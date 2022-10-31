@@ -815,6 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1801031569}
+  bullet: {fileID: 188174072191639332, guid: ebd1e7298a13d1a4aba12113fab277ab, type: 3}
   bulletSponePosition: {fileID: 473425801}
 --- !u!1 &1135722734
 GameObject:
