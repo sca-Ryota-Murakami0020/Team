@@ -74,7 +74,7 @@ public class CameraC : MonoBehaviour
             Roll(mousex, mousey);
         }
         if (Input.GetMouseButtonDown(0))
-       {
+        { 
             GetShotVector();
         }
 
@@ -184,8 +184,7 @@ public class CameraC : MonoBehaviour
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
             Debug.Log("rayHitPos" + rayHitPosition);
             dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
-            dir.y = 1.0f;
-            //Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
+            //dir.y = 1.0f;
             Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
             Debug.Log(dir);
             Debug.Log(Dir);
