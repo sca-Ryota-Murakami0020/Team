@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     private Rigidbody rb;
     private WireGun wireGun;
+    private float timeC;
 
     private Vector3 dir;
     // Start is called before the first frame update
@@ -18,10 +19,15 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timeC += Time.deltaTime;
 
-
-            dir = wireGun.NormalDirection;
+        dir = wireGun.NormalDirection;
         rb.velocity = (dir * 15.0f);
+
+        if(timeC >= 1.0f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision other)
