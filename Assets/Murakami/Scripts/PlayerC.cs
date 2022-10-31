@@ -9,7 +9,7 @@ public class PlayerC : MonoBehaviour
     //RigidBody
     private Rigidbody rb;
     //プレイヤーの速さ
-    private float speed = 1.5f;
+    private float speed = 0.5f;
     //ジャンプ力
     private float jumpPower = 10.5f;
     //接地確認用フラグ
@@ -19,6 +19,9 @@ public class PlayerC : MonoBehaviour
     //生存確認フラグ
     private bool aliveFlag;
     private bool fuckFlag;
+    private float mouseX;
+    private float mouseY;
+
 
     //プロパティ
     public int Hp
@@ -42,6 +45,7 @@ public class PlayerC : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        //camera = GameObject.Find("Main Camera");
         jumpFlag = false;
         this.hp = 1;
         this.aliveFlag = true;
@@ -54,9 +58,20 @@ public class PlayerC : MonoBehaviour
         //移動
         float H = Input.GetAxis("Horizontal") * speed;
         float V = Input.GetAxis("Vertical") * speed;
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
+
+        if (Mathf.Abs(mouseX) > 0.008f || Mathf.Abs(mouseY) > 0.005f)
+        {
+            Roll(mouseX, mouseY);
+        }
+
+        this.transform.forward = Camera.main.transform.forward;
+
         rb.AddForce(H,0,V);
+        //rb.AddForce(H,0,V);
         //ジャンプ
-        if(Input.GetKey(KeyCode.Space) && jumpFlag == false)
+        if (Input.GetKey(KeyCode.Space) && jumpFlag == false)
         {
             rb.AddForce(0,jumpPower * jumpPower,0);
             jumpFlag = true;          
@@ -73,6 +88,12 @@ public class PlayerC : MonoBehaviour
         {
             GameOver();
         }
+    }
+
+    public void Roll(float x, float y)
+    {
+        transform.RotateAround(this.transform.position, Vector3.up, x);
+        transform.RotateAround(this.transform.position, Vector3.up, y);
     }
 
     //ゲームオーバー処理

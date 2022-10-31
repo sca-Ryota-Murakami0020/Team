@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class CameraC : MonoBehaviour
 {
     //視点となるオブジェクト
-    public GameObject Player = null;
+    [SerializeField] private GameObject Player = null;
     //旋回した時のx座標
     private float xpos;
     //旋回した時のｚ座標
@@ -37,12 +38,21 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
-    public GameObject prefab;
+
+    [SerializeField] private GameObject bulletSponePosition;
+
+    private Vector3 dir;
 
     public Vector3 RayHitPosition
     {
         get { return this.rayHitPosition;}
         set { this.rayHitPosition = value;}
+    }
+
+    public Vector3 Dir
+    {
+        get { return this.dir;}
+        set { this.dir = value;}
     }
 
     void Start()
@@ -53,8 +63,7 @@ public class CameraC : MonoBehaviour
     //視点とカメラ座標を随時更新
     void Update()
     {    
-        if (Player == null) return; 
-        
+        if (Player == null) return;
         //マウスの移動量を取得
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
@@ -63,8 +72,8 @@ public class CameraC : MonoBehaviour
         {
             Roll(mousex, mousey);
         }
-        if (Input.GetMouseButtonDown(1))
-       {
+        if (Input.GetMouseButtonDown(0))
+        { 
             GetShotVector();
         }
 
@@ -142,6 +151,8 @@ public class CameraC : MonoBehaviour
 
         //平行移動により若干距離が変わるので補正する
         this.transform.position += transform.forward * (after_distance - prev_distans);
+        //D.z = 0.0f;
+        //Player.transform.rotation = Quaternion.LookRotation(D);
     }
 
     //カメラリセット
@@ -171,11 +182,14 @@ public class CameraC : MonoBehaviour
         if(Physics.Raycast(ray, out isHit, Mathf.Infinity))
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
-            rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z);    // y座標のみボールと揃えてます
-            Debug.Log("はっしゃ");
+            rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
+            Debug.Log("rayHitPos" + rayHitPosition);
+            dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
+            //dir.y = 1.0f;
+            Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
+            Debug.Log(dir);
+            Debug.Log(Dir);
         }
-        Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
-
     }
     
 }
