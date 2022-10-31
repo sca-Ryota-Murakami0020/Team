@@ -6,7 +6,7 @@ using UnityEngine;
 public class CameraC : MonoBehaviour
 {
     //視点となるオブジェクト
-    public GameObject Player = null;
+    [SerializeField] private GameObject Player = null;
     //旋回した時のx座標
     private float xpos;
     //旋回した時のｚ座標
@@ -64,8 +64,7 @@ public class CameraC : MonoBehaviour
     //視点とカメラ座標を随時更新
     void Update()
     {    
-        if (Player == null) return; 
-        
+        if (Player == null) return;
         //マウスの移動量を取得
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
@@ -183,10 +182,12 @@ public class CameraC : MonoBehaviour
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
+            Debug.Log("rayHitPos" + rayHitPosition);
             dir = (isHit.point - bulletSponePosition.transform.position).normalized;
             //Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
             Debug.Log("はっしゃ");
         }
+        Debug.Log(dir);
         Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
 
     }
