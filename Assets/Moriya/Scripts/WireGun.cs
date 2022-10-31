@@ -80,7 +80,7 @@ public class WireGun : MonoBehaviour
 
     private void StartWireGun()
     {
-        normalDirection = (camera.RayHitPosition - transform.position).normalized;
+        normalDirection =camera.Dir;
         GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.Euler(0.0f, 0.0f, 0.0f));
         Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
         bulletShootingFalg = false;
