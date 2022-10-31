@@ -654,9 +654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 547680107}
-  prefab: {fileID: 0}
-  bullet: {fileID: 0}
-  bulletSponePosition: {fileID: 0}
+  bulletSponePosition: {fileID: 1260413130}
 --- !u!1001 &6322128447252651133
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,6 @@ public class WireGun : MonoBehaviour
 
     [SerializeField] private GameObject bullet;
     private bool bulletShootingFalg = false;
-    private Vector3 normalDirection;
 
 
     private float maxDistance;//éÖÇêLÇŒÇπÇÈç≈ëÂãóó£
@@ -37,12 +36,6 @@ public class WireGun : MonoBehaviour
     {
         get { return this.bulletShootingFalg; }
         set { this.bulletShootingFalg = value; }
-    }
-
-    public Vector3 NormalDirection
-    {
-        get { return this.normalDirection; }
-        set { this.normalDirection = value; }
     }
 
       
@@ -81,13 +74,12 @@ public class WireGun : MonoBehaviour
 
     private void StartWireGun()
     {
-        normalDirection = camera.Dir;
-        Debug.Log(camera.Dir);
-        //if(bulletShootingFalg == false)
-        //{
-            GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.Euler(0.0f, 0.0f, 0.0f));
-            Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
-        //}
+       GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
+       //Debug.Log(transform.position);
+       Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
+       Debug.Log(camera.Dir);
+       Vector3 dir = camera.Dir;
+       Bullet_obj.GetComponent<Rigidbody>().AddForce(dir * 1000.0f);
     }
 
     private void StopWireGun()
