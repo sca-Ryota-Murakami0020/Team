@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,7 +38,13 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
-    public GameObject prefab;
+    [SerializeField] private GameObject prefab;
+
+    [SerializeField] private GameObject bullet;
+
+    [SerializeField] private GameObject bulletSponePosition;
+
+    private Vector3 dir;
 
     public Vector3 RayHitPosition
     {
@@ -171,7 +178,10 @@ public class CameraC : MonoBehaviour
         if(Physics.Raycast(ray, out isHit, Mathf.Infinity))
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
-            rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z);    // y座標のみボールと揃えてます
+            rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
+            dir = (isHit.point - bulletSponePosition.transform.position);
+            bullet = new GameObject();
+            bullet = Instantiate(prefab)as GameObject;
             Debug.Log("はっしゃ");
         }
         Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
