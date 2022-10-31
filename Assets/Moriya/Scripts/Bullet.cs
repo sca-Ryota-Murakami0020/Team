@@ -9,6 +9,11 @@ public class Bullet : MonoBehaviour
     private CameraC camera;
     private float timeC;
 
+
+   
+    private SpringJoint springJoint;
+    private LineRenderer lineRenderer;
+
     private bool shootFlag = false;
   
     // Start is called before the first frame update
@@ -17,6 +22,8 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         wireGun = FindObjectOfType<WireGun>();
         camera = FindObjectOfType<CameraC>();
+
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -30,15 +37,22 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             Debug.Log("’n–Ê‚Æ“–‚½‚Á‚½");
+            PlayerSpring();
         }
 
         if (other.gameObject.CompareTag("Wall"))
         {
             Debug.Log("•Ç‚É“–‚½‚Á‚½");
+            PlayerSpring();
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
             jumpCount = 0;
         }*/
+    }
+
+    private void PlayerSpring()
+    {
+
     }
 }
