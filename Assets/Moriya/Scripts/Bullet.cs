@@ -7,7 +7,9 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     private WireGun wireGun;
     private float timeC;
-    private bool shootFlag=false;
+
+    private bool shootFlag = false;
+  
 
     private Vector3 dir;
     // Start is called before the first frame update
@@ -20,24 +22,25 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeC += Time.deltaTime;
-
-        if(shootFlag == false)
-        {
-            dir = wireGun.NormalDirection;
-            rb.velocity = (dir * 15.0f);
-            shootFlag =true;
-        }
+       
+       dir = wireGun.NormalDirection;
+       rb.velocity = (dir * 15.0f);
+       shootFlag = true;
+       //wireGun.BulletShootingFalg = false;
+       
+          
+        
 
        
 
-        if(timeC >= 1.0f&& shootFlag == true)
+       /* if(timeC >= 1.0f && shootFlag == true)
         {
             Debug.Log("”­ŽË");
             Destroy(this.gameObject);
             shootFlag = false;
+            wireGun.BulletShootingFalg = false;
             timeC = 0.0f;
-        }
+        }*/
     }
 
     private void OnCollisionEnter(Collision other)
