@@ -185,7 +185,7 @@ public class CameraC : MonoBehaviour
             Debug.Log("rayHitPos" + rayHitPosition);
             dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
             dir.y = 1.0f;
-            Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
+            //Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
             Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
             Debug.Log(dir);
         }
