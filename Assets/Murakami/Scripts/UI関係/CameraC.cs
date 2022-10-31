@@ -38,6 +38,8 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
+    [SerializeField] private GameObject bullet;
+
     [SerializeField] private GameObject bulletSponePosition;
 
     private Vector3 dir;
@@ -46,6 +48,12 @@ public class CameraC : MonoBehaviour
     {
         get { return this.rayHitPosition;}
         set { this.rayHitPosition = value;}
+    }
+
+    public Vector3 Dir
+    {
+        get { return this.dir;}
+        set { this.dir = value;}
     }
 
     void Start()
@@ -175,7 +183,8 @@ public class CameraC : MonoBehaviour
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
-            dir = (isHit.point - bulletSponePosition.transform.position);
+            dir = (isHit.point - bulletSponePosition.transform.position).normalized;
+            //Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
             Debug.Log("はっしゃ");
         }
         Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
