@@ -73,7 +73,7 @@ public class CameraC : MonoBehaviour
         {
             Roll(mousex, mousey);
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
        {
             GetShotVector();
         }
@@ -188,6 +188,7 @@ public class CameraC : MonoBehaviour
             //Instantiate(bullet, new Vector3(dir.x,dir.y,dir.z), Quaternion.identity);
             Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
             Debug.Log(dir);
+            Debug.Log(Dir);
         }
     }
     
