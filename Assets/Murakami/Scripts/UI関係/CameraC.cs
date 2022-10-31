@@ -38,7 +38,7 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
-    [SerializeField] private GameObject bullet;
+    //[SerializeField] private GameObject bullet;
 
     [SerializeField] private GameObject bulletSponePosition;
 
