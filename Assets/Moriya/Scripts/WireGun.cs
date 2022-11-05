@@ -4,30 +4,24 @@ using UnityEngine;
 
 public class WireGun : MonoBehaviour
 {
-    private float bulletDisTime = 0;
+    private float bulletDisTime = 0;//弾が消える感覚
     //コンポーネント
     //private Animator animator;
     private LineRenderer lineRenderer;
     private SpringJoint springJoint;
-    private float maxDistance = 100f;
-    private Color color = new Color32(248,168,133,1);
-    private GameObject target;
+    private float maxDistance = 100f;//最大距離
+    private Color color = new Color32(248,168,133,1);//デフォの色
+    private GameObject target;//ラインが当たった時の障害物
 
-    private Player player;
-    private Transform cameraTransForm;
+    private Player player;//プレイヤー
 
     [SerializeField]
-    private Transform parentTran;
+    private Transform parentTran;//lineの初めの場所
 
+    private CameraC camera;//カメラ定義
 
-
-    private CameraC camera;
-
-
-    [SerializeField] private GameObject bullet;
-    private bool bulletShootingFalg = false;
-
-
+    [SerializeField] private GameObject bullet;//弾
+    private bool bulletShootingFalg = false;//弾が発射する時のフラグ
 
     public bool BulletShootingFalg
     {
@@ -47,7 +41,6 @@ public class WireGun : MonoBehaviour
         player = FindObjectOfType<Player>();
         camera = FindObjectOfType<CameraC>();
         //animator = this.GetComponent<Animator>();
-        cameraTransForm = Camera.main.transform;
         lineRenderer = GetComponent<LineRenderer>();
       
     }
@@ -56,35 +49,33 @@ public class WireGun : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))//左クリ押したら
         {
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.transform.SetParent(parentTran);
+
+            lineRenderer.SetPosition(0, transform.position);//レイヤーの始点をWireGunオブジェクトする
+            lineRenderer.transform.SetParent(parentTran);//プレイヤーが動いたとき
             if (camera.RayTrueFlag == true)
             {
-                lineRenderer.SetPosition(1, camera.IsHit.point);
-                target = camera.IsHit.collider.gameObject;
+                // lineの終点
+                lineRenderer.SetPosition(1, camera.IsHit.point);//カメラのレイが当たった時
+                target = camera.IsHit.collider.gameObject;//当たったオブジェクト
 
                 Debug.Log(target);
-                //GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
-                //Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
                 Debug.Log(camera.Dir);
-                Vector3 dir = camera.Dir;
+                Vector3 dir = camera.Dir;//レイの単位ベクトル
 
                 //if (bulletShootingFalg == true)
                 //{
-                ConnectWireCoroutine(target);
-                //Bullet_obj.GetComponent<Rigidbody>().AddForce(dir * 1000.0f);
-                bulletDisTime += Time.deltaTime;
-                //if(bulletDisTime == 5.0f)
-                //{
-                //Destroy(Bullet_obj);
-                bulletDisTime = 0.0f;
-                bulletShootingFalg = false;
-                camera.RayTrueFlag = false;
-                DestroyWireCoroutine();
-                //}
-                // }
+                ConnectWireCoroutine(target);//スプリングジョイント
+                bulletDisTime += Time.deltaTime;//弾の発射感覚カウント
+                /*if(bulletDisTime == 5.0f)
+                  {
+                    bulletDisTime = 0.0f;//カウントをなくす
+                    bulletShootingFalg = false;//発射するようにフラグを折る
+                    camera.RayTrueFlag = false;//レイをもう一回取得する用にフラグを折る
+                    DestroyWireCoroutine();
+                  }
+                }*/
             }
             else
             {
@@ -94,11 +85,6 @@ public class WireGun : MonoBehaviour
                 lineRenderer.endColor = color;
             }
         }
-    }
-
-    private void StartWireGun()
-    {
-       
     }
 
    void ConnectWireCoroutine(GameObject target)
