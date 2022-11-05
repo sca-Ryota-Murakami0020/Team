@@ -23,6 +23,8 @@ public class WireGun : MonoBehaviour
     [SerializeField] private GameObject bullet;//弾
     private bool bulletShootingFalg = false;//弾が発射する時のフラグ
 
+    private bool isWire;//Wireが存在するフラグ
+
     public bool BulletShootingFalg
     {
         get { return this.bulletShootingFalg; }
@@ -51,7 +53,6 @@ public class WireGun : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))//左クリ押したら
         {
-
             lineRenderer.SetPosition(0, transform.position);//レイヤーの始点をWireGunオブジェクトする
             lineRenderer.transform.SetParent(parentTran);//プレイヤーが動いたときのポジションにLineRendererの始点をつける
             if (camera.RayTrueFlag == true)
@@ -66,7 +67,7 @@ public class WireGun : MonoBehaviour
 
                 //if (bulletShootingFalg == true)
                 //{
-                ConnectWireCoroutine(target);//スプリングジョイント
+                //ConnectWireCoroutine(target);//スプリングジョイント
                 bulletDisTime += Time.deltaTime;//弾の発射感覚カウント
                 /*if(bulletDisTime == 5.0f)
                   {
@@ -76,6 +77,8 @@ public class WireGun : MonoBehaviour
                     DestroyWireCoroutine();
                   }
                 }*/
+
+                isWire = true;//Wireが発射された
             }
             else
             {
@@ -84,6 +87,13 @@ public class WireGun : MonoBehaviour
                 lineRenderer.startColor = color;
                 lineRenderer.endColor = color;
             }
+        }
+
+        //Wireが存在するとき
+        if (isWire)
+        {
+            //lineのstart場所=playerの位置に固定し続けることでWireが伸びているように見せる
+            lineRenderer.SetPosition(0, player.transform.position);
         }
     }
 
