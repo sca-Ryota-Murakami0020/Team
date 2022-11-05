@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WireGun : MonoBehaviour
 {
+    private float bulletDisTime = 0;
     //コンポーネント
     //private Animator animator;
     private LineRenderer lineRenderer;
@@ -11,11 +12,13 @@ public class WireGun : MonoBehaviour
     private Player player;
     private Transform cameraTransForm;
 
+
     private CameraC camera;
 
 
     [SerializeField] private GameObject bullet;
     private bool bulletShootingFalg = false;
+
 
 
     public bool BulletShootingFalg
@@ -41,7 +44,6 @@ public class WireGun : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            bulletShootingFalg = true;
             StartWireGun();
         }
     }
@@ -49,16 +51,28 @@ public class WireGun : MonoBehaviour
     private void StartWireGun()
     {
        lineRenderer.SetPosition(0,camera.CameraRay.origin);
-       //if(camera.)
-       //{
-
+        if (camera.RayTrueFlag == true) 
+        { 
+            //lineRenderer.SetPositions(1,hit.point);
             GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
             //Debug.Log(transform.position);
             Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
             Debug.Log(camera.Dir);
             Vector3 dir = camera.Dir;
-            Bullet_obj.GetComponent<Rigidbody>().AddForce(dir * 1000.0f);
-       //}
+            if (bulletShootingFalg == true)
+            {
+                Bullet_obj.GetComponent<Rigidbody>().AddForce(dir * 1000.0f);
+                bulletDisTime += Time.deltaTime;
+                if(bulletDisTime == 5.0f)
+                {
+                    Destroy(Bullet_obj);
+                    bulletDisTime= 0.0f;
+                    bulletShootingFalg = false;
+                    camera.RayTrueFlag = false;
+                }
+            }
+        }
+
     }
 
     private void StopWireGun()
