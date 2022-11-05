@@ -53,6 +53,7 @@ public class WireGun : MonoBehaviour
        Debug.Log(camera.Dir);
        Vector3 dir = camera.Dir;
        Bullet_obj.GetComponent<Rigidbody>().AddForce(dir * 1000.0f);
+       
     }
 
     private void StopWireGun()

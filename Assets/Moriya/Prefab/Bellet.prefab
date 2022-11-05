@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3265622582467291758}
   - component: {fileID: 8533647016382364328}
   - component: {fileID: 3853965118581102874}
+  - component: {fileID: 5135818684030807296}
   m_Layer: 0
   m_Name: Bellet
   m_TagString: Bullet
@@ -125,3 +126,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4f9e229516f1240b176f9216de69a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!145 &5135818684030807296
+SpringJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3314865941671550991}
+  m_ConnectedBody: {fileID: 0}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0.5, z: 0}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Spring: 10
+  m_Damper: 0.2
+  m_MinDistance: 0
+  m_MaxDistance: 0
+  m_Tolerance: 0.025
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
