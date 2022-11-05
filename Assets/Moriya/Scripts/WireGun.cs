@@ -53,7 +53,7 @@ public class WireGun : MonoBehaviour
         {
 
             lineRenderer.SetPosition(0, transform.position);//レイヤーの始点をWireGunオブジェクトする
-            lineRenderer.transform.SetParent(parentTran);//プレイヤーが動いたとき
+            lineRenderer.transform.SetParent(parentTran);//プレイヤーが動いたときのポジションにLineRendererの始点をつける
             if (camera.RayTrueFlag == true)
             {
                 // lineの終点
@@ -80,7 +80,7 @@ public class WireGun : MonoBehaviour
             else
             {
                 //初期状態に戻す
-                lineRenderer.SetPosition(1, camera.CameraRay.origin + (camera.Dir * maxDistance));
+                lineRenderer.SetPosition(1, camera.CameraRay.origin + (camera.Dir * maxDistance));//lineRendererのポジションを更新
                 lineRenderer.startColor = color;
                 lineRenderer.endColor = color;
             }
