@@ -38,7 +38,9 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
-    private Ray cameraRay;
+    private Ray cameraRay;//調整その１　プロパティの設定
+
+    private bool rayTrueFlag;//その２
 
 
     [SerializeField] private GameObject bulletSponePosition;
@@ -63,9 +65,15 @@ public class CameraC : MonoBehaviour
         set { this.cameraRay = value;}
     }
 
+    public bool RayTrueFlag
+    {
+        get { return this.rayTrueFlag;}
+        set { this.rayTrueFlag = value;}
+    }
     void Start()
     {
         Player = GameObject.Find("Player");
+        rayTrueFlag = false;
     }
 
     //視点とカメラ座標を随時更新
@@ -195,7 +203,7 @@ public class CameraC : MonoBehaviour
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
             Debug.Log("rayHitPos" + rayHitPosition);
             dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
-            //dir.y = 1.0f;
+            rayTrueFlag = true;
             Debug.DrawRay(cameraRay.origin,cameraRay.direction * 10, Color.green, 5);
             Debug.Log(dir);
             Debug.Log(Dir);
