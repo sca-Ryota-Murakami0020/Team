@@ -9,10 +9,9 @@ public class Bullet : MonoBehaviour
     private CameraC camera;
     private float timeC;
 
-
    
     private SpringJoint springJoint;
-    private LineRenderer lineRenderer;
+  
 
     private bool shootFlag = false;
   
@@ -23,7 +22,7 @@ public class Bullet : MonoBehaviour
         wireGun = FindObjectOfType<WireGun>();
         camera = FindObjectOfType<CameraC>();
 
-        lineRenderer = GetComponent<LineRenderer>();
+      
     }
 
     // Update is called once per frame
