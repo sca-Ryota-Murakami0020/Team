@@ -42,6 +42,8 @@ public class CameraC : MonoBehaviour
 
     private bool rayTrueFlag;//その２
 
+    private RaycastHit isHit;//その３
+
 
     [SerializeField] private GameObject bulletSponePosition;
 
@@ -69,6 +71,12 @@ public class CameraC : MonoBehaviour
     {
         get { return this.rayTrueFlag;}
         set { this.rayTrueFlag = value;}
+    }
+
+    public RaycastHit IsHit
+    {
+        get { return this.isHit;}
+        set { this.isHit = value;}
     }
     void Start()
     {
@@ -194,9 +202,6 @@ public class CameraC : MonoBehaviour
     public void GetShotVector()
     {
         cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Ray ray = new Ray()
-        
-        RaycastHit isHit;// = Physics.Raycast((Vector3) ray.origin,(Vector3) ray.direction,isHit);
         if(Physics.Raycast(cameraRay, out isHit, Mathf.Infinity))
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
