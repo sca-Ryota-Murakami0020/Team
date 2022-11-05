@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         //¶•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
         if (Input.GetKey(KeyCode.A))
         {
-            Debug.Log("a");
+           
             //¶Œü‚«‚Ì‰æ‘œ‚É•ÏX‚·‚é
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/

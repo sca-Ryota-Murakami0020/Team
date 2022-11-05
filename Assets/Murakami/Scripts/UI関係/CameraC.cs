@@ -38,6 +38,12 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
+    private Ray cameraRay;//調整その１　プロパティの設定
+
+    private bool rayTrueFlag;//その２
+
+    private RaycastHit isHit;//その３
+
 
     [SerializeField] private GameObject bulletSponePosition;
 
@@ -55,9 +61,27 @@ public class CameraC : MonoBehaviour
         set { this.dir = value;}
     }
 
+    public Ray CameraRay
+    {
+        get { return this.cameraRay;}
+        set { this.cameraRay = value;}
+    }
+
+    public bool RayTrueFlag
+    {
+        get { return this.rayTrueFlag;}
+        set { this.rayTrueFlag = value;}
+    }
+
+    public RaycastHit IsHit
+    {
+        get { return this.isHit;}
+        set { this.isHit = value;}
+    }
     void Start()
     {
         Player = GameObject.Find("Player");
+        rayTrueFlag = false;
     }
 
     //視点とカメラ座標を随時更新
@@ -177,16 +201,15 @@ public class CameraC : MonoBehaviour
     
     public void GetShotVector()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit isHit;// = Physics.Raycast((Vector3) ray.origin,(Vector3) ray.direction,isHit);
-        if(Physics.Raycast(ray, out isHit, Mathf.Infinity))
+        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(Physics.Raycast(cameraRay, out isHit, Mathf.Infinity))
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
             Debug.Log("rayHitPos" + rayHitPosition);
             dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
-            //dir.y = 1.0f;
-            Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
+            rayTrueFlag = true;
+            Debug.DrawRay(cameraRay.origin,cameraRay.direction * 10, Color.green, 5);
             Debug.Log(dir);
             Debug.Log(Dir);
         }
