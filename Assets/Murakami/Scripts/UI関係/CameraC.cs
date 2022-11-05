@@ -38,6 +38,8 @@ public class CameraC : MonoBehaviour
 
     private Vector3 rayHitPosition;
 
+    private Ray cameraRay;
+
 
     [SerializeField] private GameObject bulletSponePosition;
 
@@ -53,6 +55,12 @@ public class CameraC : MonoBehaviour
     {
         get { return this.dir;}
         set { this.dir = value;}
+    }
+
+    public Ray CameraRay
+    {
+        get { return this.cameraRay;}
+        set { this.cameraRay = value;}
     }
 
     void Start()
@@ -177,16 +185,18 @@ public class CameraC : MonoBehaviour
     
     public void GetShotVector()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Ray ray = new Ray()
+        
         RaycastHit isHit;// = Physics.Raycast((Vector3) ray.origin,(Vector3) ray.direction,isHit);
-        if(Physics.Raycast(ray, out isHit, Mathf.Infinity))
+        if(Physics.Raycast(cameraRay, out isHit, Mathf.Infinity))
         {
             // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
             rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
             Debug.Log("rayHitPos" + rayHitPosition);
             dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
             //dir.y = 1.0f;
-            Debug.DrawRay(ray.origin,ray.direction * 10, Color.green, 5);
+            Debug.DrawRay(cameraRay.origin,cameraRay.direction * 10, Color.green, 5);
             Debug.Log(dir);
             Debug.Log(Dir);
         }
