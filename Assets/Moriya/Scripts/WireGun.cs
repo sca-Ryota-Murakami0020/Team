@@ -53,7 +53,7 @@ public class WireGun : MonoBehaviour
        lineRenderer.SetPosition(0,camera.CameraRay.origin);
         if (camera.RayTrueFlag == true) 
         { 
-            //lineRenderer.SetPositions(1,hit.point);
+            lineRenderer.SetPosition(1,camera.IsHit.point);
             GameObject Bullet_obj = (GameObject)Instantiate(bullet, transform.position, Quaternion.identity);
             //Debug.Log(transform.position);
             Bullet bullet_cs = Bullet_obj.GetComponent<Bullet>();
