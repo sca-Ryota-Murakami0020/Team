@@ -5,7 +5,13 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     [SerializeField] private Vector3 velocity;              // 移動方向
-    [SerializeField] private float moveSpeed = 5.0f;        // 移動速度
+    [SerializeField] private float moveSpeed = 5.0f;
+    private int itemCount;// 移動速度
+    public int GSItemCount
+    {
+        get { return this.itemCount; }
+        set { this.itemCount = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +39,14 @@ public class player : MonoBehaviour
             // プレイヤーの位置(transform.position)の更新
             // 移動方向ベクトル(velocity)を足し込みます
             transform.position += velocity;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Item"))
+        {
+            ItemPoint++;
+            other.gameObject.SetActive(false);
         }
     }
 
