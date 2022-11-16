@@ -125,9 +125,6 @@ public class Player : MonoBehaviour
                 WireGun Gun_cs = Gun_obj.GetComponent<WireGun>();
         }*/
 
-     
-
-
         if (hp <= 0)
         {
             //SceneManager.LoadScene("OneStage");

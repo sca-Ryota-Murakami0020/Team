@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WireGun : MonoBehaviour
 {
-    private float bulletDisTime = 0;//弾が消える感覚
     //コンポーネント
     //private Animator animator;
     private LineRenderer lineRenderer;
@@ -60,24 +59,7 @@ public class WireGun : MonoBehaviour
                 // lineの終点
                 lineRenderer.SetPosition(1, camera.IsHit.point);//カメラのレイが当たった時
                 target = camera.IsHit.collider.gameObject;//当たったオブジェクト
-
-                Debug.Log(target);
-                Debug.Log(camera.Dir);
                 Vector3 dir = camera.Dir;//レイの単位ベクトル
-
-                //if (bulletShootingFalg == true)
-                //{
-                //ConnectWireCoroutine(target);//スプリングジョイント
-                bulletDisTime += Time.deltaTime;//弾の発射感覚カウント
-                /*if(bulletDisTime == 5.0f)
-                  {
-                    bulletDisTime = 0.0f;//カウントをなくす
-                    bulletShootingFalg = false;//発射するようにフラグを折る
-                    camera.RayTrueFlag = false;//レイをもう一回取得する用にフラグを折る
-                    DestroyWireCoroutine();
-                  }
-                }*/
-
                 isWire = true;//Wireが発射された
             }
             else
