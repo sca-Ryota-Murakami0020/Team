@@ -11,6 +11,18 @@ public class GManager : MonoBehaviour
     [SerializeField] private AudioClip[] bgms;
     private AudioSource audios;
 
+    //画面切り変わる時
+    private bool displaySwitchingFlag = false;
+    //タイムアップor死亡時
+    private bool playerDeathFlag = false;
+    //リザルト時のランキング決定時
+    private bool rankingFlag = false;
+    //ボタン押したときの効果音(決定時)
+    private bool decisionFlag = false;
+    //ボタン押したときの効果音(取り消し時)
+    private bool returnFlag = false;
+
+
     //敵に当たった時になる効果音フラグ
     private bool playerDamegeFlag = false;
     //壁ジャンプしたときの効果音フラグ
@@ -26,14 +38,6 @@ public class GManager : MonoBehaviour
     //ワイヤーが当たった時の効果音フラグ
     private bool wireStopFlag = false;
 
-
-    //シングルトン
-    private void Awake()
-    {
-        //AudioSource呼び出し
-        audios = GetComponent<AudioSource>();
-        DontDestroyOnLoad(this.gameObject);
-    }
 
     public bool PDFlag//プレイヤーダメージ
     {
@@ -75,6 +79,46 @@ public class GManager : MonoBehaviour
     {
         get { return this.wireStopFlag; }
         set { this.wireStopFlag = value; }
+    }
+
+
+    public bool DisplaySwitchingFlag//画面切り替え
+    {
+        get { return this.displaySwitchingFlag; }
+        set { this.displaySwitchingFlag = value; }
+    }
+
+    public bool PlayerDeathFlag//プレイヤー死亡時
+    {
+        get { return this.playerDeathFlag; }
+        set { this.playerDeathFlag = value; }
+    }
+
+    public bool RankingFlag//ランキング決定時
+    {
+        get { return this.rankingFlag; }
+        set { this.rankingFlag = value; }
+    }
+
+    public bool DecisionFlag//ボタン決定時
+    {
+        get { return this.decisionFlag; }
+        set { this.decisionFlag = value; }
+    }
+
+    private bool ReturnFlag//取り消し時
+    {
+        get { return this.returnFlag; }
+        set { this.returnFlag = value; }
+    }
+
+
+    //シングルトン
+    private void Awake()
+    {
+        //AudioSource呼び出し
+        audios = GetComponent<AudioSource>();
+        DontDestroyOnLoad(this.gameObject);
     }
 
 
@@ -135,6 +179,41 @@ public class GManager : MonoBehaviour
             audios.clip = bgms[6];
             audios.Play();
             wireStopFlag = false;
+        }
+
+        if(displaySwitchingFlag == true)
+        {
+            audios.clip = bgms[7];
+            audios.Play();
+            displaySwitchingFlag = false;
+        }
+
+        if(playerDeathFlag == true)
+        {
+            audios.clip = bgms[8];
+            audios.Play();
+            playerDeathFlag = false;
+        }
+
+        if(rankingFlag == true)
+        {
+            audios.clip = bgms[9];
+            audios.Play();
+            rankingFlag = false;
+        }
+
+        if(decisionFlag == true)
+        {
+            audios.clip = bgms[10];
+            audios.Play();
+            decisionFlag = false;
+        }
+
+        if(returnFlag == true)
+        {
+            audios.clip = bgms[11];
+            audios.Play();
+            decisionFlag = false;
         }
     }
 }
