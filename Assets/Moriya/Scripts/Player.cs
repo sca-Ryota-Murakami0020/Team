@@ -138,11 +138,10 @@ public class Player : MonoBehaviour
         //¶•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
         if (Input.GetKey(KeyCode.A))
         {
-           
             //¶Œü‚«‚Ì‰æ‘œ‚É•ÏX‚·‚é
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
-            transform.Translate(-1 * speed * Time.deltaTime, 0, 0);
+            transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
         }
         //‰E•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
         else if (Input.GetKey(KeyCode.D))
