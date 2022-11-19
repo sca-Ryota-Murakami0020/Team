@@ -5,8 +5,8 @@ using UnityEngine;
 public class player : MonoBehaviour
 {
     [SerializeField] private Vector3 velocity;              // ˆÚ“®•ûŒü
-    [SerializeField] private float moveSpeed = 5.0f;
-    private int itemCount;// ˆÚ“®‘¬“x
+    [SerializeField] private float moveSpeed = 5.0f;// ˆÚ“®‘¬“x
+    private int itemCount;
     public int GSItemCount
     {
         get { return this.itemCount; }
@@ -45,7 +45,7 @@ public class player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Item"))
         {
-            ItemPoint++;
+            itemCount++;
             other.gameObject.SetActive(false);
         }
     }
