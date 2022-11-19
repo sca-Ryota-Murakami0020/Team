@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Wall
   - key
+  - Item
   layers:
   - Default
   - TransparentFX
