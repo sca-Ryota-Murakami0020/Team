@@ -18,11 +18,14 @@ public class EnemyC : MonoBehaviour
     private float speed = 1.5f;
     //周回周期
     private float theta;
+    //スタート地点
+    [SerializeField] private GameObject startPoint;
+    //
+    [SerializeField] private GameObject endPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        pos = this.transform.position;
         var rb = GetComponent<Rigidbody>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         theta = 0.0f;
@@ -31,8 +34,9 @@ public class EnemyC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = new Vector3(pos.x , pos.y, pos.z + Mathf.Sin(theta)* wide);
-        theta += 0.01f * enemySpeed;
+        //if()
+        this.pos = this.transform.position;
+        this.transform.position += transform.forward * 0.7f;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,6 +48,19 @@ public class EnemyC : MonoBehaviour
             ver.y = 0;
             ver = ver.normalized;
             collision.transform.Translate(ver * speed);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject == startPoint)
+        {
+            this.transform.LookAt(endPoint.transform.position);
+        }
+
+        else if(other.gameObject == endPoint)
+        {
+            this.transform.LookAt(startPoint.transform.position);
         }
     }
 }
