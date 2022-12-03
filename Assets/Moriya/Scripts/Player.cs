@@ -19,6 +19,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Transform parentTran;
 
+    //プレイヤーアニメーション用変数
+    [SerializeField]
+    private Animator anime = null;
+
+    //移動
+    private bool moveFlag = false;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -99,6 +105,7 @@ public class Player : MonoBehaviour
         //gm = FindObjectOfType<GManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         hp = playerMaxhp;
+        //anime.SetBool(doldle.true);
     }
 
     // Update is called once per frame
@@ -141,6 +148,8 @@ public class Player : MonoBehaviour
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
+
+            //anime.SetBool(doWalk.true);
             transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
         }
         //右方向に向いて移動したら
@@ -149,6 +158,8 @@ public class Player : MonoBehaviour
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
+
+            //anime.SetBool(doWalk.true);
             transform.Translate(+1 * speed * Time.deltaTime, 0, 0);
         }
         //上方向に向いて移動したら
@@ -157,6 +168,8 @@ public class Player : MonoBehaviour
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
+
+            //anime.SetBool(doWalk.true);
             transform.Translate(0, 0, +1 * speed * Time.deltaTime);
         }
         //下方向に向いて移動したら
@@ -165,13 +178,18 @@ public class Player : MonoBehaviour
             //下向きの画像に変更する
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
+
+            //anime.SetBool(doWalk.true);
             transform.Translate(0, 0, -1 * speed * Time.deltaTime);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1)
+
+
+        if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1)//&& anime.SetBool(doFall.true)
         {
             this.rb.AddForce(new Vector3(0,speed*20, 0));
             jumpCount++;
+            //anime.SetBool(doJump);
         }
         #endregion
     }
@@ -180,8 +198,8 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            //anime.SetBool(doLanging)
             jumpCount = 0;
-
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
