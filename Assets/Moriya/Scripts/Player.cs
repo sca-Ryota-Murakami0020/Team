@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
 
     //移動
     private bool moveFlag = false;
+    //ジャンプ
+    private bool jumpFlag = false;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -111,8 +113,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if(anime.SetBool(doWalk.false)&&//anime.SetBool(doJump.false) && anime.SetBool(doLanging.false)){
+        //anime.SetBool(doldle.true);
+        //}
 
-        if(speedAccelerationFlag == true)
+        if (speedAccelerationFlag == true)
         {
             speedCTime++;
             speed +=5.0f;
@@ -143,62 +148,66 @@ public class Player : MonoBehaviour
 
      
         //左方向に向いて移動したら
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))//&&anime.SetBool(doLanging.true)
         {
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
-
+            moveFlag = true;
             //anime.SetBool(doWalk.true);
             transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
         }
         //右方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))//anime.SetBool(doLanging.true)
         {
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
-
+            moveFlag = true;
             //anime.SetBool(doWalk.true);
             transform.Translate(+1 * speed * Time.deltaTime, 0, 0);
         }
         //上方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.W))
+        else if (Input.GetKey(KeyCode.W))// anime.SetBool(doLanging.true)
         {
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
-
+            moveFlag = true;
             //anime.SetBool(doWalk.true);
             transform.Translate(0, 0, +1 * speed * Time.deltaTime);
         }
         //下方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))//anime.SetBool(doLanging.true)
         {
             //下向きの画像に変更する
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
-
+            moveFlag = true;
             //anime.SetBool(doWalk.true);
             transform.Translate(0, 0, -1 * speed * Time.deltaTime);
         }
 
+        moveFlag = false;
 
 
-        if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1)//&& anime.SetBool(doFall.true)
+
+        if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1 && jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
+            jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*20, 0));
+            //anime.SetBool(doJump.true);
             jumpCount++;
-            //anime.SetBool(doJump);
         }
         #endregion
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground")&&jumpFlag==true)
         {
-            //anime.SetBool(doLanging)
+            jumpFlag = false;
+            //anime.SetBool(doLanging.true)
             jumpCount = 0;
         }
         /*if (other.gameObject.CompareTag("Wall"))
