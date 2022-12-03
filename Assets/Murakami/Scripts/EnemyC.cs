@@ -35,8 +35,25 @@ public class EnemyC : MonoBehaviour
     void Update()
     {
         //if()
-        this.pos = this.transform.position;
-        this.transform.position += transform.forward * 0.7f;
+        //this.pos = this.transform.position;
+        var diff = pl.transform.position - transform.position;
+        var axis = Vector3.Cross(transform.forward, diff);
+        var angle = Vector3.Angle(transform.forward, diff) * (axis.y < 0 ? -1 : 1);
+        if (angle <= 70.0f && angle >= -70.0f)
+        {
+            // ray cast
+            RaycastHit hit;
+            Vector3 temp = pl.transform.position - this.transform.position;
+            Vector3 normal = temp.normalized;
+            if (Physics.Raycast(this.transform.position, normal, out hit, 50))
+            {
+                if (hit.transform.gameObject == pl)
+                {
+                    // 対象のオブジェクトが視界に入った時の処理
+                }
+                else this.transform.position += transform.forward * 0.7f;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
