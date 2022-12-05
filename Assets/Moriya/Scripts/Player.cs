@@ -50,10 +50,19 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private BoxCollider bc;
 
-   //GMとポーズ画面関係のスプリクトの定義
-   // private GManager gm;
-   private PasueDisplayC pasueDisplayC;
+    //GMとポーズ画面関係のスプリクトの定義
+    // private GManager gm;
+    private PasueDisplayC pasueDisplayC;
 
+    //プレイヤーの角度を保存するための変数
+    //デフォルトの角度
+    [SerializeField] private Transform defaultTransform;
+    //右の角度
+    [SerializeField] private Transform RightTransform;
+    //左の角度
+    [SerializeField] private Transform LeftTransform;
+    //下の角度
+    [SerializeField] private Transform underTransform;
     //ゲッター&セッター
     public float PlayerSpeed
     {
@@ -117,7 +126,7 @@ public class Player : MonoBehaviour
     {
         //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
         //{
-            //anime.SetBool("doldle",true);
+        anime.SetBool("doIdle",true);
         //}
 
         if (speedAccelerationFlag == true)
@@ -156,7 +165,8 @@ public class Player : MonoBehaviour
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
-            moveFlag = true;
+            //moveFlag = true;
+            transform.localScale = new Vector3(1, 1, 1);
             anime.SetBool("doWalk",true);
             transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
         }
@@ -166,7 +176,8 @@ public class Player : MonoBehaviour
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
-            moveFlag = true;
+            //moveFlag = true;
+             transform.localScale = new Vector3(1, 1, 1);
             anime.SetBool("doWalk", true);
             transform.Translate(+1 * speed * Time.deltaTime, 0, 0);
         }
@@ -176,7 +187,7 @@ public class Player : MonoBehaviour
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
-            moveFlag = true;
+            //moveFlag = true;
             anime.SetBool("doWalk", true);
             transform.Translate(0, 0, +1 * speed * Time.deltaTime);
         }
@@ -186,13 +197,16 @@ public class Player : MonoBehaviour
             //下向きの画像に変更する
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
-            moveFlag = true;
+            //moveFlag = true;
             anime.SetBool("doWalk", true);
             transform.Translate(0, 0, -1 * speed * Time.deltaTime);
         }
-
-        moveFlag = false;
-
+        else
+        {
+            moveFlag = false;
+            anime.SetBool("doWalk",false);
+            anime.SetBool("doIdle", true);
+        }
 
 
         if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1 && jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
