@@ -175,7 +175,7 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
             //moveFlag = true;
-            _parent.transform.position -= transform.right * speed *Time.deltaTime;
+            _parent.transform.position -= Vector3.right * speed *Time.deltaTime;
             anime.SetBool("doWalk",true);
             transform.rotation = left;
         }
@@ -186,7 +186,7 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
             //moveFlag = true;
-            _parent.transform.position += transform.right * speed * Time.deltaTime;
+            _parent.transform.position += Vector3.right * speed * Time.deltaTime;
             Debug.Log(_parent.transform.position);
             anime.SetBool("doWalk", true);
             transform.rotation = Right;
@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
             sr.sprite = upImage;*/
             //moveFlag = true;
             anime.SetBool("doWalk", true);
-            _parent.transform.position += transform.forward * speed * Time.deltaTime;
+            _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
             transform.rotation = up;
         }
         //‰º•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour
             sr.sprite = defaultImage;*/
             //moveFlag = true;
             anime.SetBool("doWalk", true);
-            _parent.transform.position -= transform.forward * speed * Time.deltaTime;
+            _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
             transform.rotation =down;
         }
         else
