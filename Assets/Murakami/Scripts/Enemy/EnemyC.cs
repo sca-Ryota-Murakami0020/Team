@@ -28,6 +28,7 @@ public class EnemyC : MonoBehaviour
         get { return this.doEncount;}
         set { this.doEncount = value;}
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,9 +41,9 @@ public class EnemyC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(doEncount);
+        Debug.Log(this.doEncount);
 
-        if (doEncount)
+        if (this.doEncount)
         {
             this.transform.position += transform.forward * addSpeed * Time.deltaTime;//0.7f;
             Debug.Log("追跡");
@@ -76,17 +77,17 @@ public class EnemyC : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            doEncount = true;
+            this.doEncount = true;
             Debug.Log("Estart開始");
         }
 
-        if (other.gameObject == startPoint && !doEncount)
+        if (other.gameObject == startPoint && !this.doEncount)
         {
             this.transform.LookAt(endPoint.transform.position);
             //Debug.Log("start開始");
         }
 
-        else if (other.gameObject == endPoint && !doEncount)
+        else if (other.gameObject == endPoint && !this.doEncount)
         {
             this.transform.LookAt(startPoint.transform.position);
             //Debug.Log("end開始");
