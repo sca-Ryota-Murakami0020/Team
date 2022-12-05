@@ -54,15 +54,15 @@ public class Player : MonoBehaviour
     // private GManager gm;
     private PasueDisplayC pasueDisplayC;
 
-    //プレイヤーの角度を保存するための変数
-    //デフォルトの角度
-    [SerializeField] private Transform defaultTransform;
-    //右の角度
-    [SerializeField] private Transform RightTransform;
-    //左の角度
-    [SerializeField] private Transform LeftTransform;
-    //下の角度
-    [SerializeField] private Transform underTransform;
+    //プレイヤー角度計算
+    private Quaternion left;
+    private Quaternion Right;
+    private Quaternion up;
+    private Quaternion down;
+
+    //親オブジェクト
+    private GameObject _parent;
+
     //ゲッター&セッター
     public float PlayerSpeed
     {
@@ -118,7 +118,16 @@ public class Player : MonoBehaviour
         hp = playerMaxhp;
         this.anime= GetComponent<Animator>();
 
+        //親オブジェクト取得
+        _parent = transform.root.gameObject;
+        Debug.Log(_parent.name);
+
         anime.SetBool("doIdle",true);
+
+        left = Quaternion.Euler(0,-90,0);
+        Right = Quaternion.Euler(0,90,0);
+        up = Quaternion.Euler(0,180,0);
+        down= Quaternion.Euler(0,0,0);
     }
 
     // Update is called once per frame
@@ -166,20 +175,20 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
             //moveFlag = true;
-            transform.localScale = new Vector3(1, 1, 1);
+            _parent.transform.position -= transform.right * speed *Time.deltaTime;
             anime.SetBool("doWalk",true);
-            transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
+            transform.rotation = left;
         }
         //右方向に向いて移動したら
         else if (Input.GetKey(KeyCode.D))
-        { 
+        {
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
             //moveFlag = true;
-             transform.localScale = new Vector3(1, 1, 1);
+            _parent.transform.position += transform.right * speed * Time.deltaTime;
             anime.SetBool("doWalk", true);
-            transform.Translate(+1 * speed * Time.deltaTime, 0, 0);
+            transform.rotation = Right;
         }
         //上方向に向いて移動したら
         else if (Input.GetKey(KeyCode.W))
@@ -189,7 +198,8 @@ public class Player : MonoBehaviour
             sr.sprite = upImage;*/
             //moveFlag = true;
             anime.SetBool("doWalk", true);
-            transform.Translate(0, 0, +1 * speed * Time.deltaTime);
+            _parent.transform.position += transform.forward * speed * Time.deltaTime;
+            transform.rotation = up;
         }
         //下方向に向いて移動したら
         else if (Input.GetKey(KeyCode.S))//anime.SetBool(doLanging.true)
@@ -199,7 +209,8 @@ public class Player : MonoBehaviour
             sr.sprite = defaultImage;*/
             //moveFlag = true;
             anime.SetBool("doWalk", true);
-            transform.Translate(0, 0, -1 * speed * Time.deltaTime);
+            _parent.transform.position -= transform.forward * speed * Time.deltaTime;
+            transform.rotation =down;
         }
         else
         {
