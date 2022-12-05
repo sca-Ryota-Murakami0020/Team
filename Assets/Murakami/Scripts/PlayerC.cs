@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public class PlayerC : MonoBehaviour
 {
+    [SerializeField]private BoxCollider[] bc = new BoxCollider[5];
     //RigidBody
     private Rigidbody rb;
     //プレイヤーの速さ
-    private float speed = 0.5f;
+    private float speed = 1.0f;
     //ジャンプ力
     private float jumpPower = 10.5f;
     //接地確認用フラグ
@@ -66,14 +67,14 @@ public class PlayerC : MonoBehaviour
             Roll(mouseX, mouseY);
         }
 
-        this.transform.forward = Camera.main.transform.forward;
+        //this.transform.forward = Camera.main.transform.forward;
 
         rb.AddForce(H,0,V);
-        //rb.AddForce(H,0,V);
+        
         //ジャンプ
-        if (Input.GetKey(KeyCode.Space) && jumpFlag == false)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpFlag == false)
         {
-            rb.AddForce(0,jumpPower * jumpPower,0);
+            rb.AddForce(0,Mathf.Pow(jumpPower,2),0);
             jumpFlag = true;          
         } 
         //次のジャンプまでの間隔の計算
