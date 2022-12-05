@@ -187,6 +187,7 @@ public class Player : MonoBehaviour
             sr.sprite = rightImage;*/
             //moveFlag = true;
             _parent.transform.position += transform.right * speed * Time.deltaTime;
+            Debug.Log(_parent.transform.position);
             anime.SetBool("doWalk", true);
             transform.rotation = Right;
         }
