@@ -75,12 +75,6 @@ public class EnemyC : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            this.doEncount = true;
-            Debug.Log("Estart開始");
-        }
-
         if (other.gameObject == startPoint && !this.doEncount)
         {
             this.transform.LookAt(endPoint.transform.position);
@@ -91,6 +85,12 @@ public class EnemyC : MonoBehaviour
         {
             this.transform.LookAt(startPoint.transform.position);
             //Debug.Log("end開始");
+        }
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("start開始");
+            doEncount = true;
         }
     }
 }
