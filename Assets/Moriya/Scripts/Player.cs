@@ -34,8 +34,8 @@ public class Player : MonoBehaviour
     private float speedTime = 10.0f;
 
     //ワイヤー関係
-    [Header("ワイヤー")] [SerializeField] private GameObject wire;
-    private bool wireItemFlag = false;
+    //[Header("ワイヤー")] [SerializeField] private GameObject wire;
+    //private bool wireItemFlag = false;
     //[SerializeField]
     //ワイヤーした時に表示するUIのプレハブ
     //private GameObject wireUIPrefab;
@@ -79,11 +79,11 @@ public class Player : MonoBehaviour
         set {this.jumpCount = value; }
     }
 
-    public bool WireItemFlag
+    /*public bool WireItemFlag
     {
         get { return this.wireItemFlag; }
         set { this.wireItemFlag = value; }
-    }
+    }*/
 
     public int ItemPoint
     {
@@ -107,14 +107,17 @@ public class Player : MonoBehaviour
         //gm = FindObjectOfType<GManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         hp = playerMaxhp;
-        //anime.SetBool(doldle.true);
+        this.anime= GetComponent<Animator>();
+
+        anime.SetBool("doIdle",true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(anime.SetBool(doWalk.false)&&//anime.SetBool(doJump.false) && anime.SetBool(doLanging.false)){
-        //anime.SetBool(doldle.true);
+        //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
+        //{
+            //anime.SetBool("doldle",true);
         //}
 
         if (speedAccelerationFlag == true)
@@ -148,33 +151,33 @@ public class Player : MonoBehaviour
 
      
         //左方向に向いて移動したら
-        if (Input.GetKey(KeyCode.A))//&&anime.SetBool(doLanging.true)
+        if (Input.GetKey(KeyCode.A))
         {
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
             moveFlag = true;
-            //anime.SetBool(doWalk.true);
+            anime.SetBool("doWalk",true);
             transform.Translate(-1 * speed*Time.deltaTime , 0, 0);
         }
         //右方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.D))//anime.SetBool(doLanging.true)
-        {
+        else if (Input.GetKey(KeyCode.D))
+        { 
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
             moveFlag = true;
-            //anime.SetBool(doWalk.true);
+            anime.SetBool("doWalk", true);
             transform.Translate(+1 * speed * Time.deltaTime, 0, 0);
         }
         //上方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.W))// anime.SetBool(doLanging.true)
+        else if (Input.GetKey(KeyCode.W))
         {
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
             moveFlag = true;
-            //anime.SetBool(doWalk.true);
+            anime.SetBool("doWalk", true);
             transform.Translate(0, 0, +1 * speed * Time.deltaTime);
         }
         //下方向に向いて移動したら
@@ -184,7 +187,7 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
             moveFlag = true;
-            //anime.SetBool(doWalk.true);
+            anime.SetBool("doWalk", true);
             transform.Translate(0, 0, -1 * speed * Time.deltaTime);
         }
 
