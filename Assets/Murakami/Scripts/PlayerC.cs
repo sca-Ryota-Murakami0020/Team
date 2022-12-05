@@ -73,7 +73,7 @@ public class PlayerC : MonoBehaviour
         //ジャンプ
         if (Input.GetKeyDown(KeyCode.Space) && jumpFlag == false)
         {
-            rb.AddForce(0,jumpPower,0);
+            rb.AddForce(0,Mathf.Pow(jumpPower,2),0);
             jumpFlag = true;          
         } 
         //次のジャンプまでの間隔の計算
