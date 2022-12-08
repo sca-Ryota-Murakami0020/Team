@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //プレイヤーステータス
-    private int hp = 0;
+    private int hp = 3;
     private float speed = 10.0f;
     private int playerMaxhp = 3;
     private int itemPoint = 0;
