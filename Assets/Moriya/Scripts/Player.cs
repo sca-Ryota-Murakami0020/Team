@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             _parent.transform.position -= Vector3.right * speed *Time.deltaTime;
             anime.SetBool("doWalk",true);
             transform.rotation = left;
@@ -185,9 +185,8 @@ public class Player : MonoBehaviour
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             _parent.transform.position += Vector3.right * speed * Time.deltaTime;
-            Debug.Log(_parent.transform.position);
             anime.SetBool("doWalk", true);
             transform.rotation = Right;
         }
@@ -197,7 +196,7 @@ public class Player : MonoBehaviour
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             anime.SetBool("doWalk", true);
             _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
             transform.rotation = up;
@@ -208,7 +207,7 @@ public class Player : MonoBehaviour
             //下向きの画像に変更する
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             anime.SetBool("doWalk", true);
             _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
             transform.rotation =down;
@@ -225,7 +224,7 @@ public class Player : MonoBehaviour
         {
             jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*20, 0));
-            //anime.SetBool(doJump.true);
+            anime.SetBool("doJump",true);
             jumpCount++;
         }
         #endregion
@@ -233,14 +232,25 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground")&&jumpFlag==true)
+        if (other.gameObject.CompareTag("Ground"))
         {
-            jumpFlag = false;
-            //anime.SetBool(doLanging.true)
+            if (jumpFlag == true) 
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                //anime.SetBool("doRolling",false);
+                anime.SetBool("doIdle",true);
+            }
             jumpCount = 0;
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
+            if (jumpFlag == true) 
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                anime.SetBool("doIdle",true);
+            }
             jumpCount = 0;
         }*/
     }
