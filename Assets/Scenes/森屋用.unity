@@ -190,6 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentTran: {fileID: 624044263}
   anime: {fileID: 624044261}
+  rayPosition: {fileID: 2058573363}
+  rayRange: 0.85
+  takeDamageDistance: 2
 --- !u!4 &624044263 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3441f918d51371e48ad44bf35ae9ebd6, type: 3}
@@ -205,6 +208,10 @@ PrefabInstance:
     - target: {fileID: 1140800084783159107, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1140800084783159107, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_RootOrder
@@ -492,6 +499,10 @@ PrefabInstance:
     - target: {fileID: 8751584280048579562, guid: f2c5b63092c0d7b409a77a8e862a6776, type: 3}
       propertyPath: m_Name
       value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 8751584280048579562, guid: f2c5b63092c0d7b409a77a8e862a6776, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8751584280048579566, guid: f2c5b63092c0d7b409a77a8e862a6776, type: 3}
       propertyPath: m_RootOrder

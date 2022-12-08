@@ -27,6 +27,22 @@ public class Player : MonoBehaviour
     private bool moveFlag = false;
     //ジャンプ
     private bool jumpFlag = false;
+    //落下中
+    private bool fallFlag = false;
+
+    //　レイを飛ばす場所
+    [SerializeField]
+    private Transform rayPosition;
+    //　レイを飛ばす距離
+    [SerializeField]
+    private float rayRange = 0.85f;
+    //　落ちた場所
+    private float fallenPosition;
+    //　落下してから地面に落ちるまでの距離
+    private float fallenDistance;
+    //　どのぐらいの高さからダメージを与えるか
+    [SerializeField]
+    private float takeDamageDistance = 2f;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -124,6 +140,10 @@ public class Player : MonoBehaviour
 
         anime.SetBool("doIdle",true);
 
+        fallenDistance = 0f;
+        fallenPosition = transform.position.y;
+        fallFlag= false;
+
         left = Quaternion.Euler(0,-90,0);
         Right = Quaternion.Euler(0,90,0);
         up = Quaternion.Euler(0,180,0);
@@ -133,6 +153,42 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.blue);
+
+        //　落ちている状態
+        if (fallFlag)
+        {
+
+            //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+            fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
+            Debug.Log(fallenPosition);
+
+            //　地面にレイが届いていたら
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            {
+                //　落下距離を計算
+                fallenDistance = fallenPosition - transform.position.y;
+                //　落下によるダメージが発生する距離を超える場合ダメージを与える
+                if (fallenDistance >= takeDamageDistance)
+                {
+                    hp -=((int)(fallenDistance - takeDamageDistance));
+                }
+                fallFlag = false;
+            }
+        }
+        else
+        {
+            //　地面にレイが届いていなければ落下地点を設定
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            {
+                //　最初の落下地点を設定
+                fallenPosition = transform.position.y;
+                fallenDistance = 0;
+                fallFlag = true;
+            }
+        }
+
+
         //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
         //{
         anime.SetBool("doIdle",true);
