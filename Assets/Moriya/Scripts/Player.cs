@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     //プレイヤーステータス
-    private int hp = 0;
+    private int hp = 3;
     private float speed = 10.0f;
     private int playerMaxhp = 3;
     private int itemPoint = 0;
@@ -27,6 +27,22 @@ public class Player : MonoBehaviour
     private bool moveFlag = false;
     //ジャンプ
     private bool jumpFlag = false;
+    //落下中
+    private bool fallFlag = false;
+
+    //　レイを飛ばす場所
+    [SerializeField]
+    private Transform rayPosition;
+    //　レイを飛ばす距離
+    [SerializeField]
+    private float rayRange = 0.85f;
+    //　落ちた場所
+    private float fallenPosition;
+    //　落下してから地面に落ちるまでの距離
+    private float fallenDistance;
+    //　どのぐらいの高さからダメージを与えるか
+    [SerializeField]
+    private float takeDamageDistance = 2f;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -124,6 +140,10 @@ public class Player : MonoBehaviour
 
         anime.SetBool("doIdle",true);
 
+        fallenDistance = 0f;
+        fallenPosition = transform.position.y;
+        fallFlag= false;
+
         left = Quaternion.Euler(0,-90,0);
         Right = Quaternion.Euler(0,90,0);
         up = Quaternion.Euler(0,180,0);
@@ -133,6 +153,42 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.blue);
+
+        //　落ちている状態
+        if (fallFlag)
+        {
+
+            //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+            fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
+            Debug.Log(fallenPosition);
+
+            //　地面にレイが届いていたら
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            {
+                //　落下距離を計算
+                fallenDistance = fallenPosition - transform.position.y;
+                //　落下によるダメージが発生する距離を超える場合ダメージを与える
+                if (fallenDistance >= takeDamageDistance)
+                {
+                    hp -=((int)(fallenDistance - takeDamageDistance));
+                }
+                fallFlag = false;
+            }
+        }
+        else
+        {
+            //　地面にレイが届いていなければ落下地点を設定
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            {
+                //　最初の落下地点を設定
+                fallenPosition = transform.position.y;
+                fallenDistance = 0;
+                fallFlag = true;
+            }
+        }
+
+
         //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
         //{
         anime.SetBool("doIdle",true);
@@ -174,7 +230,7 @@ public class Player : MonoBehaviour
             //左向きの画像に変更する
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             _parent.transform.position -= Vector3.right * speed *Time.deltaTime;
             anime.SetBool("doWalk",true);
             transform.rotation = left;
@@ -185,9 +241,8 @@ public class Player : MonoBehaviour
             //右向きの画像に変更する
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             _parent.transform.position += Vector3.right * speed * Time.deltaTime;
-            Debug.Log(_parent.transform.position);
             anime.SetBool("doWalk", true);
             transform.rotation = Right;
         }
@@ -197,7 +252,7 @@ public class Player : MonoBehaviour
             //上向きの画像に変更する
             /*playerDirection = PlayerDirection.UP;
             sr.sprite = upImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             anime.SetBool("doWalk", true);
             _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
             transform.rotation = up;
@@ -208,7 +263,7 @@ public class Player : MonoBehaviour
             //下向きの画像に変更する
             /*playerDirection = PlayerDirection.DOWN;
             sr.sprite = defaultImage;*/
-            //moveFlag = true;
+            moveFlag = true;
             anime.SetBool("doWalk", true);
             _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
             transform.rotation =down;
@@ -225,7 +280,7 @@ public class Player : MonoBehaviour
         {
             jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*20, 0));
-            //anime.SetBool(doJump.true);
+            anime.SetBool("doJump",true);
             jumpCount++;
         }
         #endregion
@@ -233,14 +288,25 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Ground")&&jumpFlag==true)
+        if (other.gameObject.CompareTag("Ground"))
         {
-            jumpFlag = false;
-            //anime.SetBool(doLanging.true)
+            if (jumpFlag == true) 
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                //anime.SetBool("doRolling",false);
+                anime.SetBool("doIdle",true);
+            }
             jumpCount = 0;
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
+            if (jumpFlag == true) 
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                anime.SetBool("doIdle",true);
+            }
             jumpCount = 0;
         }*/
     }
