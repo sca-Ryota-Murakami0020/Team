@@ -15,7 +15,6 @@ public class OverLoadTimer : MonoBehaviour
     private float[] oldSecondTime;
     private int[] oldMinuteTime;
     private int[] oldHourTime;
-    private float[] oldTotalTime;
     //ハイスコア更新を促す用のフラグ
     private bool counterFlag;
     private bool startFlag;
@@ -114,7 +113,7 @@ public class OverLoadTimer : MonoBehaviour
         //初プレイ時の記録を記録
         for (int count = 0; count <= loadCout; count++)
         {
-            if (bestTime[count] <= 0.0f)
+            if (bestTime[count] <= 0.0f && bestTime[count] > 0.1f)
             {
                 bestTime[count] = totalTime;
                 oldSecondTime[count] = secondTime;
