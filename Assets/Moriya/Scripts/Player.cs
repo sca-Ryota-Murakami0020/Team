@@ -291,17 +291,16 @@ public class Player : MonoBehaviour
             Debug.Log(time);
 
             //ジャンプから落下モーションへ
-           
-                /*Debug.Log("a");
-                jumpFlag = false;
-                fallFlag = true;
-                anime.SetBool("doLanding",false);
-                anime.SetBool("doJump",false);
-                anime.SetBool("doFall",true);
-                Debug.Log("Landing" + anime.GetBool("doLanding"));
-                Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                Debug.Log("doFall" + anime.GetBool("doFall"));
-                time = 0.0f;*/
+            //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
+            fallFlag = true;
+            anime.SetBool("doLanding",false);
+            //anime.SetBool("doJump",false);
+            anime.SetBool("doFall",true);
+            Debug.Log("Landing" + anime.GetBool("doLanding"));
+            Debug.Log("doJump" + anime.GetBool("doJump"));
+            Debug.Log("doIdle" + anime.GetBool("doIdle"));
+            Debug.Log("doFall" + anime.GetBool("doFall"));
+            time = 0.0f;
         }
 
         #endregion
@@ -321,6 +320,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doJump", false);
                 anime.SetBool("doFall",false);
                 anime.SetBool("doLanding",true);
+                anime.SetBool("doIdle",false);
                 landFlag = true;
 
                 Debug.Log(time);
@@ -331,9 +331,9 @@ public class Player : MonoBehaviour
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
-                    Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                    Debug.Log("doFall"+anime.GetBool("doFall"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
                     time =0.0f;
                    
                 }
