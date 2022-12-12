@@ -315,7 +315,7 @@ ModelImporter:
       name: bone|jump
       takeName: bone|jump
       internalID: 0
-      firstFrame: 0
+      firstFrame: 10
       lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
@@ -374,7 +374,7 @@ ModelImporter:
       takeName: bone|Landing
       internalID: 0
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
