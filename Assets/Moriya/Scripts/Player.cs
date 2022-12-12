@@ -284,7 +284,6 @@ public class Player : MonoBehaviour
             time +=Time.deltaTime;
             jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*50, 0));
-            anime.SetBool("doIdle",false);
             anime.SetBool("doJump",true);
             jumpCount++;
 
