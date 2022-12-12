@@ -171,7 +171,7 @@ ModelImporter:
       takeName: bone|airidle
       internalID: 0
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 31
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -315,7 +315,7 @@ ModelImporter:
       name: bone|jump
       takeName: bone|jump
       internalID: 0
-      firstFrame: 10
+      firstFrame: 0
       lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0

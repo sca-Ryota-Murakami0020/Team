@@ -41,18 +41,8 @@ public class EnemyC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(this.doEncount);
-
-        if (this.doEncount)
-        {
-            this.transform.position += transform.forward * addSpeed * Time.deltaTime;//0.7f;
-            Debug.Log("í«ê’");
-        }
-        else
-        {
-            this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
-            Debug.Log("èÑâÒ");
-        }
+        if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
+        else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -60,12 +50,16 @@ public class EnemyC : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             pl.Hp -= 1;
-            if(pl.Hp <= 0) pl.GameOver();
+            if(pl.Hp <= 0) 
+            {
+                pl.GameOver();
+                Debug.Log("pl.GameOverÇÃåƒÇ—èoÇµ");
+            }
             Vector3 ver = (pl.transform.position - this.transform.position).normalized;
             ver.y = 0;
             ver = ver.normalized;
             collision.transform.Translate(ver * speed);
-            Debug.Log("Dameze");
+            Debug.Log("Dameze pl=" + pl.Hp);
         }
 
         if (collision.gameObject.CompareTag("Wall"))

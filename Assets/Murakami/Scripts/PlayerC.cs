@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerC : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class PlayerC : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         //camera = GameObject.Find("Main Camera");
         jumpFlag = false;
-        this.hp = 1;
+        this.hp = 3;
         this.aliveFlag = true;
         this.fuckFlag = false;
     }
@@ -65,8 +66,6 @@ public class PlayerC : MonoBehaviour
         {
             Roll(mouseX, mouseY);
         }
-
-        //this.transform.forward = Camera.main.transform.forward;
 
         rb.AddForce(H,0,V);
 
@@ -100,6 +99,8 @@ public class PlayerC : MonoBehaviour
     public void GameOver()
     {
         aliveFlag = false;
+        Debug.Log("GameOverÇÃåƒÇ—èoÇµ");
+        SceneManager.LoadScene("ë∫è„ópGameOver");
     }
 }
 /*
