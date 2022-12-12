@@ -60,11 +60,12 @@ public class EnemyC : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             pl.Hp -= 1;
+            if(pl.Hp <= 0) pl.GameOver();
             Vector3 ver = (pl.transform.position - this.transform.position).normalized;
             ver.y = 0;
             ver = ver.normalized;
             collision.transform.Translate(ver * speed);
-            Debug.Log("Dameze"); //* Time.deltaTime
+            Debug.Log("Dameze");
         }
 
         if (collision.gameObject.CompareTag("Wall"))
