@@ -99,7 +99,6 @@ public class PlayerC : MonoBehaviour
     public void GameOver()
     {
         aliveFlag = false;
-        Debug.Log("GameOver‚ÌŒÄ‚Ño‚µ");
         SceneManager.LoadScene("‘ºã—pGameOver");
     }
 }

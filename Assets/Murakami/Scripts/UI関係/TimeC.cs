@@ -80,11 +80,8 @@ public class TimeC : MonoBehaviour
                     minuteTime = 0;
                 }
             }
-            //00:00:00ï\ãLèàóù
-            if (secondTime >= 1.0f && secondTime <= 9.9f)
-                timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
-            if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-                timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
+
+            timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + secondTime.ToString("00");
         }
         else this.GameOver();
     }
@@ -92,7 +89,6 @@ public class TimeC : MonoBehaviour
     public void GameOver()
     {
         olt.LoadGameOver();
-        Debug.Log("olt.LoadGameOverÇÃåƒÇ—èoÇµ");
     }
 
 }

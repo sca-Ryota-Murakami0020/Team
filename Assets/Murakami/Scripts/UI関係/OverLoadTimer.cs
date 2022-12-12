@@ -7,7 +7,9 @@ public class OverLoadTimer : MonoBehaviour
 {
     //ハイスコア用変数
     private float[] bestTime;
+    //１回のゲーム時間
     private float totalTime;
+    //秒単位カウンター
     private float secondTime;
     private int minuteTime;
     private int hourTime;
@@ -99,6 +101,7 @@ public class OverLoadTimer : MonoBehaviour
             Destroy(objects[1]);
 
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,7 +115,7 @@ public class OverLoadTimer : MonoBehaviour
         oldMinuteTime = new int[4];
         oldHourTime = new int[4];
 
-        for(int i =0;i<3;i++)
+        for(int i =0;i<=3;i++)
         {
             timer[i] = i.ToString();
         }
@@ -128,18 +131,19 @@ public class OverLoadTimer : MonoBehaviour
             secondTime = timeC.Stime;
             minuteTime = timeC.Mtime;
             hourTime = timeC.Htime;
+            for(int i = 0;i <= 3; i++) Debug.Log(timer[i] + "\n");
         }
     }
 
     public void LoadGameOver()
     {
-        Debug.Log("LoadGameOverの呼び出し");
+        Debug.Log(loadCout);
         //初プレイ時の記録を記録
         if(loadCout <= 3)
         {
             for (int count = 0; count <= loadCout; count++)
             {
-                if (bestTime[count] <= 0.0f && bestTime[count] > 0.1f)
+                if (bestTime[count] <= 0.0f && bestTime[count] < 0.1f)
                 {
                     bestTime[count] = totalTime;
                     oldSecondTime[count] = secondTime;
@@ -194,6 +198,7 @@ public class OverLoadTimer : MonoBehaviour
             }
         }
 
+        //ゲーム中に表示するタイマー表示に与える変数
         if (secondTime >= 1.0f && secondTime <= 9.9f)
             time =  hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
         if (secondTime >= 10.0f)
@@ -206,21 +211,15 @@ public class OverLoadTimer : MonoBehaviour
     {
         if (nextScene.name == "村上用")
         {
-            //SceneManager.sceneLoaded -= StageLoaded;
             startFlag = true;
             //Stage2が読み込まれたときにしたい処理
-            Debug.Log("読み込まれました");
+            //Debug.Log("読み込まれました");
             timeC = FindObjectOfType<TimeC>();
         }
         if (nextScene.name == "村上用Title")
         {
             startFlag = false;
-            Debug.Log("中止");
         }
-        if (nextScene.name == "村上用GameOver")
-        {
-            //r();
-            Debug.Log("中止");
-        }
+
     }
 }

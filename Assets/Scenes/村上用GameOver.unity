@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 794415672}
   - component: {fileID: 794415675}
   - component: {fileID: 794415674}
+  - component: {fileID: 794415673}
   m_Layer: 5
   m_Name: 3rdtext
   m_TagString: Untagged
@@ -309,6 +310,19 @@ RectTransform:
   m_AnchoredPosition: {x: 411, y: -120}
   m_SizeDelta: {x: 700, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &794415673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794415671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac925bbc04195f4ca9575b47e4bda95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  therdTimeText: {fileID: 794415674}
 --- !u!114 &794415674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9056604, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.5660378, g: 0.3111827, b: 0.21092917, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -401,10 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb47668a369f4ea4f99529a26728fdda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bestTimeText:
-  - {fileID: 868343292}
-  - {fileID: 1968343418}
-  - {fileID: 794415674}
+  bestTimeText: {fileID: 868343292}
 --- !u!114 &868343292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9056604, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.8867924, g: 0.7568243, b: 0.0292809, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1129,6 +1140,7 @@ GameObject:
   - component: {fileID: 1968343416}
   - component: {fileID: 1968343419}
   - component: {fileID: 1968343418}
+  - component: {fileID: 1968343417}
   m_Layer: 5
   m_Name: 2ndtext
   m_TagString: Untagged
@@ -1155,6 +1167,19 @@ RectTransform:
   m_AnchoredPosition: {x: 411, y: -10}
   m_SizeDelta: {x: 700, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1968343417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968343415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c687d0e3f46e0ed4486a6399bdb506a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondTimeText: {fileID: 1968343418}
 --- !u!114 &1968343418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1168,7 +1193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9056604, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.6417319, g: 0.6504927, b: 0.6509434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
