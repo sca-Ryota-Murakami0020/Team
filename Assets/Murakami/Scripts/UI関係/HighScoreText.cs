@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class HighScoreText : MonoBehaviour
 {
     private OverLoadTimer olt;
-    public Text bestTimeText;
+    [SerializeField] Text[] bestTimeText;
 
     // Start is called before the first frame update
     void Start()
     {
         olt = FindObjectOfType<OverLoadTimer>();
-        bestTimeText.text = "";
+        for (int i = 0; i <= 2; i++)
+        {
+            bestTimeText[i].text = "";
+        }
     }
 
     // Update is called once per frame
@@ -20,9 +23,15 @@ public class HighScoreText : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
-        if (olt.OldSecondTime >= 1.0f && olt.OldSecondTime <= 9.9f)
-            bestTimeText.text = olt.OldHourTime.ToString("00") + ":" + olt.OldMinuteTime.ToString("00") + ":" + ((int)olt.OldSecondTime).ToString("00");
-        if (olt.OldSecondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-            bestTimeText.text = olt.OldHourTime.ToString("00") + ":" + olt.OldMinuteTime.ToString("00") + ":" + ((int)olt.OldSecondTime).ToString("00");
+        for (int i = 0; i <= 2; i++)
+        {
+            if (olt.OldSecondTime[i] >= 1.0f && olt.OldSecondTime[i] <= 9.9f)
+                bestTimeText[i].text = i + 1 + "位:" + olt.OldHourTime[i].ToString("00") + ":" + olt.OldMinuteTime[i].ToString("00") + ":" + ((int)olt.OldSecondTime[i]).ToString("00");
+            if (olt.OldSecondTime[i] >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
+                bestTimeText[i].text = i + 1 + "位:" + olt.OldHourTime[i].ToString("00") + ":" + olt.OldMinuteTime[i].ToString("00") + ":" + ((int)olt.OldSecondTime[i]).ToString("00");
+            if (olt.OldHourTime[i] == null && olt.OldMinuteTime[i] == null && olt.OldSecondTime[i] == null)
+                bestTimeText[i].text = i + 1 + "位:" + "0:00:00";
+        }
     }
+
 }

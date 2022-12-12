@@ -13,7 +13,7 @@ public class TimeC : MonoBehaviour
     private int minuteTime;
     //時間単位
     private int hourTime;
-    
+
     private PlayerC pl;
     private OverLoadTimer olt;
 
@@ -21,26 +21,26 @@ public class TimeC : MonoBehaviour
 
     public float TotalTime
     {
-        get { return this.totalTime;}
-        set { this.totalTime = value;}
+        get { return this.totalTime; }
+        set { this.totalTime = value; }
     }
 
     public float Stime
     {
-        get { return this.secondTime;}
-        set { this.secondTime = value;}
+        get { return this.secondTime; }
+        set { this.secondTime = value; }
     }
 
     public int Mtime
     {
-        get { return this.minuteTime;}
-        set { this.minuteTime = value;}
+        get { return this.minuteTime; }
+        set { this.minuteTime = value; }
     }
 
     public int Htime
     {
-        get { return this.hourTime;}
-        set { this.hourTime = value;}
+        get { return this.hourTime; }
+        set { this.hourTime = value; }
     }
 
     // Start is called before the first frame update
@@ -74,23 +74,24 @@ public class TimeC : MonoBehaviour
                 minuteTime += 1;
                 secondTime = 0.0f;
                 if (minuteTime >= 60)
-                { 
+                {
                     //時間計算
                     hourTime += 1;
                     minuteTime = 0;
                 }
+            }
+            //00:00:00表記処理
+            if (secondTime >= 1.0f && secondTime <= 9.9f)
+                timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
+            if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
+                timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
         }
-        //00:00:00表記処理
-        if (secondTime >= 1.0f && secondTime <= 9.9f)
-        timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
-        if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-        timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
-        }
-        else GameOver();
+        else this.GameOver();
     }
 
     public void GameOver()
     {
         olt.LoadGameOver();
     }
+
 }

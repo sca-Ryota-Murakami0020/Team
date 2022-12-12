@@ -5,65 +5,68 @@ using UnityEngine.SceneManagement;
 
 public class OverLoadTimer : MonoBehaviour
 {
-    //public static OverLoadTimer 
-    private float bestTime;
+    //ハイスコア用変数
+    private float[] bestTime;
     private float totalTime;
     private float secondTime;
     private int minuteTime;
     private int hourTime;
-    //
-    private float oldSecondTime;
-    private int oldMinuteTime;
-    private int oldHourTime;
+    //記録用変数
+    private float[] oldSecondTime;
+    private int[] oldMinuteTime;
+    private int[] oldHourTime;
+    private float[] oldTotalTime;
     //ハイスコア更新を促す用のフラグ
     private bool counterFlag;
     private bool startFlag;
-    
+    //スコアの個数を数えるための変数
+    private int loadCout;
+
     private TimeC timeC;
 
-    public float BestTime
+    public float[] BestTime
     {
-        get { return this.bestTime;}
-        set { this.bestTime = value;}
+        get { return this.bestTime; }
+        set { this.bestTime = value; }
     }
 
     public float TotalTime
     {
-        get { return this.totalTime;}
-        set { this.totalTime = value;}
+        get { return this.totalTime; }
+        set { this.totalTime = value; }
     }
 
     public float SecondTime
     {
-        get { return this.secondTime;}
-        set { this.secondTime = value;}
+        get { return this.secondTime; }
+        set { this.secondTime = value; }
     }
 
     public int MinuteTime
     {
-        get { return this.minuteTime;}
-        set { this.minuteTime = value;}
+        get { return this.minuteTime; }
+        set { this.minuteTime = value; }
     }
 
     public int HourTime
     {
-        get { return this.hourTime;}
-        set { this.hourTime = value;}
+        get { return this.hourTime; }
+        set { this.hourTime = value; }
     }
 
-    public float OldSecondTime
+    public float[] OldSecondTime
     {
         get { return this.oldSecondTime; }
-        set { this.secondTime = value; }
+        set { this.oldSecondTime = value; }
     }
 
-    public int OldMinuteTime
+    public int[] OldMinuteTime
     {
         get { return this.oldMinuteTime; }
         set { this.oldMinuteTime = value; }
     }
 
-    public int OldHourTime
+    public int[] OldHourTime
     {
         get { return this.oldHourTime; }
         set { this.oldHourTime = value; }
@@ -71,16 +74,16 @@ public class OverLoadTimer : MonoBehaviour
 
     public bool CounterFlag
     {
-        get { return this.counterFlag;}
-        set { this.counterFlag = value;}
+        get { return this.counterFlag; }
+        set { this.counterFlag = value; }
     }
 
     private void Awake()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Counter");
         DontDestroyOnLoad(this.gameObject);
-        if(objects.Length > 1)
-        Destroy(objects[1]);
+        if (objects.Length > 1)
+            Destroy(objects[1]);
 
     }
     // Start is called before the first frame update
@@ -89,31 +92,30 @@ public class OverLoadTimer : MonoBehaviour
         timeC = FindObjectOfType<TimeC>();
         startFlag = false;
         SceneManager.sceneLoaded += StageLoaded;
+        loadCout = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log(startFlag);
-        if(startFlag == true)
+        if (startFlag == true)
         {
             totalTime = timeC.TotalTime;
             secondTime = timeC.Stime;
             minuteTime = timeC.Mtime;
             hourTime = timeC.Htime;
-            float timer = 0.0f;
-            timer += Time.deltaTime;
-            if(timer >= 1.0f)
+            /*if(timer >= 1.0f)
             { 
                 if (secondTime >= 1.0f && secondTime <= 9.9f)
                 Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
                 if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
                 Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
                 timer = 0.0f;
-            }
-                //Debug.Log(totalTime);
+            }*/
+            //Debug.Log(totalTime);
 
-            }
+        }
     }
     //public void CountTime()
     //{
@@ -123,33 +125,52 @@ public class OverLoadTimer : MonoBehaviour
     public void LoadGameOver()
     {
         //初プレイ時の記録を記録
-        if (bestTime <= 0.0f)
+        for (int count = 0; count <= loadCout; count++)
         {
-            bestTime = totalTime;
-            oldSecondTime = secondTime;
-            oldMinuteTime = minuteTime;
-            OldHourTime = hourTime;
-            Debug.Log("登録");
+            if (bestTime[count] <= 0.0f)
+            {
+                bestTime[count] = totalTime;
+                oldSecondTime[count] = secondTime;
+                oldMinuteTime[count] = minuteTime;
+                OldHourTime[count] = hourTime;
+                Debug.Log("登録");
+            }
         }
-        //2回目以降ハイスコアを出したら記録を更新する
-        if (bestTime > totalTime && bestTime >= 0.01f)
+
+        loadCout += 1;
+
+        //4回目以降ハイスコアを出したら記録を更新する
+        if (loadCout >= 4)
         {
-            bestTime = totalTime;
-            oldSecondTime = secondTime;
-            oldMinuteTime = minuteTime;
-            OldHourTime = hourTime;
-            Debug.Log("更新");
+            for (int i = 0; i <= 2; i++)
+            {
+                if (bestTime[i] > totalTime && bestTime[i] >= 0.01f)
+                {
+                    bestTime[i] = totalTime;
+                    oldSecondTime[i] = secondTime;
+                    oldMinuteTime[i] = minuteTime;
+                    oldHourTime[i] = hourTime;
+                    Debug.Log("更新");
+                    break;
+                }
+            }
         }
+
+
         totalTime = 0.0f;
         SceneManager.LoadScene("村上用GameOver");
+
+        /*
         if (secondTime >= 1.0f && secondTime <= 9.9f)
             Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
         if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
             Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
+        //
         if (oldSecondTime >= 1.0f && oldSecondTime <= 9.9f)
             Debug.Log(oldMinuteTime.ToString("00") + ":" + oldMinuteTime.ToString("00") + ":" + ((int)oldSecondTime).ToString("00"));
         if (oldSecondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
              Debug.Log(oldHourTime.ToString("00") + ":" + oldMinuteTime.ToString("00") + ":" + ((int)oldSecondTime).ToString("00"));
+        */
     }
 
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
@@ -162,7 +183,7 @@ public class OverLoadTimer : MonoBehaviour
             Debug.Log("読み込まれました");
             timeC = FindObjectOfType<TimeC>();
         }
-        if(nextScene.name == "村上用Title")
+        if (nextScene.name == "村上用Title")
         {
             startFlag = false;
             Debug.Log("中止");

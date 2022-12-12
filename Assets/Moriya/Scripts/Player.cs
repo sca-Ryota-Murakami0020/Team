@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     private bool jumpFlag = false;
     //落下中
     private bool fallFlag = false;
+    //着地中
+    private bool landFlag = false;
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -75,6 +77,8 @@ public class Player : MonoBehaviour
     private Quaternion Right;
     private Quaternion up;
     private Quaternion down;
+
+    private float time =0.0f;
 
     //親オブジェクト
     private GameObject _parent;
@@ -156,7 +160,7 @@ public class Player : MonoBehaviour
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.blue);
 
         //　落ちている状態
-        if (fallFlag)
+        /*if (fallFlag)
         {
 
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
@@ -186,7 +190,7 @@ public class Player : MonoBehaviour
                 fallenDistance = 0;
                 fallFlag = true;
             }
-        }
+        }*/
 
 
         //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
@@ -221,8 +225,6 @@ public class Player : MonoBehaviour
         }
 
         #region//移動方法
-
-
      
         //左方向に向いて移動したら
         if (Input.GetKey(KeyCode.A))
@@ -279,7 +281,7 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1 && jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
             jumpFlag = true;
-            this.rb.AddForce(new Vector3(0,speed*20, 0));
+            this.rb.AddForce(new Vector3(0,speed*50, 0));
             anime.SetBool("doJump",true);
             jumpCount++;
         }
@@ -292,10 +294,25 @@ public class Player : MonoBehaviour
         {
             if (jumpFlag == true) 
             {
+                time += Time.deltaTime;
                 jumpFlag = false;
                 anime.SetBool("doJump", false);
-                //anime.SetBool("doRolling",false);
-                anime.SetBool("doIdle",true);
+                anime.SetBool("doFall",false);
+                anime.SetBool("doLanding",true);
+                landFlag = true;
+
+                Debug.Log(time);
+
+                if (time >0.01f )
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));
+                    time =0.0f;
+                   
+                }
             }
             jumpCount = 0;
         }
