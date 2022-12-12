@@ -245,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3441f918d51371e48ad44bf35ae9ebd6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.52
+      value: 2.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3441f918d51371e48ad44bf35ae9ebd6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1205,7 +1205,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5928395085533954453, guid: 4de60904dc9978d40a4f122a746e09d5, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5928395085533954453, guid: 4de60904dc9978d40a4f122a746e09d5, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5928395085533954453, guid: 4de60904dc9978d40a4f122a746e09d5, type: 3}
       propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5928395085533954453, guid: 4de60904dc9978d40a4f122a746e09d5, type: 3}
+      propertyPath: m_SkinnedMotionVectors
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2822069803251812769, guid: 4de60904dc9978d40a4f122a746e09d5, type: 3}
@@ -1664,6 +1676,7 @@ GameObject:
   - component: {fileID: 2011877571}
   - component: {fileID: 2011877572}
   - component: {fileID: 2011877573}
+  - component: {fileID: 2011877574}
   m_Layer: 0
   m_Name: collider
   m_TagString: Untagged
@@ -1710,10 +1723,22 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!114 &2011877574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011877570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74cd26f4905be734f91db5700b0153e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2021200033
 GameObject:
   m_ObjectHideFlags: 0
