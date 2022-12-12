@@ -61,7 +61,7 @@ public class TimeC : MonoBehaviour
     {
         //Debug.Log(totalTime);
         //
-        if (pl.AliveFlag == true)
+        if (pl.AliveFlag)
         {
             //ハイスコアを比較しやすくするために秒計算の変数を作る
             totalTime += Time.deltaTime;
@@ -92,6 +92,7 @@ public class TimeC : MonoBehaviour
     public void GameOver()
     {
         olt.LoadGameOver();
+        Debug.Log("olt.LoadGameOverの呼び出し");
     }
 
 }

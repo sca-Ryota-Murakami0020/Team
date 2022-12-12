@@ -89,7 +89,7 @@ public class OverLoadTimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeC = FindObjectOfType<TimeC>();
+        //timeC = FindObjectOfType<TimeC>();
         startFlag = false;
         SceneManager.sceneLoaded += StageLoaded;
         loadCout = 0;
@@ -105,25 +105,12 @@ public class OverLoadTimer : MonoBehaviour
             secondTime = timeC.Stime;
             minuteTime = timeC.Mtime;
             hourTime = timeC.Htime;
-            /*if(timer >= 1.0f)
-            { 
-                if (secondTime >= 1.0f && secondTime <= 9.9f)
-                Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
-                if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-                Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
-                timer = 0.0f;
-            }*/
-            //Debug.Log(totalTime);
-
         }
     }
-    //public void CountTime()
-    //{
-
-    //}
 
     public void LoadGameOver()
     {
+        Debug.Log("LoadGameOverの呼び出し");
         //初プレイ時の記録を記録
         for (int count = 0; count <= loadCout; count++)
         {
@@ -156,21 +143,7 @@ public class OverLoadTimer : MonoBehaviour
             }
         }
 
-
         totalTime = 0.0f;
-        SceneManager.LoadScene("村上用GameOver");
-
-        /*
-        if (secondTime >= 1.0f && secondTime <= 9.9f)
-            Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
-        if (secondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-            Debug.Log(hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00"));
-        //
-        if (oldSecondTime >= 1.0f && oldSecondTime <= 9.9f)
-            Debug.Log(oldMinuteTime.ToString("00") + ":" + oldMinuteTime.ToString("00") + ":" + ((int)oldSecondTime).ToString("00"));
-        if (oldSecondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-             Debug.Log(oldHourTime.ToString("00") + ":" + oldMinuteTime.ToString("00") + ":" + ((int)oldSecondTime).ToString("00"));
-        */
     }
 
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
