@@ -15,6 +15,7 @@ public class OverLoadTimer : MonoBehaviour
     private float[] oldSecondTime;
     private int[] oldMinuteTime;
     private int[] oldHourTime;
+    private string[] timer;
     //ハイスコア更新を促す用のフラグ
     private bool counterFlag;
     private bool startFlag;
@@ -77,6 +78,12 @@ public class OverLoadTimer : MonoBehaviour
         set { this.counterFlag = value; }
     }
 
+    public string[] TimeText
+    {
+        get { return this.timer;}
+        set { this.timer = value;}
+    }
+
     private void Awake()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Counter");
@@ -92,6 +99,13 @@ public class OverLoadTimer : MonoBehaviour
         startFlag = false;
         SceneManager.sceneLoaded += StageLoaded;
         loadCout = 0;
+        timer = new string[3];
+        bestTime = new float[3];
+
+        for(int i =0;i<3;i++)
+        {
+            timer[i] = i.ToString();
+        }
     }
 
     // Update is called once per frame
@@ -111,31 +125,43 @@ public class OverLoadTimer : MonoBehaviour
     {
         Debug.Log("LoadGameOverの呼び出し");
         //初プレイ時の記録を記録
-        for (int count = 0; count <= loadCout; count++)
+        if(loadCout <= 3)
         {
-            if (bestTime[count] <= 0.0f && bestTime[count] > 0.1f)
+            for (int count = 0; count <= loadCout; count++)
             {
-                bestTime[count] = totalTime;
-                oldSecondTime[count] = secondTime;
-                oldMinuteTime[count] = minuteTime;
-                OldHourTime[count] = hourTime;
-                Debug.Log("登録");
+                if (bestTime[count] <= 0.0f && bestTime[count] > 0.1f)
+                {
+                    bestTime[count] = totalTime;
+                    oldSecondTime[count] = secondTime;
+                    oldMinuteTime[count] = minuteTime;
+                    OldHourTime[count] = hourTime;
+                    if (oldSecondTime[count] >= 1.0f && oldSecondTime[count] <= 9.9f)
+                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                    if (oldSecondTime[count] >= 10.0f)
+                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                    Debug.Log("登録");
+                }
             }
         }
+        
 
         loadCout += 1;
 
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCout >= 4)
         {
-            for (int i = 0; i <= 2; i++)
+            for (int count = 0; count <= 2; count++)
             {
-                if (bestTime[i] > totalTime && bestTime[i] >= 0.01f)
+                if (bestTime[count] > totalTime && bestTime[count] >= 0.01f)
                 {
-                    bestTime[i] = totalTime;
-                    oldSecondTime[i] = secondTime;
-                    oldMinuteTime[i] = minuteTime;
-                    oldHourTime[i] = hourTime;
+                    bestTime[count] = totalTime;
+                    oldSecondTime[count] = secondTime;
+                    oldMinuteTime[count] = minuteTime;
+                    oldHourTime[count] = hourTime;
+                    if (oldSecondTime[count] >= 1.0f && oldSecondTime[count] <= 9.9f)
+                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                    if (oldSecondTime[count] >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
+                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
                     Debug.Log("更新");
                     break;
                 }
@@ -158,6 +184,11 @@ public class OverLoadTimer : MonoBehaviour
         if (nextScene.name == "村上用Title")
         {
             startFlag = false;
+            Debug.Log("中止");
+        }
+        if (nextScene.name == "村上用GameOver")
+        {
+            //r();
             Debug.Log("中止");
         }
     }
