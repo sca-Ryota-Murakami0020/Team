@@ -101,6 +101,9 @@ public class OverLoadTimer : MonoBehaviour
         loadCout = 0;
         timer = new string[3];
         bestTime = new float[3];
+        oldSecondTime = new float[3];
+        oldMinuteTime = new int[3];
+        oldHourTime = new int[3];
 
         for(int i =0;i<3;i++)
         {
