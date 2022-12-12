@@ -85,6 +85,12 @@ public class OverLoadTimer : MonoBehaviour
         set { this.timer = value;}
     }
 
+    public string Time
+    {
+        get { return this.time; }
+        set { this.time = value; }
+    }
+
     private void Awake()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Counter");
@@ -100,11 +106,11 @@ public class OverLoadTimer : MonoBehaviour
         startFlag = false;
         SceneManager.sceneLoaded += StageLoaded;
         loadCout = 0;
-        timer = new string[3];
-        bestTime = new float[3];
-        oldSecondTime = new float[3];
-        oldMinuteTime = new int[3];
-        oldHourTime = new int[3];
+        timer = new string[4];
+        bestTime = new float[4];
+        oldSecondTime = new float[4];
+        oldMinuteTime = new int[4];
+        oldHourTime = new int[4];
 
         for(int i =0;i<3;i++)
         {
