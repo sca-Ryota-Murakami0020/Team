@@ -86,11 +86,5 @@ public class EnemyC : MonoBehaviour
             this.transform.LookAt(startPoint.transform.position);
             //Debug.Log("end開始");
         }
-
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("start開始");
-            doEncount = true;
-        }
     }
 }
