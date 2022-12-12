@@ -273,8 +273,9 @@ public class Player : MonoBehaviour
         else
         {
             moveFlag = false;
-            anime.SetBool("doWalk",false);
             anime.SetBool("doIdle", true);
+            anime.SetBool("doWalk",false);
+           
         }
 
 
@@ -282,18 +283,16 @@ public class Player : MonoBehaviour
         {
             //ジャンプ時
             time +=Time.deltaTime;
+            anime.SetBool("doJump", true);
             jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*50, 0));
-            anime.SetBool("doIdle",false);
-            anime.SetBool("doJump",true);
             jumpCount++;
 
             Debug.Log(time);
 
             //ジャンプから落下モーションへ
-            if (time >0.0001f)
-            {
-                Debug.Log("a");
+           
+                /*Debug.Log("a");
                 jumpFlag = false;
                 fallFlag = true;
                 anime.SetBool("doLanding",false);
@@ -302,13 +301,12 @@ public class Player : MonoBehaviour
                 Debug.Log("Landing" + anime.GetBool("doLanding"));
                 Debug.Log("doIdle" + anime.GetBool("doIdle"));
                 Debug.Log("doFall" + anime.GetBool("doFall"));
-                time = 0.0f;
-            }
+                time = 0.0f;*/
         }
 
         #endregion
 
-  
+
     }
 
     private void OnCollisionEnter(Collision other)
