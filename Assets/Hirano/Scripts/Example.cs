@@ -15,10 +15,12 @@ public class Example : MonoBehaviour
     private void Update()
     {
         
-        while()
-        {
+        //while()
+        //{
 
         
-        m_shiny.Play(2);
+        //m_shiny.Play(2);
     }
+
 }
+
