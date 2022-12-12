@@ -278,24 +278,48 @@ public class Player : MonoBehaviour
         }
 
 
-        if(Input.GetKeyDown(KeyCode.Space)&& this.jumpCount < 1 && jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
+        if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
+            //ジャンプ時
+            time +=Time.deltaTime;
             jumpFlag = true;
             this.rb.AddForce(new Vector3(0,speed*50, 0));
+            anime.SetBool("doIdle",false);
             anime.SetBool("doJump",true);
             jumpCount++;
+
+            Debug.Log(time);
+
+            //ジャンプから落下モーションへ
+            if (time >0.0001f)
+            {
+                Debug.Log("a");
+                jumpFlag = false;
+                fallFlag = true;
+                anime.SetBool("doLanding",false);
+                anime.SetBool("doJump",false);
+                anime.SetBool("doFall",true);
+                Debug.Log("Landing" + anime.GetBool("doLanding"));
+                Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                Debug.Log("doFall" + anime.GetBool("doFall"));
+                time = 0.0f;
+            }
         }
+
         #endregion
+
+  
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            if (jumpFlag == true) 
+            if (fallFlag == true) 
             {
+                //落下モーションか着地モーションへ
                 time += Time.deltaTime;
-                jumpFlag = false;
+                fallFlag = false;
                 anime.SetBool("doJump", false);
                 anime.SetBool("doFall",false);
                 anime.SetBool("doLanding",true);
@@ -303,7 +327,9 @@ public class Player : MonoBehaviour
 
                 Debug.Log(time);
 
-                if (time >0.01f )
+
+                //着地モーションから待機モーションへ
+                /*if (time >0.01f )
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
@@ -312,7 +338,7 @@ public class Player : MonoBehaviour
                     Debug.Log("doFall"+anime.GetBool("doFall"));
                     time =0.0f;
                    
-                }
+                }*/
             }
             jumpCount = 0;
         }
@@ -371,5 +397,19 @@ public class Player : MonoBehaviour
         hp = playerMaxhp;
         speed = rSpeed;
         jumpCount = 0;
+    }
+
+    private void Fallsituation()
+    {
+        Debug.Log("a");
+        jumpFlag = false;
+        fallFlag = true;
+        anime.SetBool("doLanding", false);
+        anime.SetBool("doJump", false);
+        anime.SetBool("doFall", true);
+        Debug.Log("Landing" + anime.GetBool("doLanding"));
+        Debug.Log("doIdle" + anime.GetBool("doIdle"));
+        Debug.Log("doFall" + anime.GetBool("doFall"));
+        time = 0.0f;
     }
 }
