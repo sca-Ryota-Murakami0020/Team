@@ -313,11 +313,11 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            if (fallFlag == true) 
+            if (jumpFlag == true) 
             {
                 //落下モーションか着地モーションへ
                 time += Time.deltaTime;
-                fallFlag = false;
+                jumpFlag = false;
                 anime.SetBool("doJump", false);
                 anime.SetBool("doFall",false);
                 anime.SetBool("doLanding",true);
@@ -327,7 +327,7 @@ public class Player : MonoBehaviour
 
 
                 //着地モーションから待機モーションへ
-                /*if (time >0.01f )
+                if (jumpFlag == false)
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
@@ -336,7 +336,7 @@ public class Player : MonoBehaviour
                     Debug.Log("doFall"+anime.GetBool("doFall"));
                     time =0.0f;
                    
-                }*/
+                }
             }
             jumpCount = 0;
         }
