@@ -11,6 +11,7 @@ public class OverLoadTimer : MonoBehaviour
     private float secondTime;
     private int minuteTime;
     private int hourTime;
+    private string time;
     //記録用変数
     private float[] oldSecondTime;
     private int[] oldMinuteTime;
@@ -155,21 +156,42 @@ public class OverLoadTimer : MonoBehaviour
         {
             for (int count = 0; count <= 2; count++)
             {
-                if (bestTime[count] > totalTime && bestTime[count] >= 0.01f)
+                for(int i = 1; i <= 3; i++)
                 {
-                    bestTime[count] = totalTime;
-                    oldSecondTime[count] = secondTime;
-                    oldMinuteTime[count] = minuteTime;
-                    oldHourTime[count] = hourTime;
-                    if (oldSecondTime[count] >= 1.0f && oldSecondTime[count] <= 9.9f)
-                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
-                    if (oldSecondTime[count] >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-                        timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
-                    Debug.Log("更新");
-                    break;
+                    if (bestTime[count] > totalTime && bestTime[count] >= 0.01f)
+                    {
+                        float bestTimeTem = bestTime[count];
+                        bestTime[count] = totalTime;
+                        bestTime[count + 1] = bestTimeTem;
+
+                        float stt = oldSecondTime[count];
+                        oldSecondTime[count] = secondTime;
+                        oldSecondTime[count + 1] = stt;
+
+                        int mtt = oldMinuteTime[count];
+                        oldMinuteTime[count] = minuteTime;
+                        oldMinuteTime[count + 1] = mtt;
+
+                        int htt = oldHourTime[count];
+                        oldHourTime[count] = hourTime;
+                        oldHourTime[count + 1] = htt;
+
+                        if (oldSecondTime[count] >= 1.0f && oldSecondTime[count] <= 9.9f)
+                            timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                        if(oldSecondTime[count] >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
+                            timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                        Debug.Log("更新");
+                        break;
+                    }
                 }
+
             }
         }
+
+        if (secondTime >= 1.0f && secondTime <= 9.9f)
+            time =  hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
+        if (secondTime >= 10.0f)
+            time =  hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
 
         totalTime = 0.0f;
     }

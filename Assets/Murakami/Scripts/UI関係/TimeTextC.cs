@@ -20,9 +20,6 @@ public class TimeTextC : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
-        if (olt.SecondTime >= 1.0f && olt.SecondTime <= 9.9f)
-            TimeText.text = olt.HourTime.ToString("00") + ":" + olt.MinuteTime.ToString("00") + ":" + ((int)olt.SecondTime).ToString("00");
-        if (olt.SecondTime >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
-            TimeText.text = olt.HourTime.ToString("00") + ":" + olt.MinuteTime.ToString("00") + ":" + ((int)olt.SecondTime).ToString("00");
+        TimeText[i].text = olt.TimeText[i];
     }
 }
