@@ -10,15 +10,20 @@ public class OverLoadTimer : MonoBehaviour
     //１回のゲーム時間
     private float totalTime;
     //秒単位カウンター
+    /*
     private float secondTime;
     private int minuteTime;
     private int hourTime;
+    */
     private string time;
+    private string[] timer;
     //記録用変数
+    /*
     private float[] oldSecondTime;
     private int[] oldMinuteTime;
     private int[] oldHourTime;
-    private string[] timer;
+    
+    */
     //ハイスコア更新を促す用のフラグ
     private bool counterFlag;
     private bool startFlag;
@@ -38,7 +43,7 @@ public class OverLoadTimer : MonoBehaviour
         get { return this.totalTime; }
         set { this.totalTime = value; }
     }
-
+    /*
     public float SecondTime
     {
         get { return this.secondTime; }
@@ -73,7 +78,7 @@ public class OverLoadTimer : MonoBehaviour
     {
         get { return this.oldHourTime; }
         set { this.oldHourTime = value; }
-    }
+    }*/
 
     public bool CounterFlag
     {
@@ -111,9 +116,11 @@ public class OverLoadTimer : MonoBehaviour
         loadCount = 0;
         timer = new string[4];
         bestTime = new float[4];
+        /*
         oldSecondTime = new float[4];
         oldMinuteTime = new int[4];
         oldHourTime = new int[4];
+        */
 
         for (int i = 0; i <= 3; i++)
         {
@@ -128,10 +135,11 @@ public class OverLoadTimer : MonoBehaviour
         if (startFlag == true)
         {
             totalTime = timeC.TotalTime;
+            /*
             secondTime = timeC.Stime;
             minuteTime = timeC.Mtime;
             hourTime = timeC.Htime;
-            for (int i = 0; i <= 3; i++) Debug.Log(timer[i] + "\n");
+            */
         }
     }
 
@@ -144,9 +152,11 @@ public class OverLoadTimer : MonoBehaviour
             if (bestTime[loadCount] <= 0.0f && bestTime[loadCount] < 0.1f)
             {
                 bestTime[loadCount] = totalTime;
+                /*
                 oldSecondTime[loadCount] = secondTime;
                 oldMinuteTime[loadCount] = minuteTime;
                 OldHourTime[loadCount] = hourTime;
+                */
                 if (bestTime.Length >= 2)
                 {
                     for (int i = 0; i <= 3; i++)
@@ -158,7 +168,7 @@ public class OverLoadTimer : MonoBehaviour
                                 float btt = bestTime[loadCount - 1];
                                 bestTime[loadCount - 1] = totalTime;
                                 bestTime[loadCount] = btt;
-
+                                /*
                                 float stt = oldSecondTime[loadCount - 1];
                                 oldSecondTime[loadCount - 1] = secondTime;
                                 oldSecondTime[loadCount] = stt;
@@ -170,7 +180,7 @@ public class OverLoadTimer : MonoBehaviour
                                 int htt = oldHourTime[loadCount - 1];
                                 oldHourTime[loadCount - 1] = hourTime;
                                 OldHourTime[loadCount] = htt;
-
+                                */
                                 Debug.Log("登録");
                                 break;
                             }
@@ -180,10 +190,7 @@ public class OverLoadTimer : MonoBehaviour
             }
         }
 
-        if (oldSecondTime[loadCount] >= 1.0f && oldSecondTime[loadCount] <= 9.9f)
-            timer[loadCount] = loadCount + 1 + "位:" + oldHourTime[loadCount].ToString("00") + ":" + oldMinuteTime[loadCount].ToString("00") + ":" + ((int)oldSecondTime[loadCount]).ToString("00");
-        if (oldSecondTime[loadCount] >= 10.0f)
-            timer[loadCount] = loadCount + 1 + "位:" + oldHourTime[loadCount].ToString("00") + ":" + oldMinuteTime[loadCount].ToString("00") + ":" + ((int)oldSecondTime[loadCount]).ToString("00");
+            timer[loadCount] = loadCount + 1 + "位:" + (bestTime[loadCount]/3600.0f).ToString("00") + ":" + (bestTime[loadCount]/60.0f).ToString("00") + ":" + ((int)bestTime[loadCount] % 60.0f).ToString("00");
 
 
 
@@ -202,6 +209,7 @@ public class OverLoadTimer : MonoBehaviour
                         bestTime[count] = totalTime;
                         bestTime[count + 1] = bestTimeTem;
 
+                        /*
                         float stt = oldSecondTime[count];
                         oldSecondTime[count] = secondTime;
                         oldSecondTime[count + 1] = stt;
@@ -218,6 +226,8 @@ public class OverLoadTimer : MonoBehaviour
                             timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
                         if (oldSecondTime[count] >= 10.0f) //Debug.Log(HTime + ":" + MTime.ToString("00") + ":" + STime.ToString("f0"));
                             timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
+                        */
+                        timer[loadCount] = loadCount + 1 + "位:" + (bestTime[loadCount] / 3600.0f).ToString("00") + ":" + (bestTime[loadCount] / 60.0f).ToString("00") + ":" + ((int)bestTime[loadCount] % 60.0f).ToString("00");
                         Debug.Log("更新");
                         break;
                     }
@@ -227,10 +237,7 @@ public class OverLoadTimer : MonoBehaviour
         }
 
         //ゲーム中に表示するタイマー表示に与える変数
-        if (secondTime >= 1.0f && secondTime <= 9.9f)
-            time = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
-        if (secondTime >= 10.0f)
-            time = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + ((int)secondTime).ToString("00");
+            time = loadCount + 1 + "位:" + (totalTime / 3600.0f).ToString("00") + ":" + (totalTime / 60.0f).ToString("00") + ":" + ((int)totalTime % 60.0f).ToString("00");
 
         totalTime = 0.0f;
     }

@@ -7,12 +7,13 @@ public class TimeC : MonoBehaviour
 {
     //総プレイ時間：
     private float totalTime;
-    //秒単位
+    /*//秒単位
     private float secondTime;
     //分単位
     private int minuteTime;
     //時間単位
     private int hourTime;
+    */
 
     private PlayerC pl;
     private OverLoadTimer olt;
@@ -24,7 +25,7 @@ public class TimeC : MonoBehaviour
         get { return this.totalTime; }
         set { this.totalTime = value; }
     }
-
+    /*
     public float Stime
     {
         get { return this.secondTime; }
@@ -41,16 +42,18 @@ public class TimeC : MonoBehaviour
     {
         get { return this.hourTime; }
         set { this.hourTime = value; }
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()
     {
         //時間計測の初期化
+        /*
         totalTime = 0.0f;
         secondTime = 0.0f;
         minuteTime = 0;
         hourTime = 0;
+        */
         timeText = GetComponentInChildren<Text>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         olt = GameObject.Find("GameManager").GetComponent<OverLoadTimer>();
@@ -65,9 +68,21 @@ public class TimeC : MonoBehaviour
         {
             //ハイスコアを比較しやすくするために秒計算の変数を作る
             totalTime += Time.deltaTime;
-            //時間を00:00:00表記するための変数の演算
+
+            timeText.text = (totalTime/3600.0f).ToString("00") + ":" + (totalTime/60.0f).ToString("00") + ":" + (totalTime%60.0f).ToString("00");
+        }
+        else this.GameOver();
+    }
+
+    public void GameOver()
+    {
+        olt.LoadGameOver();
+    }
+
+}       
+//時間を00:00:00表記するための変数の演算
             //秒計算
-            secondTime += Time.deltaTime;
+            /*secondTime += Time.deltaTime;
             if (secondTime >= 60.0f)
             {
                 //分計算
@@ -79,16 +94,4 @@ public class TimeC : MonoBehaviour
                     hourTime += 1;
                     minuteTime = 0;
                 }
-            }
-
-            timeText.text = hourTime.ToString("00") + ":" + minuteTime.ToString("00") + ":" + secondTime.ToString("00");
-        }
-        else this.GameOver();
-    }
-
-    public void GameOver()
-    {
-        olt.LoadGameOver();
-    }
-
-}
+            }*/

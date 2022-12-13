@@ -22,9 +22,11 @@ public class RetryButtonC : MonoBehaviour
     public void RetryGame()
     {
         olt.TotalTime =0.0f;
+        /*
         olt.SecondTime = 0.0f;
         olt.MinuteTime = 0;
         olt.HourTime = 0;
+        */
         SceneManager.LoadScene("FirstScene");
     }
 }
