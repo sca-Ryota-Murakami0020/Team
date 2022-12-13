@@ -27,12 +27,12 @@ public class SecondScore : MonoBehaviour
 
             if (olt.TimeText[1] == "1")
             {
-                Debug.Log("２位のデフォルト表示");
-                secondTimeText.text = "2位:0:00:00";
+                //２位のデフォルト表示
+                secondTimeText.text = "2位:00:00:00";
             }
             else
             {
-                Debug.Log("２位のランキング表示");
+                //２位のランキング表示
                 secondTimeText.text = olt.TimeText[1];
             }
 

@@ -53,13 +53,11 @@ public class EnemyC : MonoBehaviour
             if(pl.Hp <= 0) 
             {
                 pl.GameOver();
-                Debug.Log("pl.GameOver‚ÌŒÄ‚Ño‚µ");
             }
             Vector3 ver = (pl.transform.position - this.transform.position).normalized;
             ver.y = 0;
             ver = ver.normalized;
             collision.transform.Translate(ver * speed);
-            Debug.Log("Dameze pl=" + pl.Hp);
         }
 
         if (collision.gameObject.CompareTag("Wall"))

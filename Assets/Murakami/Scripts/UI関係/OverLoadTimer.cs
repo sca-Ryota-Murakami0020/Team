@@ -145,7 +145,6 @@ public class OverLoadTimer : MonoBehaviour
 
     public void LoadGameOver()
     {
-        Debug.Log(loadCount);
         //初プレイ時の記録を記録
         if (loadCount <= 3)
         {
@@ -157,17 +156,17 @@ public class OverLoadTimer : MonoBehaviour
                 oldMinuteTime[loadCount] = minuteTime;
                 OldHourTime[loadCount] = hourTime;
                 */
-                if (bestTime.Length >= 2)
+                if (loadCount >= 1)
                 {
-                    for (int i = 0; i <= 3; i++)
+                    for (int i = 0; i < 3; i++)
                     {
-                        for (int j = 1; j <= 4; j++)
+                        for (int j = 1; j < 4; j++)
                         {
-                            if (bestTime[loadCount - 1] <= bestTime[loadCount])
+                            if (bestTime[i] >= bestTime[j])
                             {
-                                float btt = bestTime[loadCount - 1];
-                                bestTime[loadCount - 1] = totalTime;
-                                bestTime[loadCount] = btt;
+                                float btt = bestTime[j];
+                                bestTime[j] = totalTime;
+                                bestTime[i] = btt;
                                 /*
                                 float stt = oldSecondTime[loadCount - 1];
                                 oldSecondTime[loadCount - 1] = secondTime;
@@ -181,33 +180,27 @@ public class OverLoadTimer : MonoBehaviour
                                 oldHourTime[loadCount - 1] = hourTime;
                                 OldHourTime[loadCount] = htt;
                                 */
-                                Debug.Log("登録");
                                 break;
                             }
                         }
+                        timer[i] = i + 1 + "位:" + (bestTime[i] / 3600.0f).ToString("00") + ":" + (bestTime[i] / 60.0f).ToString("00") + ":" + ((int)bestTime[i] % 60.0f).ToString("00");
                     }
                 }
             }
         }
 
-            timer[loadCount] = loadCount + 1 + "位:" + (bestTime[loadCount]/3600.0f).ToString("00") + ":" + (bestTime[loadCount]/60.0f).ToString("00") + ":" + ((int)bestTime[loadCount] % 60.0f).ToString("00");
-
-
-
-        loadCount += 1;
-
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCount >= 4)
         {
-            for (int count = 0; count <= 2; count++)
+            for (int i = 0; i <= 3; i++)
             {
-                for (int i = 1; i <= 3; i++)
+                for (int j = 1; j <= 4; j++)
                 {
-                    if (bestTime[count] > totalTime && bestTime[count] >= 0.01f)
+                    if (bestTime[i] > totalTime && bestTime[i] >= 0.01f)
                     {
-                        float bestTimeTem = bestTime[count];
-                        bestTime[count] = totalTime;
-                        bestTime[count + 1] = bestTimeTem;
+                        float bestTimeTem = bestTime[i];
+                        bestTime[i] = totalTime;
+                        bestTime[i + 1] = bestTimeTem;
 
                         /*
                         float stt = oldSecondTime[count];
@@ -228,17 +221,16 @@ public class OverLoadTimer : MonoBehaviour
                             timer[count] = count + 1 + "位:" + oldHourTime[count].ToString("00") + ":" + oldMinuteTime[count].ToString("00") + ":" + ((int)oldSecondTime[count]).ToString("00");
                         */
                         timer[loadCount] = loadCount + 1 + "位:" + (bestTime[loadCount] / 3600.0f).ToString("00") + ":" + (bestTime[loadCount] / 60.0f).ToString("00") + ":" + ((int)bestTime[loadCount] % 60.0f).ToString("00");
-                        Debug.Log("更新");
                         break;
                     }
                 }
-
+                timer[i] = i + 1 + "位:" + (bestTime[i] / 3600.0f).ToString("00") + ":" + (bestTime[i] / 60.0f).ToString("00") + ":" + ((int)bestTime[i] % 60.0f).ToString("00");
             }
         }
 
         //ゲーム中に表示するタイマー表示に与える変数
-            time = loadCount + 1 + "位:" + (totalTime / 3600.0f).ToString("00") + ":" + (totalTime / 60.0f).ToString("00") + ":" + ((int)totalTime % 60.0f).ToString("00");
-
+        time = (totalTime / 3600.0f).ToString("00") + ":" + (totalTime / 60.0f).ToString("00") + ":" + ((int)totalTime % 60.0f).ToString("00");
+        loadCount += 1;
         totalTime = 0.0f;
     }
 

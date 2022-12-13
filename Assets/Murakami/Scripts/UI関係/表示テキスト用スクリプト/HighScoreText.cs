@@ -25,11 +25,11 @@ public class HighScoreText : MonoBehaviour
         //ハイスコアの表記
 
             if(olt.TimeText[0] == "0") {
-                Debug.Log("１位のデフォルト表示");
-                bestTimeText.text ="1位:" + "0:00:00";
+                //１位のデフォルト表示"
+                bestTimeText.text ="1位:00:00:00";
             }
             else {
-                Debug.Log("１位のランキング表示");
+                //１位のランキング表示"
                 bestTimeText.text  = olt.TimeText[0];
             }
 

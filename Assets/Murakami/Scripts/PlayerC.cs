@@ -10,7 +10,7 @@ public class PlayerC : MonoBehaviour
     //RigidBody
     private Rigidbody rb;
     //プレイヤーの速さ
-    private float speed = 1.0f;
+    private float speed = 5.0f;
     //ジャンプ力
     private float jumpPower = 10.5f;
     //接地確認用フラグ

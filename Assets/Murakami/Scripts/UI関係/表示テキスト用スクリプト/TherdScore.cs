@@ -27,12 +27,12 @@ public class TherdScore : MonoBehaviour
 
         if (olt.TimeText[2] == "2")
         {
-            Debug.Log("３位のデフォルト表示");
-            therdTimeText.text = "3位:0:00:00";
+            //３位のデフォルト表示"
+            therdTimeText.text = "3位:00:00:00";
         }
         else
         {
-            Debug.Log("３位のランキング表示");
+            //３位のランキング表示"
             therdTimeText.text = olt.TimeText[2];
         }
 

@@ -20,6 +20,7 @@ public class TimeTextC : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
+        Debug.Log(olt.Time);
         TimeText.text = olt.Time;
     }
 }
