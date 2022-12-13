@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     //　どのぐらいの高さからダメージを与えるか
     [SerializeField]
     private float takeDamageDistance = 2f;
+    //落下し着地したときのフラグ
+    private bool fallGroundFalg = false;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -77,6 +79,17 @@ public class Player : MonoBehaviour
     private Quaternion Right;
     private Quaternion up;
     private Quaternion down;
+
+
+    //　Time.timeScaleに設定する値
+    [SerializeField]
+    private float timeScale = 0.1f;
+    //　時間を遅くしている時間
+    [SerializeField]
+    private float slowTime = 1f;
+    //　経過時間
+    private float elapsedTime = 0f;
+ 
 
     private float time =0.0f;
 
@@ -132,8 +145,6 @@ public class Player : MonoBehaviour
     void Start()
     {
 
-       
-
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
         //gm = FindObjectOfType<GManager>();
@@ -159,11 +170,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Debug.Log(hp);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.blue);
-
-        Debug.Log(fallFlag);
         //　落ちている状態
         if (fallFlag)
         {
@@ -176,16 +183,16 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+                fallGroundFalg = true;
+
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
 
-
-                //　落下によるダメージが発生する距離を超える場合ダメージを与える
-                if (fallenDistance >= takeDamageDistance)
+                if (fallGroundFalg)
                 {
-                    Debug.Log("aisu");
-                    hp --;
+                    Falldamage();
                 }
+
                 fallFlag = false;
             }
         }
@@ -396,6 +403,28 @@ public class Player : MonoBehaviour
            // gm.HpRecoveryFlag = true;
             other.gameObject.SetActive(false);
         }*/
+    }
+
+    private void Falldamage()
+    {
+        elapsedTime += Time.unscaledDeltaTime;
+        if (elapsedTime < slowTime)
+        {
+            Time.timeScale = timeScale;
+
+            //　落下によるダメージが発生する距離を超える場合ダメージを与える
+            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
+            {
+                hp--;
+            }
+        }
+
+        if (elapsedTime > slowTime)
+        {
+            Debug.Log("asita");
+            Time.timeScale = 1f;
+            elapsedTime = 0.0f;
+        }
     }
 
     private void PlayerRisetController()
