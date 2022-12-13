@@ -11,6 +11,10 @@ TagManager:
   - Wall
   - key
   - Item
+  - RollingPoint
+  - WallJumpPoint
+  - HoppingJumpPoint
+  - ClingPoint
   layers:
   - Default
   - TransparentFX

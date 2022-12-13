@@ -131,6 +131,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+       
+
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
         //gm = FindObjectOfType<GManager>();
