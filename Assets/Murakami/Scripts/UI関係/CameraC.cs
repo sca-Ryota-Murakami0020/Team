@@ -36,57 +36,11 @@ public class CameraC : MonoBehaviour
     //縦方向のマウスの移動量
     private float mousey;
 
-    private Vector3 rayHitPosition;
-
-    private Ray cameraRay;//調整その１　プロパティの設定
-
-    private bool rayTrueFlag;//その２
-
-    private RaycastHit isHit;//その３
-
-
-    [SerializeField] private GameObject bulletSponePosition;
-
     private Vector3 dir;
-
-    public Vector3 RayHitPosition
-    {
-        get { return this.rayHitPosition;}
-        set { this.rayHitPosition = value;}
-    }
-
-    public Vector3 Dir
-    {
-        get { return this.dir;}
-        set { this.dir = value;}
-    }
-
-    public Ray CameraRay
-    {
-        get { return this.cameraRay;}
-        set { this.cameraRay = value;}
-    }
-
-    public bool RayTrueFlag
-    {
-        get { return this.rayTrueFlag;}
-        set { this.rayTrueFlag = value;}
-    }
-
-    public RaycastHit IsHit
-    {
-        get { return this.isHit;}
-        set { this.isHit = value;}
-    }
-    void Start()
-    {
-        Player = GameObject.Find("Player");
-        rayTrueFlag = false;
-    }
 
     //視点とカメラ座標を随時更新
     void Update()
-    {    
+    {
         if (Player == null) return;
         //マウスの移動量を取得
         mousex = Input.GetAxis("Mouse X");
@@ -95,10 +49,6 @@ public class CameraC : MonoBehaviour
         if (Mathf.Abs(mousex) > 0.008f || Mathf.Abs(mousey) > 0.005f)
         {
             Roll(mousex, mousey);
-        }
-        if (Input.GetMouseButtonDown(0))
-        { 
-            GetShotVector();
         }
 
         UpdateLookPosition();
@@ -197,24 +147,6 @@ public class CameraC : MonoBehaviour
         //視点を更新する
         this.transform.LookAt(D);
     }
-
-    
-    public void GetShotVector()
-    {
-        cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(cameraRay, out isHit, Mathf.Infinity))
-        {
-            // rayの当たった位置 - ボール位置間の計算を行い、ベクトルを取得（y座標のみボールの座標を採用）
-            rayHitPosition = new Vector3(isHit.point.x, isHit.point.y, isHit.point.z); 
-            Debug.Log("rayHitPos" + rayHitPosition);
-            dir = (rayHitPosition - bulletSponePosition.transform.position).normalized;
-            rayTrueFlag = true;
-            Debug.DrawRay(cameraRay.origin,cameraRay.direction * 10, Color.green, 5);
-            Debug.Log(dir);
-            Debug.Log(Dir);
-        }
-    }
-    
 }
 
 
