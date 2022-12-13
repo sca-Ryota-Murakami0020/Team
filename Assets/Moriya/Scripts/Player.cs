@@ -140,7 +140,6 @@ public class Player : MonoBehaviour
 
         //親オブジェクト取得
         _parent = transform.root.gameObject;
-        Debug.Log(_parent.name);
 
         anime.SetBool("doIdle",true);
 
@@ -157,25 +156,31 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log(hp);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.blue);
 
+        Debug.Log(fallFlag);
         //　落ちている状態
-        /*if (fallFlag)
+        if (fallFlag)
         {
 
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+            //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             Debug.Log(fallenPosition);
 
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+               
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 //　落下によるダメージが発生する距離を超える場合ダメージを与える
                 if (fallenDistance >= takeDamageDistance)
                 {
-                    hp -=((int)(fallenDistance - takeDamageDistance));
+                    Debug.Log("aisu");
+                    hp --;
                 }
                 fallFlag = false;
             }
@@ -190,7 +195,7 @@ public class Player : MonoBehaviour
                 fallenDistance = 0;
                 fallFlag = true;
             }
-        }*/
+        }
 
 
         //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
