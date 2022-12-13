@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Rigidbody rb;
+   /* private Rigidbody rb;
     private WireGun wireGun;
     private CameraC camera;
     private float timeC;
@@ -48,11 +48,11 @@ public class Bullet : MonoBehaviour
         /*if (other.gameObject.CompareTag("Wall"))
         {
             jumpCount = 0;
-        }*/
+        }
     }
 
     private void PlayerSpring()
     {
 
-    }
+    }*/
 }

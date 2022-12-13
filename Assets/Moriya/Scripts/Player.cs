@@ -176,9 +176,10 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
-               
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
+
+
                 //　落下によるダメージが発生する距離を超える場合ダメージを与える
                 if (fallenDistance >= takeDamageDistance)
                 {

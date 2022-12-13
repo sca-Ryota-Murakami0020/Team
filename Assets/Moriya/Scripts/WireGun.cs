@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WireGun : MonoBehaviour
 {
-    //コンポーネント
+   /* //コンポーネント
     //private Animator animator;
     private LineRenderer lineRenderer;
     private SpringJoint springJoint;
@@ -97,6 +97,6 @@ public class WireGun : MonoBehaviour
             Destroy(springJoint);
         }
     }
-
+*/
 
 }
