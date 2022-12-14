@@ -7,13 +7,6 @@ public class TimeC : MonoBehaviour
 {
     //総プレイ時間：
     private float totalTime;
-    /*//秒単位
-    private float secondTime;
-    //分単位
-    private int minuteTime;
-    //時間単位
-    private int hourTime;
-    */
 
     private PlayerC pl;
     private OverLoadTimer olt;
@@ -25,35 +18,11 @@ public class TimeC : MonoBehaviour
         get { return this.totalTime; }
         set { this.totalTime = value; }
     }
-    /*
-    public float Stime
-    {
-        get { return this.secondTime; }
-        set { this.secondTime = value; }
-    }
-
-    public int Mtime
-    {
-        get { return this.minuteTime; }
-        set { this.minuteTime = value; }
-    }
-
-    public int Htime
-    {
-        get { return this.hourTime; }
-        set { this.hourTime = value; }
-    }*/
 
     // Start is called before the first frame update
     void Start()
     {
-        //時間計測の初期化
-        /*
-        totalTime = 0.0f;
-        secondTime = 0.0f;
-        minuteTime = 0;
-        hourTime = 0;
-        */
+
         timeText = GetComponentInChildren<Text>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         olt = GameObject.Find("GameManager").GetComponent<OverLoadTimer>();
@@ -62,14 +31,13 @@ public class TimeC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(totalTime);
         //
         if (pl.AliveFlag)
         {
             //ハイスコアを比較しやすくするために秒計算の変数を作る
             totalTime += Time.deltaTime;
 
-            timeText.text = (totalTime/3600.0f).ToString("00") + ":" + (totalTime/60.0f).ToString("00") + ":" + (totalTime%60.0f).ToString("00");
+            timeText.text = (totalTime/3600).ToString("00") + ":" + (totalTime/120).ToString("00") + ":" + (totalTime%60).ToString("00");
         }
         else this.GameOver();
     }
@@ -80,18 +48,4 @@ public class TimeC : MonoBehaviour
     }
 
 }       
-//時間を00:00:00表記するための変数の演算
-            //秒計算
-            /*secondTime += Time.deltaTime;
-            if (secondTime >= 60.0f)
-            {
-                //分計算
-                minuteTime += 1;
-                secondTime = 0.0f;
-                if (minuteTime >= 60)
-                {
-                    //時間計算
-                    hourTime += 1;
-                    minuteTime = 0;
-                }
-            }*/
+
