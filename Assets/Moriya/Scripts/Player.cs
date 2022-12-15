@@ -157,6 +157,7 @@ public class Player : MonoBehaviour
 
         anime.SetBool("doIdle",true);
 
+        //落ちた時に使う数値リセット
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
@@ -183,16 +184,17 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+                //落ちて地面についた時のフラグ
                 fallGroundFalg = true;
 
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
-
+                //呼び出し
                 if (fallGroundFalg)
                 {
                     Falldamage();
                 }
-
+                //リセット
                 fallFlag = false;
             }
         }
@@ -407,23 +409,27 @@ public class Player : MonoBehaviour
 
     private void Falldamage()
     {
+        //スローモーションの制限時間用
         elapsedTime += Time.unscaledDeltaTime;
+        //1秒いないならスローモーションにする
         if (elapsedTime < slowTime)
         {
             Time.timeScale = timeScale;
 
-            //　落下によるダメージが発生する距離を超える場合ダメージを与える
+            //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
             if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
             {
                 hp--;
             }
         }
 
+        //スローモーション解除
         if (elapsedTime > slowTime)
         {
-            Debug.Log("asita");
+            Debug.Log("とけた");
             Time.timeScale = 1f;
             elapsedTime = 0.0f;
+            fallGroundFalg = false;
         }
     }
 
