@@ -157,6 +157,7 @@ public class Player : MonoBehaviour
 
         anime.SetBool("doIdle",true);
 
+        //落ちた時に使う数値リセット
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
@@ -183,11 +184,12 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+                //落ちて地面についた時のフラグ
                 fallGroundFalg = true;
 
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
-
+                //呼び出し
                 if (fallGroundFalg)
                 {
                     Falldamage();
