@@ -137,8 +137,8 @@ public class OverLoadTimer : MonoBehaviour
                             float bestTimeTem = bestTime[j];
                             bestTime[j] = bestTime[i];
                             bestTime[i] = bestTimeTem;
-                            Debug.Log(bestTime[i]);
-                            Debug.Log(bestTime[j]);
+                            Debug.Log("i: " + bestTime[i]);
+                            Debug.Log("j: " + bestTime[j]);
                         }
                     }
                 //timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
@@ -147,7 +147,7 @@ public class OverLoadTimer : MonoBehaviour
 
         //ゲーム中に表示するタイマー表示に与える変数
         time = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
-        for(int i = 0; i <= loadCount; i++)
+        for(int i = 0; i <= 2; i++)
         {
             //if (loadCount >= 3) Debug.Log("olt"+ i + " " + bestTime[i]);
             timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
