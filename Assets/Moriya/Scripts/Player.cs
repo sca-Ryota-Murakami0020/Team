@@ -194,7 +194,7 @@ public class Player : MonoBehaviour
                 {
                     Falldamage();
                 }
-
+                //リセット
                 fallFlag = false;
             }
         }
@@ -409,23 +409,27 @@ public class Player : MonoBehaviour
 
     private void Falldamage()
     {
+        //スローモーションの制限時間用
         elapsedTime += Time.unscaledDeltaTime;
+        //1秒いないならスローモーションにする
         if (elapsedTime < slowTime)
         {
             Time.timeScale = timeScale;
 
-            //　落下によるダメージが発生する距離を超える場合ダメージを与える
+            //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
             if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
             {
                 hp--;
             }
         }
 
+        //スローモーション解除
         if (elapsedTime > slowTime)
         {
-            Debug.Log("asita");
+            Debug.Log("とけた");
             Time.timeScale = 1f;
             elapsedTime = 0.0f;
+            fallGroundFalg = false;
         }
     }
 
