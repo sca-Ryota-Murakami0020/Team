@@ -23,8 +23,6 @@ public class SecondScore : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //2位スコアの表記
-
-
             if (olt.TimeText[1] == "1")
             {
                 //２位のデフォルト表示
@@ -34,7 +32,8 @@ public class SecondScore : MonoBehaviour
             {
                 //２位のランキング表示
                 secondTimeText.text = olt.TimeText[1];
+            //if(olt.LoadCout > 3)
+                //Debug.Log("text2 " + olt.TimeText[1]);
             }
-
     }
 }

@@ -41,8 +41,8 @@ public class EnemyC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
-        else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+        //if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
+        //else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -71,13 +71,13 @@ public class EnemyC : MonoBehaviour
         if (other.gameObject == startPoint && !this.doEncount)
         {
             this.transform.LookAt(endPoint.transform.position);
-            //Debug.Log("start開始");
+            Debug.Log("start開始");
         }
 
         else if (other.gameObject == endPoint && !this.doEncount)
         {
             this.transform.LookAt(startPoint.transform.position);
-            //Debug.Log("end開始");
+            Debug.Log("end開始");
         }
     }
 }

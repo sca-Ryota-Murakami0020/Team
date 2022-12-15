@@ -15,6 +15,7 @@ TagManager:
   - WallJumpPoint
   - HoppingJumpPoint
   - ClingPoint
+  - Enemy
   layers:
   - Default
   - TransparentFX
