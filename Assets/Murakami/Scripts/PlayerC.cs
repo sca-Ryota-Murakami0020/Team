@@ -23,7 +23,6 @@ public class PlayerC : MonoBehaviour
     private float mouseX;
     private float mouseY;
 
-
     //プロパティ
     public int Hp
     {

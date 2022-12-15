@@ -31,8 +31,11 @@ public class HighScoreText : MonoBehaviour
             else {
                 //‚PˆÊ‚Ìƒ‰ƒ“ƒLƒ“ƒO•\Ž¦"
                 bestTimeText.text  = olt.TimeText[0];
+                /*if(olt.LoadCout > 3)
+                {
+                    Debug.Log("text1 " + olt.TimeText[0]);
+                }*/              
             }
-
     }
 
 

@@ -51,6 +51,12 @@ public class OverLoadTimer : MonoBehaviour
         set { this.time = value; }
     }
 
+    public int LoadCout
+    {
+        get { return this.loadCount;}
+        set { this.loadCount = value;}
+    }
+
     private void Awake()
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Counter");
@@ -88,65 +94,67 @@ public class OverLoadTimer : MonoBehaviour
 
     public void LoadGameOver()
     {
-        Debug.Log("LoadCount" + loadCount);
-        //初プレイ時の記録を記録
-        if (loadCount < 3)
+        //Debug.Log("LoadCount" + loadCount);
+
+        if (loadCount == 0)
         {
-            Debug.Log("LoadCount3未満");
-            if (bestTime[loadCount] <= 0.0f && bestTime[loadCount] < 0.1f)
+            bestTime[loadCount] = totalTime;
+            //timer[loadCount] = "1位:" + (bestTime[loadCount] / 3600).ToString("00") + ":" + (bestTime[loadCount] / 120).ToString("00") + ":" + ((int)bestTime[loadCount] % 60).ToString("00");
+        }
+
+        //２回目プレイ～３回目時の記録を記録
+        if (loadCount >= 1 && loadCount <= 2)
+        {
+            bestTime[loadCount] = totalTime;
+            if (loadCount >= 1)
             {
-                bestTime[loadCount] = totalTime;
-                if (loadCount >= 1)
+                for (int i = loadCount; i > 0; i--)
                 {
-                    for (int i = loadCount; i >= 0; i--)
+                    for (int j = loadCount - 1; j >= 0; j--)
                     {
-                        for (int j = loadCount - 1; j >= 0; j--)
+                        if (bestTime[j] > bestTime[i])
                         {
-                            if (bestTime[j] > bestTime[i])
-                            {
-                                float btt = bestTime[j];
-                                bestTime[j] = bestTime[i];
-                                bestTime[i] = btt;
-                                Debug.Log("touroku");
-                            }
+                            float btt = bestTime[j];
+                            bestTime[j] = bestTime[i];
+                            bestTime[i] = btt;
                         }
-                        timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");                      
                     }
+                    //timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");                      
                 }
-                //初回プレイの結果をランキングに反映させる
-                if (loadCount == 0)
-                {
-                    bestTime[loadCount] = totalTime;
-                    timer[loadCount] = "1位:" + (bestTime[loadCount] / 3600).ToString("00") + ":" + (bestTime[loadCount] / 120).ToString("00") + ":" + ((int)bestTime[loadCount] % 60).ToString("00");
-                }
-                    
             }
         }
 
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCount >= 3)
         {
-            Debug.Log("LoadCount3以上");
-            for (int i = 3; i >= 0; i--)
-            {
-                for (int j = 2; j >= 0; j--)
+            bestTime[3] = totalTime;
+                for (int i = 3; i >= 1; i--)
                 {
-                    if (bestTime[j] > bestTime[i])
+                    for (int j = i -1; j >= 0; j--)
                     {
-                        float bestTimeTem = bestTime[j];
-                        bestTime[j] = bestTime[i];
-                        bestTime[i] = bestTimeTem;
-                        Debug.Log("kousinn");
+                        if (bestTime[j] > bestTime[i])
+                        {                       
+                            float bestTimeTem = bestTime[j];
+                            bestTime[j] = bestTime[i];
+                            bestTime[i] = bestTimeTem;
+                            Debug.Log(bestTime[i]);
+                            Debug.Log(bestTime[j]);
+                        }
                     }
+                //timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
                 }
-                timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
-            }
         }
 
         //ゲーム中に表示するタイマー表示に与える変数
         time = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
+        for(int i = 0; i <= loadCount; i++)
+        {
+            //if (loadCount >= 3) Debug.Log("olt"+ i + " " + bestTime[i]);
+            timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
+        }
         loadCount += 1;
         totalTime = 0.0f;
+
     }
 
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
@@ -156,6 +164,7 @@ public class OverLoadTimer : MonoBehaviour
             startFlag = true;
             //Stage2が読み込まれたときにしたい処理
             timeC = FindObjectOfType<TimeC>();
+            //if(loadCount >= 3) bestTime[3] = 0.0f;
         }
         if (nextScene.name == "村上用Title")
         {
