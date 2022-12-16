@@ -190,11 +190,28 @@ public class Player : MonoBehaviour
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 //呼び出し
-                if (fallGroundFalg)
+                //スローモーションの制限時間用
+                elapsedTime += Time.unscaledDeltaTime;
+                //1秒いないならスローモーションにする
+                while(elapsedTime <slowTime)
                 {
-                    Falldamage();
+                    Time.timeScale = timeScale;
+
+                    //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
+                    if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
+                    {
+                        hp--;
+                    }
                 }
-                //リセット
+
+                //スローモーション解除
+                if (elapsedTime > slowTime)
+                {
+                    Debug.Log("とけた");
+                    Time.timeScale = 1f;
+                    elapsedTime = 0.0f;
+                    fallGroundFalg = false;
+                }
             }
             fallFlag = false;
         }
@@ -405,32 +422,6 @@ public class Player : MonoBehaviour
            // gm.HpRecoveryFlag = true;
             other.gameObject.SetActive(false);
         }*/
-    }
-
-    private void Falldamage()
-    {
-        //スローモーションの制限時間用
-        elapsedTime += Time.unscaledDeltaTime;
-        //1秒いないならスローモーションにする
-        if (elapsedTime < slowTime)
-        {
-            Time.timeScale = timeScale;
-
-            //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
-            {
-                hp--;
-            }
-        }
-
-        //スローモーション解除
-        if (elapsedTime > slowTime)
-        {
-            Debug.Log("とけた");
-            Time.timeScale = 1f;
-            elapsedTime = 0.0f;
-            fallGroundFalg = false;
-        }
     }
 
     private void PlayerRisetController()
