@@ -45,8 +45,6 @@ public class Player : MonoBehaviour
     //　どのぐらいの高さからダメージを与えるか
     [SerializeField]
     private float takeDamageDistance = 2f;
-    //落下し着地したときのフラグ
-    private bool fallGroundFalg = false;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -85,10 +83,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float timeScale = 0.1f;
     //　時間を遅くしている時間
-    [SerializeField]
-    private float slowTime = 1f;
+    private float slowTime = 3f;
     //　経過時間
     private float elapsedTime = 0f;
+    private bool fallDamegeFlag;
  
 
     private float time =0.0f;
@@ -175,7 +173,6 @@ public class Player : MonoBehaviour
         //　落ちている状態
         if (fallFlag)
         {
-
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
@@ -184,23 +181,24 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
-                //落ちて地面についた時のフラグ
-                fallGroundFalg = true;
-
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
-                //呼び出し
-                //スローモーションの制限時間用
-                elapsedTime += Time.unscaledDeltaTime;
-                //1秒いないならスローモーションにする
-                while(elapsedTime < slowTime)
-                {
-                    Time.timeScale = timeScale;
 
+                //フラグたてる
+                fallDamegeFlag = true;
+
+                //1秒いないならスローモーションにする
+                Time.timeScale = timeScale;
+
+                while (elapsedTime < slowTime)
+                {
+                    //スローモーションの制限時間用
+                    elapsedTime += Time.unscaledDeltaTime;
                     //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-                    if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
+                    if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
                     {
                         hp--;
+                        fallDamegeFlag =false; 
                     }
                 }
 
@@ -210,7 +208,6 @@ public class Player : MonoBehaviour
                     Debug.Log("とけた");
                     Time.timeScale = 1f;
                     elapsedTime = 0.0f;
-                    fallGroundFalg = false;
                 }
                 fallFlag = false;
             }
