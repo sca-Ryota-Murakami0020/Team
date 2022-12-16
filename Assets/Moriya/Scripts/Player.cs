@@ -195,8 +195,8 @@ public class Player : MonoBehaviour
                     Falldamage();
                 }
                 //ƒŠƒZƒbƒg
-                fallFlag = false;
             }
+            fallFlag = false;
         }
         else
         {
