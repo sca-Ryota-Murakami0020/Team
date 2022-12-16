@@ -16,6 +16,8 @@ TagManager:
   - HoppingJumpPoint
   - ClingPoint
   - Enemy
+  - PlayerD
+  - PositionD
   layers:
   - Default
   - TransparentFX

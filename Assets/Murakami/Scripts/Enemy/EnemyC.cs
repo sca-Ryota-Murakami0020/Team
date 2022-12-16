@@ -18,10 +18,24 @@ public class EnemyC : MonoBehaviour
     private float addSpeed = 3.0f;
     //追跡フラグ
     private bool doEncount;
+    //巡回開始のフラグ
+    private bool startFlag;
     //スタート地点
     [SerializeField] private GameObject startPoint;
     //終着点
     [SerializeField] private GameObject endPoint;
+
+    public GameObject StartP
+    {
+        get { return this.startPoint;}
+        set { this.startPoint = value;}
+    }
+
+    public GameObject EndP
+    {
+        get { return this.endPoint;}
+        set { this.endPoint = value;}
+    }
 
     public bool DoEn
     {
@@ -36,13 +50,15 @@ public class EnemyC : MonoBehaviour
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         this.transform.position = startPoint.transform.position;
         doEncount = false;
+        startFlag = true;
+        this.transform.LookAt(endPoint.transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
-        //else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+        if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
+        else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -66,18 +82,32 @@ public class EnemyC : MonoBehaviour
         }
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == startPoint && !this.doEncount)
+        if (other.gameObject == startPoint && !doEncount)
         {
-            this.transform.LookAt(endPoint.transform.position);
-            Debug.Log("start開始");
+            Debug.Log("Eestart開始");
+            returnLookEndPosition();
         }
 
-        else if (other.gameObject == endPoint && !this.doEncount)
+        else if (other.gameObject == endPoint && !doEncount)
         {
-            this.transform.LookAt(startPoint.transform.position);
-            Debug.Log("end開始");
+            Debug.Log("Eeend開始");
+            returnLookStartPosition();
         }
+    }
+    */
+
+    public void returnLookStartPosition()
+    {
+        this.transform.LookAt(endPoint.transform.position);
+        Debug.Log("Estart開始");
+    }
+
+    public void returnLookEndPosition()
+    {
+        this.transform.LookAt(startPoint.transform.position);
+        Debug.Log("Eend開始");
     }
 }

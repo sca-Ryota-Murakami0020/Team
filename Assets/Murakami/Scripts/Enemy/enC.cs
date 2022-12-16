@@ -24,7 +24,7 @@ public class enC : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && this.gameObject.CompareTag("PlayerD"))
         {       
             Debug.Log("EstartŠJŽn");
             ec.DoEn = true;
