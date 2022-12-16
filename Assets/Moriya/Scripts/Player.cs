@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     //プレイヤーステータス
     private int hp = 3;
     private float speed = 10.0f;
+    private float jumpSpeed =10.0f;
+    private float fallSpeed = -0.01f; 
     private int playerMaxhp = 3;
     private int itemPoint = 0;
     private int jumpCount = 0;
@@ -265,7 +267,14 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.LEFT;
             sr.sprite = leftImage;*/
             moveFlag = true;
-            _parent.transform.position -= Vector3.right * speed *Time.deltaTime;
+            if(jumpFlag == false)
+            {
+                _parent.transform.position -= Vector3.right * speed * Time.deltaTime;
+            }
+            if(jumpFlag == true)
+            {
+                _parent.transform.position -= Vector3.right * (speed/10) * Time.deltaTime;
+            }
             anime.SetBool("doWalk",true);
             transform.rotation = left;
         }
@@ -276,7 +285,14 @@ public class Player : MonoBehaviour
             /*playerDirection = PlayerDirection.RIGHT;
             sr.sprite = rightImage;*/
             moveFlag = true;
-            _parent.transform.position += Vector3.right * speed * Time.deltaTime;
+            if(jumpFlag == false)
+            {
+                _parent.transform.position += Vector3.right * speed * Time.deltaTime;
+            }
+            if(jumpFlag == true)
+            {
+                _parent.transform.position = Vector3.right * (speed / 10) * Time.deltaTime;
+            }
             anime.SetBool("doWalk", true);
             transform.rotation = Right;
         }
@@ -288,7 +304,14 @@ public class Player : MonoBehaviour
             sr.sprite = upImage;*/
             moveFlag = true;
             anime.SetBool("doWalk", true);
-            _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
+            if(jumpFlag == false)
+            {
+                _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
+            }
+            if (jumpFlag == true)
+            {
+                _parent.transform.position -= Vector3.forward * (speed/10) * Time.deltaTime;
+            }
             transform.rotation = up;
         }
         //下方向に向いて移動したら
@@ -299,7 +322,15 @@ public class Player : MonoBehaviour
             sr.sprite = defaultImage;*/
             moveFlag = true;
             anime.SetBool("doWalk", true);
-            _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+            if(jumpFlag == false)
+            {
+                _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+            }
+           
+            if(jumpFlag == true)
+            {
+                _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
+            }
             transform.rotation =down;
         }
         else
@@ -316,11 +347,9 @@ public class Player : MonoBehaviour
             //ジャンプ時
             time +=Time.deltaTime;
             anime.SetBool("doJump", true);
+            this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
             jumpFlag = true;
-            this.rb.AddForce(new Vector3(0,speed*50, 0));
             jumpCount++;
-
-            Debug.Log(time);
 
             //ジャンプから落下モーションへ
             //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
@@ -335,6 +364,11 @@ public class Player : MonoBehaviour
             time = 0.0f;
         }
 
+
+        if(jumpFlag == true)
+        {
+            this.rb.AddForce(new Vector3(0, fallSpeed * Time.deltaTime , 0));
+        }
         #endregion
 
 
@@ -344,33 +378,47 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            if (jumpFlag == true) 
+            var con = other.GetContact(0);
+
+            if (con.normal.x < 0.0f)
             {
-                //落下モーションか着地モーションへ
-                time += Time.deltaTime;
                 jumpFlag = false;
-                anime.SetBool("doJump", false);
-                anime.SetBool("doFall",false);
-                anime.SetBool("doLanding",true);
-                anime.SetBool("doIdle",false);
-                landFlag = true;
-
-                Debug.Log(time);
-
-
-                //着地モーションから待機モーションへ
-                if (jumpFlag == false)
-                {
-                    anime.SetBool("doLanding", false);
-                    anime.SetBool("doIdle", true);
-                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                    time =0.0f;
-                   
-                }
+                jumpCount = 0;
             }
-            jumpCount = 0;
+
+            if (con.normal.z < 0.0f)
+            {
+                jumpFlag = false;
+                jumpCount = 0;
+            }
+
+
+            if (con.normal.y > 0.0f)
+            {
+                if (jumpFlag == true)
+                {
+                    //落下モーションか着地モーションへ
+                    time += Time.deltaTime;
+                    jumpFlag = false;
+                    anime.SetBool("doJump", false);
+                    anime.SetBool("doFall", false);
+                    anime.SetBool("doLanding", true);
+                    anime.SetBool("doIdle", false);
+                    landFlag = true;
+                    //着地モーションから待機モーションへ
+                    if (jumpFlag == false)
+                    {
+                        anime.SetBool("doLanding", false);
+                        anime.SetBool("doIdle", true);
+                        /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                        Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                        Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                        time = 0.0f;
+                    }
+                }
+                jumpCount = 0;
+            }
+          
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
