@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
                 //スローモーションの制限時間用
                 elapsedTime += Time.unscaledDeltaTime;
                 //1秒いないならスローモーションにする
-                while(elapsedTime <slowTime)
+                while(elapsedTime < slowTime)
                 {
                     Time.timeScale = timeScale;
 
@@ -212,8 +212,8 @@ public class Player : MonoBehaviour
                     elapsedTime = 0.0f;
                     fallGroundFalg = false;
                 }
+                fallFlag = false;
             }
-            fallFlag = false;
         }
         else
         {
