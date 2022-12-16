@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     private int hp = 3;
     private float speed = 10.0f;
     private float jumpSpeed =10.0f;
-    private float fallSpeed = -0.01f; 
+    private float fallSpeed = -0.1f; 
     private int playerMaxhp = 3;
     private int itemPoint = 0;
     private int jumpCount = 0;
@@ -85,14 +85,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float timeScale = 0.1f;
     //　時間を遅くしている時間
-    private float slowTime = 3f;
+    private float slowTime = 1f;
     //　経過時間
     private float elapsedTime = 0f;
     private bool fallDamegeFlag;
  
-
-    private float time =0.0f;
-
     //親オブジェクト
     private GameObject _parent;
 
@@ -172,44 +169,50 @@ public class Player : MonoBehaviour
     void Update()
     {
         Debug.Log(hp);
+        Debug.Log(Time.timeScale);
         //　落ちている状態
         if (fallFlag)
         {
+            //徐々に落下速度を加速させる
+            transform.position += transform.up * Time.deltaTime * fallSpeed;
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
-            Debug.Log(fallenPosition);
+            //Debug.Log(fallenPosition);
 
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+                Debug.Log("test");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
-
-                //フラグたてる
-                fallDamegeFlag = true;
-
-                //1秒いないならスローモーションにする
-                Time.timeScale = timeScale;
-
-                while (elapsedTime < slowTime)
+                if(fallenDistance >= takeDamageDistance)
                 {
-                    //スローモーションの制限時間用
-                    elapsedTime += Time.unscaledDeltaTime;
-                    //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-                    if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
+                    StartCoroutine("StartSlowmotion");
+                    //フラグたてる
+                    fallDamegeFlag = true;
+                    /*while (elapsedTime < slowTime)
                     {
-                        hp--;
-                        fallDamegeFlag =false; 
-                    }
-                }
-
-                //スローモーション解除
-                if (elapsedTime > slowTime)
-                {
-                    Debug.Log("とけた");
-                    Time.timeScale = 1f;
-                    elapsedTime = 0.0f;
+                        //1秒いないならスローモーションにする
+                        Time.timeScale = timeScale;
+                        //スローモーションの制限時間用
+                        elapsedTime += Time.unscaledDeltaTime;
+                        Debug.Log(elapsedTime);
+                        //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
+                        if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
+                        {
+                            hp--;
+                            fallDamegeFlag = false;
+                        }
+                        //スローモーション解除
+                        if (elapsedTime > slowTime)
+                        {
+                            Debug.Log("とけた");
+                            Time.timeScale = 1f;
+                            elapsedTime = 0.0f;
+                            break;
+                        }
+                    }*/
                 }
                 fallFlag = false;
             }
@@ -345,15 +348,14 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
             //ジャンプ時
-            time +=Time.deltaTime;
             anime.SetBool("doJump", true);
-            this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
+            this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
             jumpFlag = true;
             jumpCount++;
 
             //ジャンプから落下モーションへ
             //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
-            fallFlag = true;
+            //fallFlag = true;
             anime.SetBool("doLanding",false);
             //anime.SetBool("doJump",false);
             anime.SetBool("doFall",true);
@@ -361,14 +363,8 @@ public class Player : MonoBehaviour
             Debug.Log("doJump" + anime.GetBool("doJump"));
             Debug.Log("doIdle" + anime.GetBool("doIdle"));
             Debug.Log("doFall" + anime.GetBool("doFall"));
-            time = 0.0f;
         }
-
-
-        if(jumpFlag == true)
-        {
-            this.rb.AddForce(new Vector3(0, fallSpeed * Time.deltaTime , 0));
-        }
+           
         #endregion
 
 
@@ -378,6 +374,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            
             var con = other.GetContact(0);
 
             if (con.normal.x < 0.0f)
@@ -398,7 +395,6 @@ public class Player : MonoBehaviour
                 if (jumpFlag == true)
                 {
                     //落下モーションか着地モーションへ
-                    time += Time.deltaTime;
                     jumpFlag = false;
                     anime.SetBool("doJump", false);
                     anime.SetBool("doFall", false);
@@ -413,7 +409,6 @@ public class Player : MonoBehaviour
                         /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                         Debug.Log("doIdle" + anime.GetBool("doIdle"));
                         Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                        time = 0.0f;
                     }
                 }
                 jumpCount = 0;
@@ -477,7 +472,7 @@ public class Player : MonoBehaviour
         jumpCount = 0;
     }
 
-    private void Fallsituation()
+    /*private void Fallsituation()
     {
         Debug.Log("a");
         jumpFlag = false;
@@ -488,6 +483,52 @@ public class Player : MonoBehaviour
         Debug.Log("Landing" + anime.GetBool("doLanding"));
         Debug.Log("doIdle" + anime.GetBool("doIdle"));
         Debug.Log("doFall" + anime.GetBool("doFall"));
-        time = 0.0f;
+    }*/
+
+    private IEnumerator StartSlowmotion()
+    {
+        //slowmotion本体を起動
+        StartCoroutine("Slowmotion");
+
+        //1.0秒待つ
+        yield return  new WaitForSecondsRealtime(1.0f);
+
+        //slowmotion本体をストップ
+        StopCoroutine("StartSlowmotion");
+        StopCoroutine("Slowmotion");
+    }
+    private IEnumerator Slowmotion()
+    {
+        //遅くする
+        Time.timeScale = timeScale;
+
+        Debug.Log("slowmotion");
+
+        //時間計測＋キー判定
+        while (elapsedTime < slowTime)
+        {
+            //1秒いないならスローモーションにする
+            Time.timeScale = timeScale;
+            //スローモーションの制限時間用
+            elapsedTime += Time.unscaledDeltaTime;
+            Debug.Log("elapsed"+elapsedTime);
+            //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
+            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
+            {
+                hp--;
+                fallDamegeFlag = false;
+            }
+            //スローモーション解除
+            if (elapsedTime > slowTime)
+            {
+                Debug.Log("とけた");
+                Time.timeScale = 1f;
+                elapsedTime = 0.0f;
+                StopCoroutine("Slowmotion");
+                break;
+            }
+
+            yield return null;
+        };
     }
 }

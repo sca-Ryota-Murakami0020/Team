@@ -185,4 +185,3 @@ MonoBehaviour:
   rayRange: 0.85
   takeDamageDistance: 1
   timeScale: 0.1
-  slowTime: 1
