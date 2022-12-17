@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Animator anime = null;
 
+    //ダメージ
+    private bool damageFlag = false;
     //移動
     private bool moveFlag = false;
     //ジャンプ
@@ -39,14 +41,14 @@ public class Player : MonoBehaviour
     private Transform rayPosition;
     //　レイを飛ばす距離
     [SerializeField]
-    private float rayRange = 0.85f;
+    private float rayRange;
     //　落ちた場所
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
     private float fallenDistance;
     //　どのぐらいの高さからダメージを与えるか
     [SerializeField]
-    private float takeDamageDistance = 2f;
+    private float takeDamageDistance = 3f;
 
     //加速関係
     private bool speedAccelerationFlag = false;
@@ -183,7 +185,6 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
-                Debug.Log("test");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if(fallenDistance >= takeDamageDistance)
@@ -213,6 +214,11 @@ public class Player : MonoBehaviour
                             break;
                         }
                     }*/
+                }
+                if(damageFlag == true)
+                {
+                    hp--;
+                    damageFlag = false;
                 }
                 fallFlag = false;
             }
@@ -359,10 +365,10 @@ public class Player : MonoBehaviour
             anime.SetBool("doLanding",false);
             //anime.SetBool("doJump",false);
             anime.SetBool("doFall",true);
-            Debug.Log("Landing" + anime.GetBool("doLanding"));
+           /* Debug.Log("Landing" + anime.GetBool("doLanding"));
             Debug.Log("doJump" + anime.GetBool("doJump"));
             Debug.Log("doIdle" + anime.GetBool("doIdle"));
-            Debug.Log("doFall" + anime.GetBool("doFall"));
+            Debug.Log("doFall" + anime.GetBool("doFall"));*/
         }
            
         #endregion
@@ -502,7 +508,7 @@ public class Player : MonoBehaviour
         //遅くする
         Time.timeScale = timeScale;
 
-        Debug.Log("slowmotion");
+        //Debug.Log("slowmotion");
 
         //時間計測＋キー判定
         while (elapsedTime < slowTime)
@@ -511,12 +517,12 @@ public class Player : MonoBehaviour
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
-            Debug.Log("elapsed"+elapsedTime);
+            //Debug.Log("elapsed"+elapsedTime);
             //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
             if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
             {
-                hp--;
                 fallDamegeFlag = false;
+                damageFlag = true;
             }
             //スローモーション解除
             if (elapsedTime > slowTime)
