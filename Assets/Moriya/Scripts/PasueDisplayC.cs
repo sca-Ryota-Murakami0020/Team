@@ -88,6 +88,8 @@ public class PasueDisplayC : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Tab))
         {
+            //StartCoroutine(PlayerXplanation());
+
             Destroy(pauseUIInstance);
             //‘€ìà–¾ŠJ‚­
             playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
@@ -104,6 +106,10 @@ public class PasueDisplayC : MonoBehaviour
     }
     #endregion
 
+   /* private IEnumerator PlayerXplanation()
+    {
+
+    }*/
 
     private void ResetCommand()
     {
