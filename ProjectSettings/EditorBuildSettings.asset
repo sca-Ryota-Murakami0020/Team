@@ -18,8 +18,8 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScene.unity
     guid: 0c8f8ec99004ebd439db4e0def9f5a31
   - enabled: 1
-    path: Assets/Scenes/IndoorScene.unity
-    guid: 389fe148f9b45f94b83139d44d8af08b
+    path: "Assets/Scenes/\u64CD\u4F5C\u8AAC\u660E.unity"
+    guid: f905e088b877eb74da5ac2cec7ad7808
   - enabled: 1
     path: Assets/Scenes/GameOverScene.unity
     guid: b7732543fde2127499ad3c712b3f5173

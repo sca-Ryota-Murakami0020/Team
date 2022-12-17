@@ -20,6 +20,8 @@ public class TitleNextStege : MonoBehaviour
 
     public void NextStege()
     {
-        SceneManager.LoadScene("‘€ìà–¾");
+        
+            SceneManager.LoadScene("‘€ìà–¾");
+      
     }
 }

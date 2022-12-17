@@ -207,8 +207,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 241718646}
-        m_TargetAssemblyTypeName: scene, Assembly-CSharp
-        m_MethodName: next
+        m_TargetAssemblyTypeName: TitleNextStege, Assembly-CSharp
+        m_MethodName: NextStege
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 241718641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 418a055d7c8b8c64db25d67a72256827, type: 3}
+  m_Script: {fileID: 11500000, guid: 78fe938fa5050894a97bcec09b843fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &249563936

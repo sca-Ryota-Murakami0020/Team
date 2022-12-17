@@ -14,11 +14,14 @@ public class PlayExplanation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SceneManager.LoadScene("FirstScene");
+        }
     }
 
     public void NextStege()
     {
-        SceneManager.LoadScene("FirstScene");
+        
     }
 }
