@@ -385,12 +385,16 @@ public class Player : MonoBehaviour
 
             if (con.normal.x < 0.0f)
             {
+                landFlag = true;
+                //専用の着地モーション
                 jumpFlag = false;
                 jumpCount = 0;
+
             }
 
             if (con.normal.z < 0.0f)
             {
+                landFlag = true;
                 jumpFlag = false;
                 jumpCount = 0;
             }
