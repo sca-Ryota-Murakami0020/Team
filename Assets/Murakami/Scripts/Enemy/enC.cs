@@ -29,5 +29,15 @@ public class enC : MonoBehaviour
             Debug.Log("Estart開始");
             ec.DoEn = true;
         }
+
+        if (other.gameObject == ec.StartP && !ec.DoEn && this.gameObject.CompareTag("PlayerD"))
+        {
+            Debug.Log("スタート開始");
+        }
+
+        else if (other.gameObject == ec.EndP && !ec.DoEn && this.gameObject.CompareTag("PlayerD"))
+        {
+            Debug.Log("エンド開始");
+        }
     }
 }

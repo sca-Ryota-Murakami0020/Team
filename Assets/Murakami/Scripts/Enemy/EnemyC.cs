@@ -81,23 +81,19 @@ public class EnemyC : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    /*
+    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == startPoint && !doEncount)
+        if (other.gameObject == startPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Eestart開始");
-            returnLookEndPosition();
-        }
-
-        else if (other.gameObject == endPoint && !doEncount)
-        {
-            Debug.Log("Eeend開始");
             returnLookStartPosition();
         }
+
+        else if (other.gameObject == endPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
+        {
+            returnLookEndPosition();
+        }
     }
-    */
 
     public void returnLookStartPosition()
     {
