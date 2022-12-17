@@ -755,7 +755,7 @@ PrefabInstance:
     - target: {fileID: 4531917323346168088, guid: 22757e230549c884395ef5ed47897a5b, type: 3}
       propertyPath: playOperatePrafab
       value: 
-      objectReference: {fileID: 3478305942366739513, guid: e7322dcd2a0e06a42818bb6e403ae063, type: 3}
+      objectReference: {fileID: 3516121092579955884, guid: e231a5ab0f4382c40883bc73ceff630f, type: 3}
     - target: {fileID: 6841218424577988751, guid: 22757e230549c884395ef5ed47897a5b, type: 3}
       propertyPath: m_Name
       value: PauseDisplay

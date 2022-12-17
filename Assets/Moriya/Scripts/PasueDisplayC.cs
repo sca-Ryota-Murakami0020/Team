@@ -13,6 +13,9 @@ public class PasueDisplayC : MonoBehaviour
     //ポーズが開いたかのフラグ
     private bool menuFlag = false;
 
+    //操作説明開いたときのフラグ
+    private bool operationExpFlag = false;
+
     [SerializeField]
     //ポーズした時に表示するUIのプレハブ
     private GameObject pauseUIPrefab;
@@ -83,15 +86,25 @@ public class PasueDisplayC : MonoBehaviour
             menuFlag = false;
             ResetCommand();
         }
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
-            
+            Destroy(pauseUIInstance);
             //操作説明開く
             playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
+            operationExpFlag = true;
+            Debug.Log(playOperateUIInstance);
+        }
+        if(operationExpFlag == true && Input.GetKeyUp(KeyCode.Tab))
+        {
+            operationExpFlag = false;
+            Destroy(playOperateUIInstance);
+            pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
         }
 
     }
     #endregion
+
+
     private void ResetCommand()
     {
         playerC.PlayerMaxHp = 3;
