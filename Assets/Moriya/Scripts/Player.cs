@@ -78,6 +78,9 @@ public class Player : MonoBehaviour
 
     //プレイヤー角度計算
     private Quaternion left;
+    private Quaternion up;
+    private Quaternion right;
+    private Quaternion down;
 
 
     //　Time.timeScaleに設定する値
@@ -95,8 +98,9 @@ public class Player : MonoBehaviour
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
-
+    private Quaternion mainCameraQuat;
     private Vector3 mainCameraForwardDer;
+    private Vector3 mainCameraRightDer;
 
     //ゲッター&セッター
     public float PlayerSpeed
@@ -164,7 +168,8 @@ public class Player : MonoBehaviour
         fallenPosition = transform.position.y;
         fallFlag= false;
 
-        left = Quaternion.Euler(0,-90,0);
+        mainCameraQuat = mainCamera.transform.rotation;
+        
  
     }
 
@@ -172,6 +177,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
+        mainCameraRightDer = mainCamera.transform.right.normalized;
+        Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
+        cameraDreNoY = cameraDreNoY.normalized;
+        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z)
+
+
 
         Debug.Log(hp);
         Debug.Log(Time.timeScale);
@@ -280,18 +291,19 @@ public class Player : MonoBehaviour
 
                 if (jumpFlag == false)
                 {
-                    _parent.transform.position -=Vector3.right * speed * Time.deltaTime;
+                    _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
                 }
                 if(jumpFlag == true)
                 {
-                    _parent.transform.position -= Vector3.right * (speed/10) * Time.deltaTime;
+                    _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
                 }
 
-                transform.rotation = left;
-            }
-            //右方向に向いて移動したら
-            else if (Input.GetKey(KeyCode.D))
-            {
+                //transform.rotation = left;
+         }
+
+         //右方向に向いて移動したら
+         else if (Input.GetKey(KeyCode.D))
+         {
                 //右向きの画像に変更する
                 //playerDirection = PlayerDirection.RIGHT;
                 //sr.sprite = rightImage;
@@ -299,18 +311,18 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
                 if (jumpFlag == false)
                 {
-                    _parent.transform.position += Vector3.right * speed * Time.deltaTime;
+                    _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
                 }
                 if(jumpFlag == true)
                 {
-                    _parent.transform.position = Vector3.right * (speed / 10) * Time.deltaTime;
+                    _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
                 }
-            }
-            //上方向に向いて移動したら
-         
-            else if (Input.GetKey(KeyCode.W))
-            //anime.SetBool(doLanging.true)
-             {
+         }
+
+         //上方向に向いて移動したら
+         else if (Input.GetKey(KeyCode.W))
+         //anime.SetBool(doLanging.true)
+         {
                  //上向きの画像に変更する
                  //playerDirection = PlayerDirection.DOWN;
                  //sr.sprite = defaultImage;
@@ -326,29 +338,65 @@ public class Player : MonoBehaviour
                      _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
                  }
  
-             }
-            //下方向に向いて移動したら
-            else if (Input.GetKey(KeyCode.S))
-            {
+         }
+         //下方向に向いて移動したら
+         else if (Input.GetKey(KeyCode.S))
+         {
                 moveFlag = true;
                 anime.SetBool("doWalk", true);
                 if(jumpFlag == false)
                 {
-                    _parent.transform.position -= mainCameraForwardDer * speed * Time.deltaTime;
+                    _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
                 }
 
                 if(jumpFlag == true)
                 {
-                    _parent.transform.position -= mainCameraForwardDer * (speed/10) * Time.deltaTime;
+                    _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
                 }
 
-            }
-            else
+         }
+
+
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        {
+
+            moveFlag = true;
+            anime.SetBool("doWalk", true);
+            if (jumpFlag == false)
             {
+                _parent.transform.position -= cameraUpLeftDiaDer * speed * Time.deltaTime;
+            }
+
+            if (jumpFlag == true)
+            {
+                _parent.transform.position -= cameraUpLeftDiaDer * (speed / 10) * Time.deltaTime;
+            }
+            
+        }
+
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        {
+
+        }
+
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        {
+
+        }
+
+
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        {
+
+        }
+
+
+        else
+        {
                 moveFlag = false;
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
-            }
+        }
 
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
