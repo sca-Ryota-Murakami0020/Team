@@ -7,6 +7,7 @@ public class TherdScore : MonoBehaviour
 {
     private OverLoadTimer olt;
     [SerializeField] Text therdTimeText;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class TherdScore : MonoBehaviour
         {
             therdTimeText.text = "";
         }
+        anim = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame

@@ -7,6 +7,7 @@ public class SecondScore : MonoBehaviour
 {
     private OverLoadTimer olt;
     [SerializeField] Text secondTimeText;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class SecondScore : MonoBehaviour
         {
             secondTimeText.text = "";
         }
+        anim = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -35,5 +37,6 @@ public class SecondScore : MonoBehaviour
             //if(olt.LoadCout > 3)
                 //Debug.Log("text2 " + olt.TimeText[1]);
             }
+        anim.SetBool("setSecondScore", true);
     }
 }
