@@ -268,87 +268,107 @@ public class Player : MonoBehaviour
         }
 
         #region//移動方法
-     
+
+        //十字キー操作
         //左方向に向いて移動したら
-        if (Input.GetKey(KeyCode.A))
-        {
-            //左向きの画像に変更する
-            /*playerDirection = PlayerDirection.LEFT;
-            sr.sprite = leftImage;*/
-            moveFlag = true;
-            if(jumpFlag == false)
-            {
-                _parent.transform.position -= Vector3.right * speed * Time.deltaTime;
+         if (Input.GetKey(KeyCode.A))
+         {
+                //左向きの画像に変更する
+                //playerDirection = PlayerDirection.LEFT;
+                //sr.sprite = leftImage;
+                moveFlag = true;
+                anime.SetBool("doWalk", true);
+
+                if (jumpFlag == false)
+                {
+                    _parent.transform.position -= Vector3.right * speed * Time.deltaTime;
+                }
+                if(jumpFlag == true)
+                {
+                    _parent.transform.position -= Vector3.right * (speed/10) * Time.deltaTime;
+                }
+
+                transform.rotation = left;
             }
-            if(jumpFlag == true)
+            //右方向に向いて移動したら
+            else if (Input.GetKey(KeyCode.D))
             {
-                _parent.transform.position -= Vector3.right * (speed/10) * Time.deltaTime;
+                //右向きの画像に変更する
+                //playerDirection = PlayerDirection.RIGHT;
+                //sr.sprite = rightImage;
+                moveFlag = true;
+                anime.SetBool("doWalk", true);
+                if (jumpFlag == false)
+                {
+                    _parent.transform.position += Vector3.right * speed * Time.deltaTime;
+                }
+                if(jumpFlag == true)
+                {
+                    _parent.transform.position = Vector3.right * (speed / 10) * Time.deltaTime;
+                }
+
+                transform.rotation = Right;
             }
-            anime.SetBool("doWalk",true);
-            transform.rotation = left;
-        }
-        //右方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.D))
-        {
-            //右向きの画像に変更する
-            /*playerDirection = PlayerDirection.RIGHT;
-            sr.sprite = rightImage;*/
-            moveFlag = true;
-            if(jumpFlag == false)
+            //上方向に向いて移動したら
+            else if (Input.GetKey(KeyCode.W))
             {
-                _parent.transform.position += Vector3.right * speed * Time.deltaTime;
+                //上向きの画像に変更する
+                ///layerDirection = PlayerDirection.UP;
+                //sr.sprite = upImage;
+                moveFlag = true;
+                anime.SetBool("doWalk", true);
+                if(jumpFlag == false)
+                {
+                    _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
+                }
+                if (jumpFlag == true)
+                {
+                    _parent.transform.position -= Vector3.forward * (speed/10) * Time.deltaTime;
+                }
+                transform.rotation = up;
             }
-            if(jumpFlag == true)
+            //下方向に向いて移動したら
+            else if (Input.GetKey(KeyCode.S))
+            //anime.SetBool(doLanging.true)
+             {
+                 //下向きの画像に変更する
+                 //playerDirection = PlayerDirection.DOWN;
+                 //sr.sprite = defaultImage;
+                 moveFlag = true;
+                 anime.SetBool("doWalk", true);
+                 if(jumpFlag == false)
+                 {
+                     _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+                 }
+
+                 if(jumpFlag == true)
+                 {
+                     _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
+                 }
+                 transform.rotation =down;
+             }
+
+            else if (Input.GetKey(KeyCode.S))
             {
-                _parent.transform.position = Vector3.right * (speed / 10) * Time.deltaTime;
+                moveFlag = true;
+                anime.SetBool("doWalk", true);
+                if(jumpFlag == false)
+                {
+                    _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+                }
+
+                if(jumpFlag == true)
+                {
+                    _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
+                }
+                transform.rotation =down;
             }
-            anime.SetBool("doWalk", true);
-            transform.rotation = Right;
-        }
-        //上方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.W))
-        {
-            //上向きの画像に変更する
-            /*playerDirection = PlayerDirection.UP;
-            sr.sprite = upImage;*/
-            moveFlag = true;
-            anime.SetBool("doWalk", true);
-            if(jumpFlag == false)
+            else
             {
-                _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
+                moveFlag = false;
+                anime.SetBool("doIdle", true);
+                anime.SetBool("doWalk",false);
             }
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= Vector3.forward * (speed/10) * Time.deltaTime;
-            }
-            transform.rotation = up;
-        }
-        //下方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.S))//anime.SetBool(doLanging.true)
-        {
-            //下向きの画像に変更する
-            /*playerDirection = PlayerDirection.DOWN;
-            sr.sprite = defaultImage;*/
-            moveFlag = true;
-            anime.SetBool("doWalk", true);
-            if(jumpFlag == false)
-            {
-                _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
-            }
-           
-            if(jumpFlag == true)
-            {
-                _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
-            }
-            transform.rotation =down;
-        }
-        else
-        {
-            moveFlag = false;
-            anime.SetBool("doIdle", true);
-            anime.SetBool("doWalk",false);
-           
-        }
 
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
