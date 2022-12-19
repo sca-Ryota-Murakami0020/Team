@@ -95,10 +95,17 @@ public class Player : MonoBehaviour
     //親オブジェクト
     private GameObject _parent;
 
+    //当たった時の取得
+    private GameObject obj;
+    //色取得
+    private Color objColor;
+    //MeshRendererの取得
+    MeshRenderer meshRenderer;
+
+
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
-    private Quaternion mainCameraQuat;
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
 
@@ -168,9 +175,8 @@ public class Player : MonoBehaviour
         fallenPosition = transform.position.y;
         fallFlag= false;
 
-        mainCameraQuat = mainCamera.transform.rotation;
-        
- 
+        meshRenderer = GetComponent<MeshRenderer>();
+
     }
 
     // Update is called once per frame
@@ -178,10 +184,9 @@ public class Player : MonoBehaviour
     {
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
         mainCameraRightDer = mainCamera.transform.right.normalized;
+
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
-        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
-
 
 
         Debug.Log(hp);
@@ -298,11 +303,11 @@ public class Player : MonoBehaviour
                     _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
                 }
 
-                //transform.rotation = left;
+            transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
 
          //右方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.D))
+         if (Input.GetKey(KeyCode.D))
          {
                 //右向きの画像に変更する
                 //playerDirection = PlayerDirection.RIGHT;
@@ -317,10 +322,11 @@ public class Player : MonoBehaviour
                 {
                     _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
                 }
+            transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
 
          //上方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.W))
+         if (Input.GetKey(KeyCode.W))
          //anime.SetBool(doLanging.true)
          {
                  //上向きの画像に変更する
@@ -337,10 +343,10 @@ public class Player : MonoBehaviour
                  {
                      _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
                  }
- 
+            transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
          //下方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.S))
+         if (Input.GetKey(KeyCode.S))
          {
                 moveFlag = true;
                 anime.SetBool("doWalk", true);
@@ -353,45 +359,12 @@ public class Player : MonoBehaviour
                 {
                     _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
                 }
-
+            transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
 
 
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
-        {
 
-            moveFlag = true;
-            anime.SetBool("doWalk", true);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * speed * Time.deltaTime;
-            }
-
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * (speed / 10) * Time.deltaTime;
-            }
-            
-        }
-
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
-        {
-
-        }
-
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-
-        else
+        if(!Input.anyKey)
         {
                 moveFlag = false;
                 anime.SetBool("doIdle", true);
@@ -428,7 +401,16 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            Vector3 pos = other.transform.position;
+            RaycastHit hit;
+            if(Physics.Raycast(pos,other.contacts[0].point - pos,out hit, Mathf.Infinity))
+            {
+                Vector2 uv = hit.textureCoord;
+                //gameObject.meshRenderer.material.color 
+            }
             
+            Debug.Log(GetComponent<Renderer>().material.color);
+
             var con = other.GetContact(0);
 
             if (con.normal.x < 0.0f)
