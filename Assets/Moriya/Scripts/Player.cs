@@ -95,10 +95,17 @@ public class Player : MonoBehaviour
     //親オブジェクト
     private GameObject _parent;
 
+    //当たった時の取得
+    private GameObject obj;
+    //色取得
+    private Color objColor;
+    //MeshRendererの取得
+    MeshRenderer meshRenderer;
+
+
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
-    private Quaternion mainCameraQuat;
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
 
@@ -168,9 +175,8 @@ public class Player : MonoBehaviour
         fallenPosition = transform.position.y;
         fallFlag= false;
 
-        mainCameraQuat = mainCamera.transform.rotation;
-        
- 
+        meshRenderer = GetComponent<MeshRenderer>();
+
     }
 
     // Update is called once per frame
@@ -395,7 +401,16 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            Vector3 pos = other.transform.position;
+            RaycastHit hit;
+            if(Physics.Raycast(pos,other.contacts[0].point - pos,out hit, Mathf.Infinity))
+            {
+                Vector2 uv = hit.textureCoord;
+                //gameObject.meshRenderer.material.color 
+            }
             
+            Debug.Log(GetComponent<Renderer>().material.color);
+
             var con = other.GetContact(0);
 
             if (con.normal.x < 0.0f)
