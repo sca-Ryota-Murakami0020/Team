@@ -18,6 +18,8 @@ TagManager:
   - Enemy
   - PlayerD
   - PositionD
+  - ClingJudgement
+  - WallJumpJudgement
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1140800084783159105}
   - component: {fileID: 1140800084783159106}
   - component: {fileID: 1140800084783159110}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Wall
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5244864651188012931}
   - component: {fileID: 1116572489994122600}
   - component: {fileID: 926344690719959825}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WallJumpPoint
   m_TagString: WallJumpPoint
   m_Icon: {fileID: 0}
@@ -141,8 +141,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4096948263483875844}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00016, y: -0.012, z: 0.0006}
-  m_LocalScale: {x: 0.9992578, y: 0.9661003, z: 1.046416}
+  m_LocalPosition: {x: 0.00039, y: -0.012, z: 0.0006}
+  m_LocalScale: {x: 1.0040073, y: 0.9661003, z: 1.046416}
   m_Children: []
   m_Father: {fileID: 1140800084783159111}
   m_RootOrder: 1
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 6069595932783142572}
   - component: {fileID: 6931499151734266825}
   - component: {fileID: 8427224661989230746}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ClingPoint
   m_TagString: ClingPoint
   m_Icon: {fileID: 0}
@@ -236,8 +236,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8285050660500718712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00015, y: 0.4853, z: 0.0016}
-  m_LocalScale: {x: 0.999588, y: 0.02746, z: 1.1009223}
+  m_LocalPosition: {x: 0.00055, y: 0.4853, z: 0.0016}
+  m_LocalScale: {x: 1.003951, y: 0.02746, z: 1.1009223}
   m_Children: []
   m_Father: {fileID: 1140800084783159111}
   m_RootOrder: 0
