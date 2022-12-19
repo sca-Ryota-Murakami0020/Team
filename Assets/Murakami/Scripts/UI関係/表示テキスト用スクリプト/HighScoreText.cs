@@ -7,6 +7,7 @@ public class HighScoreText : MonoBehaviour
 {
     private OverLoadTimer olt;
     [SerializeField] Text bestTimeText;
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class HighScoreText : MonoBehaviour
         {
             bestTimeText.text = "";
         }
+        anim = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -36,6 +38,7 @@ public class HighScoreText : MonoBehaviour
                     Debug.Log("text1 " + olt.TimeText[0]);
                 }*/              
             }
+        anim.SetBool("setHighScore", true);
     }
 
 

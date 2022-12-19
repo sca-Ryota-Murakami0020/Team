@@ -8,6 +8,7 @@ public class TimeTextC : MonoBehaviour
     private OverLoadTimer olt;
     public Text TimeText;
 
+
     // Start is called before the first frame update
     void Start()
     {

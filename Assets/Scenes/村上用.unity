@@ -1121,5 +1121,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u8AAC\u660E"
       objectReference: {fileID: 0}
+    - target: {fileID: 9157807815991052710, guid: 235b85533849e7d49ad408ac2ef8d6af, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 235b85533849e7d49ad408ac2ef8d6af, type: 3}
