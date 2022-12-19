@@ -178,9 +178,12 @@ public class Player : MonoBehaviour
     {
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
         mainCameraRightDer = mainCamera.transform.right.normalized;
+
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
+
         Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
+        cameraUpLeftDiaDer = cameraUpLeftDiaDer.normalized;
 
 
 
@@ -298,11 +301,11 @@ public class Player : MonoBehaviour
                     _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
                 }
 
-                //transform.rotation = left;
+                transform.rotation = left;
          }
 
          //右方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.D))
+         if (Input.GetKey(KeyCode.D))
          {
                 //右向きの画像に変更する
                 //playerDirection = PlayerDirection.RIGHT;
@@ -320,7 +323,7 @@ public class Player : MonoBehaviour
          }
 
          //上方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.W))
+         if (Input.GetKey(KeyCode.W))
          //anime.SetBool(doLanging.true)
          {
                  //上向きの画像に変更する
@@ -340,7 +343,7 @@ public class Player : MonoBehaviour
  
          }
          //下方向に向いて移動したら
-         else if (Input.GetKey(KeyCode.S))
+         if (Input.GetKey(KeyCode.S))
          {
                 moveFlag = true;
                 anime.SetBool("doWalk", true);
@@ -356,42 +359,7 @@ public class Player : MonoBehaviour
 
          }
 
-
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
-        {
-
-            moveFlag = true;
-            anime.SetBool("doWalk", true);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * speed * Time.deltaTime;
-            }
-
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * (speed / 10) * Time.deltaTime;
-            }
-            
-        }
-
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
-        {
-
-        }
-
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-
-        else
+        if(!Input.anyKey)
         {
                 moveFlag = false;
                 anime.SetBool("doIdle", true);
