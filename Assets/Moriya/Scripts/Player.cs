@@ -78,9 +78,6 @@ public class Player : MonoBehaviour
 
     //プレイヤー角度計算
     private Quaternion left;
-    private Quaternion Right;
-    private Quaternion up;
-    private Quaternion down;
 
 
     //　Time.timeScaleに設定する値
@@ -94,6 +91,12 @@ public class Player : MonoBehaviour
  
     //親オブジェクト
     private GameObject _parent;
+
+    //カメラ
+    [SerializeField]
+    private GameObject mainCamera;
+
+    private Vector3 mainCameraForwardDer;
 
     //ゲッター&セッター
     public float PlayerSpeed
@@ -162,16 +165,18 @@ public class Player : MonoBehaviour
         fallFlag= false;
 
         left = Quaternion.Euler(0,-90,0);
-        Right = Quaternion.Euler(0,90,0);
-        up = Quaternion.Euler(0,180,0);
-        down= Quaternion.Euler(0,0,0);
+ 
     }
 
     // Update is called once per frame
     void Update()
     {
+        mainCameraForwardDer = mainCamera.transform.forward.normalized;
+
         Debug.Log(hp);
         Debug.Log(Time.timeScale);
+        anime.SetBool("doIdle", true);
+
         //　落ちている状態
         if (fallFlag)
         {
@@ -235,12 +240,6 @@ public class Player : MonoBehaviour
             }
         }
 
-
-        //if(anime.SetBool("doWalk",false) && anime.SetBool("doJump",false) && anime.SetBool("doLanging",false))
-        //{
-        anime.SetBool("doIdle",true);
-        //}
-
         if (speedAccelerationFlag == true)
         {
             speedCTime++;
@@ -281,7 +280,7 @@ public class Player : MonoBehaviour
 
                 if (jumpFlag == false)
                 {
-                    _parent.transform.position -= Vector3.right * speed * Time.deltaTime;
+                    _parent.transform.position -=Vector3.right * speed * Time.deltaTime;
                 }
                 if(jumpFlag == true)
                 {
@@ -306,62 +305,43 @@ public class Player : MonoBehaviour
                 {
                     _parent.transform.position = Vector3.right * (speed / 10) * Time.deltaTime;
                 }
-
-                transform.rotation = Right;
             }
             //上方向に向いて移動したら
+         
             else if (Input.GetKey(KeyCode.W))
-            {
-                //上向きの画像に変更する
-                ///layerDirection = PlayerDirection.UP;
-                //sr.sprite = upImage;
-                moveFlag = true;
-                anime.SetBool("doWalk", true);
-                if(jumpFlag == false)
-                {
-                    _parent.transform.position -= Vector3.forward * speed * Time.deltaTime;
-                }
-                if (jumpFlag == true)
-                {
-                    _parent.transform.position -= Vector3.forward * (speed/10) * Time.deltaTime;
-                }
-                transform.rotation = up;
-            }
-            //下方向に向いて移動したら
-            else if (Input.GetKey(KeyCode.S))
             //anime.SetBool(doLanging.true)
              {
-                 //下向きの画像に変更する
+                 //上向きの画像に変更する
                  //playerDirection = PlayerDirection.DOWN;
                  //sr.sprite = defaultImage;
                  moveFlag = true;
                  anime.SetBool("doWalk", true);
                  if(jumpFlag == false)
                  {
-                     _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+                     _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
                  }
 
                  if(jumpFlag == true)
                  {
-                     _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
+                     _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
                  }
-                 transform.rotation =down;
+ 
              }
-
+            //下方向に向いて移動したら
             else if (Input.GetKey(KeyCode.S))
             {
                 moveFlag = true;
                 anime.SetBool("doWalk", true);
                 if(jumpFlag == false)
                 {
-                    _parent.transform.position += Vector3.forward * speed * Time.deltaTime;
+                    _parent.transform.position -= mainCameraForwardDer * speed * Time.deltaTime;
                 }
 
                 if(jumpFlag == true)
                 {
-                    _parent.transform.position += Vector3.forward * (speed/10) * Time.deltaTime;
+                    _parent.transform.position -= mainCameraForwardDer * (speed/10) * Time.deltaTime;
                 }
-                transform.rotation =down;
+
             }
             else
             {
