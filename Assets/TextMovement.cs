@@ -37,6 +37,7 @@ public class TextMovement : MonoBehaviour
                 {
                     break;
                 }
+                Debug.Log("ˆÚ“®ˆ—’†");
                 yield return null;//1F‘Ò‚Â
             }
             yield return new WaitForSeconds(1);

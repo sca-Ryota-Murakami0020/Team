@@ -21,6 +21,8 @@ public class OverLoadTimer : MonoBehaviour
 
     private TimeC timeC;
 
+    private TextMovement textM;
+
     public float[] BestTime
     {
         get { return this.bestTime; }
@@ -166,11 +168,16 @@ public class OverLoadTimer : MonoBehaviour
             timeC = FindObjectOfType<TimeC>();
             //if(loadCount >= 3) bestTime[3] = 0.0f;
         }
+
         if (nextScene.name == "ë∫è„ópTitle")
         {
             startFlag = false;
         }
 
+        if(nextScene.name == "GoalScene")
+        {
+            textM = FindObjectOfType<TextMovement>();
+        }
     }
 
 }
