@@ -16,16 +16,19 @@ public class PasueDisplayC : MonoBehaviour
     //操作説明開いたときのフラグ
     private bool operationExpFlag = false;
 
+    //一回だけ入るときのフラグ
+    private bool onlyFlag = false;
+
     [SerializeField]
     //ポーズした時に表示するUIのプレハブ
     private GameObject pauseUIPrefab;
-    [SerializeField]
-    //操作説明UIのプレハブ
-    private GameObject playOperatePrafab;
     //ポーズUIのインスタンス
     private GameObject pauseUIInstance;
     //操作説明UIのインスタンス
     private GameObject playOperateUIInstance;
+    [SerializeField]
+    //操作説明UIのプレハブ
+    private GameObject playOperatePrafab;
 
     //ゲッターセッター
     public bool MenuFlag
@@ -86,30 +89,42 @@ public class PasueDisplayC : MonoBehaviour
             menuFlag = false;
             ResetCommand();
         }
-        if (Input.GetKeyUp(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //StartCoroutine(PlayerXplanation());
-
-            Destroy(pauseUIInstance);
+            onlyFlag = true;
+            StartCoroutine("PlayerXplanation");
             //操作説明開く
-            playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
-            operationExpFlag = true;
-            Debug.Log(playOperateUIInstance);
+           
         }
-        if(operationExpFlag == true && Input.GetKeyUp(KeyCode.Tab))
-        {
-            operationExpFlag = false;
-            Destroy(playOperateUIInstance);
-            pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
-        }
+        
 
     }
     #endregion
 
-   /* private IEnumerator PlayerXplanation()
+    private IEnumerator PlayerXplanation()
     {
-
-    }*/
+        while (true)
+        {
+            Debug.Log(onlyFlag);
+            if (onlyFlag == true)
+            {
+                Destroy(pauseUIInstance);
+                playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
+                operationExpFlag = true;
+                onlyFlag = false;
+            }
+            Debug.Log(playOperateUIInstance);
+            if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
+            {
+                operationExpFlag = false;
+                Destroy(playOperateUIInstance);
+                pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
+                Debug.Log(pauseUIInstance);
+                yield break;
+            }
+           yield return null; 
+        }
+    }
 
     private void ResetCommand()
     {

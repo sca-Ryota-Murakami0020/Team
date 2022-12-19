@@ -38,6 +38,22 @@ public class CameraC : MonoBehaviour
 
     private Vector3 dir;
 
+    private Vector3 cameraPos;
+
+    private Vector3 cameraFor;
+
+    private Vector3 CameraPos
+    {
+        get { return this.cameraPos;}
+        set { this.cameraPos = value;}
+    }
+
+    private Vector3 CameraFor
+    {
+        get { return this.cameraFor;}
+        set { this.CameraFor = value;}
+    }
+
     //視点とカメラ座標を随時更新
     void Update()
     {
@@ -72,6 +88,7 @@ public class CameraC : MonoBehaviour
         {
             Reset();
         }
+        this.cameraFor = D;
     }
 
     //カメラ座標の制御
@@ -93,6 +110,7 @@ public class CameraC : MonoBehaviour
 
         //新しいカメラの位置を求める
         Vector3 camera_pos = this.transform.position + (xz_vec.normalized * move_distance);
+        cameraPos = camera_pos;
 
         //高さは現在紫檀を常に一定で維持する
         camera_pos.y = D.y + nowCameraHeight;
@@ -146,6 +164,8 @@ public class CameraC : MonoBehaviour
 
         //視点を更新する
         this.transform.LookAt(D);
+
+        this.cameraFor = D;
     }
 }
 

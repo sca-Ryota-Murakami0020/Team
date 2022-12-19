@@ -37,6 +37,5 @@ public class TherdScore : MonoBehaviour
             //if(olt.LoadCout > 3)
                 //Debug.Log("text3 " + olt.TimeText[2]);
         }
-
     }
 }

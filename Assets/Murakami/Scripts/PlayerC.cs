@@ -61,11 +61,6 @@ public class PlayerC : MonoBehaviour
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
-        if (Mathf.Abs(mouseX) > 0.008f || Mathf.Abs(mouseY) > 0.005f)
-        {
-            Roll(mouseX, mouseY);
-        }
-
         rb.AddForce(H,0,V);
 
         //ジャンプ
@@ -88,17 +83,11 @@ public class PlayerC : MonoBehaviour
         }
     }
 
-    public void Roll(float x, float y)
-    {
-        transform.RotateAround(this.transform.position, Vector3.up, x);
-        transform.RotateAround(this.transform.position, Vector3.up, y);
-    }
-
     //ゲームオーバー処理
     public void GameOver()
     {
         aliveFlag = false;
-        SceneManager.LoadScene("村上用GameOver");
+        SceneManager.LoadScene("GoalScene");
     }
 }
 /*
