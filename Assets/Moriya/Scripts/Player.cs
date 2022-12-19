@@ -182,10 +182,6 @@ public class Player : MonoBehaviour
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
 
-        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
-        cameraUpLeftDiaDer = cameraUpLeftDiaDer.normalized;
-
-
 
         Debug.Log(hp);
         Debug.Log(Time.timeScale);
@@ -301,7 +297,7 @@ public class Player : MonoBehaviour
                     _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
                 }
 
-                transform.rotation = left;
+            transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
 
          //‰E•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
@@ -320,6 +316,7 @@ public class Player : MonoBehaviour
                 {
                     _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
                 }
+            transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
 
          //ã•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
@@ -340,7 +337,7 @@ public class Player : MonoBehaviour
                  {
                      _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
                  }
- 
+            transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
          //‰º•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
          if (Input.GetKey(KeyCode.S))
@@ -356,8 +353,10 @@ public class Player : MonoBehaviour
                 {
                     _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
                 }
-
+            transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
+
+
 
         if(!Input.anyKey)
         {
