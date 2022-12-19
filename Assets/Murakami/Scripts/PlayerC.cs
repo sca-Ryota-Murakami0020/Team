@@ -98,7 +98,7 @@ public class PlayerC : MonoBehaviour
     public void GameOver()
     {
         aliveFlag = false;
-        SceneManager.LoadScene("ë∫è„ópGameOver");
+        SceneManager.LoadScene("GoalScene");
     }
 }
 /*
