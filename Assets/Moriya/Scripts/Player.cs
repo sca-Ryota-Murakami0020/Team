@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
         mainCameraRightDer = mainCamera.transform.right.normalized;
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
-        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z)
+        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
 
 
 
