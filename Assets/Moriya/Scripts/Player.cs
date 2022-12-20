@@ -175,8 +175,8 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(hp);
-        Debug.Log(Time.timeScale);
+        //Debug.Log(hp);
+        //Debug.Log(Time.timeScale);
 
         //カメラの角度取得と単位ベクトル化
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
@@ -354,15 +354,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            Vector3 pos = other.transform.position;
-            RaycastHit hit;
-            if(Physics.Raycast(pos,other.contacts[0].point - pos,out hit, Mathf.Infinity))
-            {
-                Vector2 uv = hit.textureCoord;
-                //gameObject.meshRenderer.material.color 
-            }
-            
-            Debug.Log(GetComponent<Renderer>().material.color);
+          
 
             var con = other.GetContact(0);
 
