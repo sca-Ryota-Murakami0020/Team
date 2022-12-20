@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     private bool fallFlag = false;
     //着地中
     private bool landFlag = false;
+    //ローリング中
+    private bool RollingJumpFlag = false;
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -155,7 +157,7 @@ public class Player : MonoBehaviour
         //親オブジェクト取得
         _parent = transform.root.gameObject;
         //子オブジェクト取得
-        //child =transform.GetChild(2).gameObject;
+        child =transform.GetChild(2).gameObject;
 
         //アニメーション初期化
         anime.SetBool("doIdle",true);
@@ -329,22 +331,24 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
+            if(RollingJumpFlag == true)
+            {
+                //ローリングジャンプ時
+                //anime.SetBool("doJump", true);
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpFlag = true;
+                jumpCount++;
+                anime.SetBool("doLanding", false);
+                anime.SetBool("doFall", true);
+                RollingJumpFlag = false;
+            }
             //ジャンプ時
             anime.SetBool("doJump", true);
             this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
             jumpFlag = true;
             jumpCount++;
-
-            //ジャンプから落下モーションへ
-            //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
-            //fallFlag = true;
             anime.SetBool("doLanding",false);
-            //anime.SetBool("doJump",false);
             anime.SetBool("doFall",true);
-           /* Debug.Log("Landing" + anime.GetBool("doLanding"));
-            Debug.Log("doJump" + anime.GetBool("doJump"));
-            Debug.Log("doIdle" + anime.GetBool("doIdle"));
-            Debug.Log("doFall" + anime.GetBool("doFall"));*/
         }
         #endregion
 
@@ -372,6 +376,31 @@ public class Player : MonoBehaviour
                         Debug.Log("doIdle" + anime.GetBool("doIdle"));
                         Debug.Log("doFall"+anime.GetBool("doFall"));*/
                     }
+            }
+            jumpCount = 0;
+        }
+
+        if (other.gameObject.CompareTag("RollingPoint"))
+        {
+            if (jumpFlag == true)
+            {
+                //落下モーションか着地モーションへ
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                anime.SetBool("doFall", false);
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                landFlag = true;
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    RollingJumpFlag = true;
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
             }
             jumpCount = 0;
         }
