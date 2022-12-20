@@ -33,11 +33,6 @@ public class GManager : MonoBehaviour
     private bool jumpFlag = false;
     //移動したときの効果音フラグ
     private bool moveFlag = false;
-    //ワイヤーを発射したときの効果音フラグ
-    private bool wireStartFlag = false;
-    //ワイヤーが当たった時の効果音フラグ
-    private bool wireStopFlag = false;
-
 
     public bool PDFlag//プレイヤーダメージ
     {
@@ -68,19 +63,6 @@ public class GManager : MonoBehaviour
         get { return this.moveFlag; }
         set { this.moveFlag = value; }
     }
-
-    public bool WireStartFlag//ワイヤースタート
-    {
-        get { return this.wireStartFlag; }
-        set { this.wireStartFlag = value; }
-    }
-
-    public bool WireStopFlag//ワイヤーストップ
-    {
-        get { return this.wireStopFlag; }
-        set { this.wireStopFlag = value; }
-    }
-
 
     public bool DisplaySwitchingFlag//画面切り替え
     {
@@ -167,51 +149,37 @@ public class GManager : MonoBehaviour
             moveFlag = false;
         }
 
-        if (wireStartFlag == true)
-        {
-            audios.clip = bgms[5];
-            audios.Play();
-            wireStartFlag = false;
-        }
-
-        if (wireStopFlag == true)
-        {
-            audios.clip = bgms[6];
-            audios.Play();
-            wireStopFlag = false;
-        }
-
         if(displaySwitchingFlag == true)
         {
-            audios.clip = bgms[7];
+            audios.clip = bgms[5];
             audios.Play();
             displaySwitchingFlag = false;
         }
 
         if(playerDeathFlag == true)
         {
-            audios.clip = bgms[8];
+            audios.clip = bgms[6];
             audios.Play();
             playerDeathFlag = false;
         }
 
         if(rankingFlag == true)
         {
-            audios.clip = bgms[9];
+            audios.clip = bgms[7];
             audios.Play();
             rankingFlag = false;
         }
 
         if(decisionFlag == true)
         {
-            audios.clip = bgms[10];
+            audios.clip = bgms[9];
             audios.Play();
             decisionFlag = false;
         }
 
         if(returnFlag == true)
         {
-            audios.clip = bgms[11];
+            audios.clip = bgms[10];
             audios.Play();
             decisionFlag = false;
         }

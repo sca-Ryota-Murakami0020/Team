@@ -75,6 +75,7 @@ public class PasueDisplayC : MonoBehaviour
     #region//メニュー画面が開いている時の処理
     private void PauseMenu()
     {
+        //escキーおしたとき
         if (Input.GetKey(KeyCode.Escape)) 
         { 
              /*#if UNITY_EDITOR
@@ -89,18 +90,19 @@ public class PasueDisplayC : MonoBehaviour
             menuFlag = false;
             ResetCommand();
         }
+        //tabキー押したとき
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             onlyFlag = true;
+            //操作説明開くコルーチン
             StartCoroutine("PlayerXplanation");
-            //操作説明開く
-           
         }
         
 
     }
     #endregion
 
+    //操作説明の際のコルーチン
     private IEnumerator PlayerXplanation()
     {
         while (true)
