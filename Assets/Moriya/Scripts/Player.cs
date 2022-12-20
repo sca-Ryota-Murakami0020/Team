@@ -134,10 +134,10 @@ public class Player : MonoBehaviour
 
 
     //ƒVƒ“ƒOƒ‹ƒgƒ“
-    private void Awake()
+    /*private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-    }
+    }*/
 
 
     // Start is called before the first frame update
