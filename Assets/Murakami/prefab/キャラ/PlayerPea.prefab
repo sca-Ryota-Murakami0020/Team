@@ -84,7 +84,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
       propertyPath: m_Name
-      value: t-model
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
@@ -98,44 +102,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
   m_PrefabInstance: {fileID: 1274602783898149547}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6883896875423174486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121518317850337274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0831f4980107d55409c1be26d7a03c36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentTran: {fileID: 1418898780249809995}
-  anime: {fileID: 5667396859790402249}
-  rayPosition: {fileID: 1601862031877883200}
-  rayRange: 0
-  takeDamageDistance: 3
-  timeScale: 0.1
-  mainCamera: {fileID: 0}
---- !u!95 &5667396859790402249
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121518317850337274}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4def5dabe5c28784c9fc31621dc529ce, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!54 &3419994126928287630
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -165,3 +131,41 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7920675, y: 2.3710983, z: 1.8376133}
   m_Center: {x: 0.011785507, y: 1.185325, z: -0.071780086}
+--- !u!95 &5667396859790402249
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121518317850337274}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4def5dabe5c28784c9fc31621dc529ce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6883896875423174486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121518317850337274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0831f4980107d55409c1be26d7a03c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTran: {fileID: 1418898780249809995}
+  anime: {fileID: 5667396859790402249}
+  rayPosition: {fileID: 1601862031877883200}
+  rayRange: 0
+  takeDamageDistance: 3
+  timeScale: 0.1
+  mainCamera: {fileID: 0}
