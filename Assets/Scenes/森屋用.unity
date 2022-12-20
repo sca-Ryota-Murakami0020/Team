@@ -747,6 +747,10 @@ PrefabInstance:
       propertyPath: takeDamageDistance
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1732800318682391947, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611484, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_Name
       value: PlayerParent

@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
         //親オブジェクト取得
         _parent = transform.root.gameObject;
         //子オブジェクト取得
-        child =transform.GetChild(2).gameObject;
+        //child =transform.GetChild(2).gameObject;
 
         //アニメーション初期化
         anime.SetBool("doIdle",true);
@@ -251,8 +251,9 @@ public class Player : MonoBehaviour
         //左方向に向いて移動したら
          if (Input.GetKey(KeyCode.A))
          {
-                moveFlag = true;
-                anime.SetBool("doWalk", true);
+            moveFlag = true;
+            anime.SetBool("doIdle", false);
+            anime.SetBool("doWalk", true);
                 if (jumpFlag == false)
                 {
                     _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
@@ -268,8 +269,9 @@ public class Player : MonoBehaviour
          //右方向に向いて移動したら
          if (Input.GetKey(KeyCode.D))
          {
-                moveFlag = true;
-                anime.SetBool("doWalk", true);
+            moveFlag = true;
+            anime.SetBool("doIdle", false);
+            anime.SetBool("doWalk", true);
                 if (jumpFlag == false)
                 {
                     _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
@@ -286,10 +288,11 @@ public class Player : MonoBehaviour
          {
                  moveFlag = true;
                  anime.SetBool("doWalk", true);
-                 if(jumpFlag == false)
-                 {
+                 anime.SetBool("doIdle", false);
+                if (jumpFlag == false)
+                {
                      _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
-                 }
+                }
 
                  if(jumpFlag == true)
                  {
@@ -303,7 +306,8 @@ public class Player : MonoBehaviour
          {
                 moveFlag = true;
                 anime.SetBool("doWalk", true);
-                if(jumpFlag == false)
+                anime.SetBool("doIdle", false);
+                if (jumpFlag == false)
                 {
                     _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
                 }
