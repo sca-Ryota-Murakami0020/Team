@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
         cameraDreNoY = cameraDreNoY.normalized;
 
         //何もなかったら待機モーション
-        anime.SetBool("doIdle", true);
+        //anime.SetBool("doIdle", true);
 
         #region//落下状態
         //　落ちている状態
