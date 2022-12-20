@@ -249,8 +249,7 @@ public class PlayerC : MonoBehaviour
             PlayerRisetController();
         }
 
-        #region//移動方法
-
+        /*
         //十字キー操作
         //左方向に向いて移動したら
         if (Input.GetKey(KeyCode.A))
@@ -398,12 +397,110 @@ public class PlayerC : MonoBehaviour
             /* Debug.Log("Landing" + anime.GetBool("doLanding"));
              Debug.Log("doJump" + anime.GetBool("doJump"));
              Debug.Log("doIdle" + anime.GetBool("doIdle"));
-             Debug.Log("doFall" + anime.GetBool("doFall"));*/
+             Debug.Log("doFall" + anime.GetBool("doFall"));#region//移動＆ジャンプ方法 #endregion
+        }    
+        */
+        #region//移動＆ジャンプ方法
+        //十字キー操作
+        //左方向に向いて移動したら
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveFlag = true;
+            anime.SetBool("doWalk", true);
+            anime.SetBool("doIdle", false);
+            if (jumpFlag == false)
+            {
+                _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
+            }
+            if (jumpFlag == true)
+            {
+                _parent.transform.position -= mainCameraRightDer * (speed / 10) * Time.deltaTime;
+            }
+
+            transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
         }
 
+        //右方向に向いて移動したら
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveFlag = true;
+            anime.SetBool("doWalk", true);
+            anime.SetBool("doIdle", false);
+            if (jumpFlag == false)
+            {
+                _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
+            }
+            if (jumpFlag == true)
+            {
+                _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
+            }
+            transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
+        }
+
+        //上方向に向いて移動したら
+        if (Input.GetKey(KeyCode.W))
+        {
+            moveFlag = true;
+            anime.SetBool("doWalk", true);
+            anime.SetBool("doIdle", false);
+            if (jumpFlag == false)
+            {
+                _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
+            }
+
+            if (jumpFlag == true)
+            {
+                _parent.transform.position += mainCameraForwardDer * (speed / 10) * Time.deltaTime;
+            }
+            transform.rotation = Quaternion.LookRotation(cameraDreNoY);
+        }
+
+        //下方向に向いて移動したら
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveFlag = true;
+            anime.SetBool("doWalk", true);
+            anime.SetBool("doIdle", false);
+            if (jumpFlag == false)
+            {
+                _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
+            }
+
+            if (jumpFlag == true)
+            {
+                _parent.transform.position -= cameraDreNoY * (speed / 10) * Time.deltaTime;
+            }
+            transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
+        }
+
+        if (!Input.anyKey)
+        {
+            moveFlag = false;
+            anime.SetBool("doIdle", true);
+            anime.SetBool("doWalk", false);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && jumpFlag == false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
+        {
+            //ジャンプ時
+            anime.SetBool("doJump", true);
+            this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+            jumpFlag = true;
+            jumpCount++;
+
+            //ジャンプから落下モーションへ
+            //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
+            //fallFlag = true;
+            anime.SetBool("doLanding", false);
+            //anime.SetBool("doJump",false);
+            anime.SetBool("doFall", true);
+            /* Debug.Log("Landing" + anime.GetBool("doLanding"));
+             Debug.Log("doJump" + anime.GetBool("doJump"));
+             Debug.Log("doIdle" + anime.GetBool("doIdle"));
+             Debug.Log("doFall" + anime.GetBool("doFall"));*/
+        }
         #endregion
-
-
     }
 
     private void OnCollisionEnter(Collision other)
