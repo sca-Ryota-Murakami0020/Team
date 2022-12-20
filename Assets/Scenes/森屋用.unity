@@ -792,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.92
+      value: -0.89
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -826,6 +826,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3500261077386611487, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3500261078099572171, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: rayRange
       value: 1
@@ -834,7 +838,12 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1536325002}
-    m_RemovedComponents: []
+    - target: {fileID: 3500261078099572175, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3500261077386611487, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
 --- !u!1001 &6322128447252651133
 PrefabInstance:

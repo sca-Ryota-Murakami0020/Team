@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
     //GMとポーズ画面関係のスプリクトの定義
     // private GManager gm;
     private PasueDisplayC pasueDisplayC;
+    private PlayerWallCon playerWallConC;
 
 
     //　Time.timeScaleに設定する値
@@ -82,13 +83,9 @@ public class Player : MonoBehaviour
     //子オブジェクト
     private GameObject child;
 
-    //当たった時の取得
-    private GameObject obj;
-    //色取得
-    private Color objColor;
-    //MeshRendererの取得
-    MeshRenderer meshRenderer;
 
+
+ 
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
@@ -149,6 +146,7 @@ public class Player : MonoBehaviour
         bc = GetComponent<BoxCollider>();
         //gm = FindObjectOfType<GManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
+        playerWallConC = FindObjectOfType<PlayerWallCon>();
         this.anime = GetComponent<Animator>();
 
         //hp初期化
@@ -166,9 +164,6 @@ public class Player : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
-
-        meshRenderer = GetComponent<MeshRenderer>();
-
     }
 
     // Update is called once per frame
@@ -348,37 +343,15 @@ public class Player : MonoBehaviour
             Debug.Log("doFall" + anime.GetBool("doFall"));*/
         }
         #endregion
+
     }
 
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-          
-
-            var con = other.GetContact(0);
-
-            if (con.normal.x < 0.0f)
+            if (jumpFlag == true)
             {
-                landFlag = true;
-                //専用の着地モーション
-                jumpFlag = false;
-                jumpCount = 0;
-
-            }
-
-            if (con.normal.z < 0.0f)
-            {
-                landFlag = true;
-                jumpFlag = false;
-                jumpCount = 0;
-            }
-
-
-            if (con.normal.y > 0.0f)
-            {
-                if (jumpFlag == true)
-                {
                     //落下モーションか着地モーションへ
                     jumpFlag = false;
                     anime.SetBool("doJump", false);
@@ -395,10 +368,8 @@ public class Player : MonoBehaviour
                         Debug.Log("doIdle" + anime.GetBool("doIdle"));
                         Debug.Log("doFall"+anime.GetBool("doFall"));*/
                     }
-                }
-                jumpCount = 0;
             }
-          
+            jumpCount = 0;
         }
         /*if (other.gameObject.CompareTag("Wall"))
         {
