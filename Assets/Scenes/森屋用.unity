@@ -212,6 +212,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
+--- !u!1 &832238420 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8563644905687810048, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+  m_PrefabInstance: {fileID: 3500261078555827501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &832238421 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9048854286861818554, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+  m_PrefabInstance: {fileID: 3500261078555827501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &832238422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832238420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856ed6052262b28429fe236b7e5b9b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTran: {fileID: 3500261078555827502}
+  anime: {fileID: 832238423}
+  rayPosition: {fileID: 832238421}
+  rayRange: 1
+  takeDamageDistance: 3
+  timeScale: 0.1
+  mainCamera: {fileID: 1536325002}
+--- !u!95 &832238423 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2670541578645781811, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+  m_PrefabInstance: {fileID: 3500261078555827501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &925909136
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651bd77829830e44ca27cbfc30ef6cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 3500261078555827503}
+  Player: {fileID: 832238420}
 --- !u!1001 &2056819618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -765,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.89
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -842,7 +876,7 @@ PrefabInstance:
     - target: {fileID: 7606899977958710256, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: anime
       value: 
-      objectReference: {fileID: 3500261078555827506}
+      objectReference: {fileID: 0}
     - target: {fileID: 7606899977958710256, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: rayRange
       value: 1
@@ -858,7 +892,7 @@ PrefabInstance:
     - target: {fileID: 7606899977958710256, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: rayPosition
       value: 
-      objectReference: {fileID: 3500261078555827504}
+      objectReference: {fileID: 0}
     - target: {fileID: 7606899977958710256, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: takeDamageDistance
       value: 1
@@ -870,21 +904,6 @@ PrefabInstance:
 --- !u!4 &3500261078555827502 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
-  m_PrefabInstance: {fileID: 3500261078555827501}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3500261078555827503 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5466141193030326456, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
-  m_PrefabInstance: {fileID: 3500261078555827501}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3500261078555827504 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4652344690803442178, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
-  m_PrefabInstance: {fileID: 3500261078555827501}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &3500261078555827506 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1732800318682391947, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
   m_PrefabInstance: {fileID: 3500261078555827501}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6322128447252651133
