@@ -238,14 +238,14 @@ public class Player : MonoBehaviour
             PlayerRisetController();
         }
 
-
-
         #region//落下状態
         //　落ちている状態
         if (fallFlag)
         {
+            //Debug.Log("if");
+            anime.SetTrigger("fall");
             //徐々に落下速度を加速させる
-            transform.position += transform.up * Time.deltaTime * fallSpeed;
+            transform.position -= transform.up * Time.deltaTime * fallSpeed;
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
@@ -268,16 +268,16 @@ public class Player : MonoBehaviour
                     //StartCoroutine("PlayerDamaze");
                     fallDamageHitFlag = false;
                 }
-                fallFlag = false;
-              
+                fallFlag = false;            
             }
         }
-        else
+        if(!fallFlag)
         {
             //　地面にレイが届いていなければ落下地点を設定
             if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
                 //　最初の落下地点を設定
+                Debug.Log("else");
                 fallenPosition = transform.position.y;
                 fallenDistance = 0;
                 fallFlag = true;
@@ -305,9 +305,12 @@ public class Player : MonoBehaviour
         //左方向に向いて移動したら
          if (Input.GetKey(KeyCode.A))
          {
-            moveFlag = true;
-            anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
+            //moveFlag = true;
+            if(fallFlag)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
                 if (jumpFlag == false)
                 {
                     _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
@@ -323,9 +326,12 @@ public class Player : MonoBehaviour
          //右方向に向いて移動したら
          if (Input.GetKey(KeyCode.D))
          {
-            moveFlag = true;
-            anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
+            //moveFlag = true;
+            if (fallFlag)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
                 if (jumpFlag == false)
                 {
                     _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
@@ -340,9 +346,12 @@ public class Player : MonoBehaviour
          //上方向に向いて移動したら
          if (Input.GetKey(KeyCode.W))
          {
-                 moveFlag = true;
-                 anime.SetBool("doWalk", true);
-                 anime.SetBool("doIdle", false);
+            //moveFlag = true;
+            if (fallFlag)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
                 if (jumpFlag == false)
                 {
                      _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
@@ -358,10 +367,13 @@ public class Player : MonoBehaviour
          //下方向に向いて移動したら
          if (Input.GetKey(KeyCode.S))
          {
-                moveFlag = true;
-                anime.SetBool("doWalk", true);
+            //moveFlag = true;
+            if (fallFlag)
+            {
                 anime.SetBool("doIdle", false);
-                if (jumpFlag == false)
+                anime.SetBool("doWalk", true);
+            }
+            if (jumpFlag == false)
                 {
                     _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
                 }
@@ -375,9 +387,12 @@ public class Player : MonoBehaviour
 
         if(!Input.anyKey)
         {
-                moveFlag = false;
+            //moveFlag = false;
+            if(fallFlag)
+            {
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
+            }              
         }
 
 
@@ -463,7 +478,7 @@ public class Player : MonoBehaviour
                 //落下モーションか着地モーションへ
                 jumpFlag = false;
                 anime.SetBool("doJump", false);
-                anime.SetBool("doFall", false);
+                //anime.SetBool("doFall", false);
                 anime.SetBool("doLanding", true);
                 anime.SetBool("doIdle", false);
                 //着地モーションから待機モーションへ
@@ -513,7 +528,7 @@ public class Player : MonoBehaviour
                 //落下モーションか着地モーションへ
                 jumpFlag = false;
                 //anime.SetBool("doJump", false);
-                anime.SetBool("doFall", false);
+                //anime.SetBool("doFall", false);
                 anime.SetBool("doIdle", false);
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
