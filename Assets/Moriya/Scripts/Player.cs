@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     //着地中
     private bool landFlag = false;
     //ローリング中
-    private bool RollingJumpFlag = false;
+    private bool rollingJumpFlag = false;
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -332,7 +332,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
-            if(RollingJumpFlag == true)
+            if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
                 //anime.SetBool("doJump", true);
@@ -374,7 +374,7 @@ public class Player : MonoBehaviour
                     }
             }
 
-            if (RollingJumpFlag == true && jumpFlag == true)
+            if (rollingJumpFlag == true && jumpFlag == true)
             {
                 jumpFlag = false;
                 //ローリングジャンプアニメーション
@@ -409,7 +409,7 @@ public class Player : MonoBehaviour
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
-                    RollingJumpFlag = true;
+                    rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
@@ -418,11 +418,11 @@ public class Player : MonoBehaviour
 
             if(jumpFlag == false)
             {
-                RollingJumpFlag = true;
+                rollingJumpFlag = true;
             }
 
 
-            if (RollingJumpFlag == true && jumpFlag == true)
+            if (rollingJumpFlag == true && jumpFlag == true)
             {
                 jumpFlag = false;
                 //ローリングジャンプアニメーション
@@ -458,7 +458,7 @@ public class Player : MonoBehaviour
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
-                    RollingJumpFlag = true;
+                    rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
