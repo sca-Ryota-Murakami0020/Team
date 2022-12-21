@@ -79,6 +79,9 @@ public class Player : MonoBehaviour
     //　経過時間
     private float elapsedTime = 0f;
     private bool fallDamegeFlag;
+
+    //プレイヤーのダメージモーション時間
+    private float damazeAnimeTime = 0;
  
     //親オブジェクト
     private GameObject _parent;
@@ -209,9 +212,11 @@ public class Player : MonoBehaviour
                 if(damageFlag == true)
                 {
                     hp--;
+                    StartCoroutine("PlayerDamaze");
                     damageFlag = false;
                 }
                 fallFlag = false;
+              
             }
         }
         else
@@ -508,4 +513,23 @@ public class Player : MonoBehaviour
         };
     }
     #endregion
+
+    private IEnumerator PlayerDamaze()
+    {
+        int i =0;
+        if(i <2)
+        {
+            anime.SetBool("doDamaze", true);
+            i++;
+        }
+        if(i>=2)
+        {
+            Debug.Log("ku");
+            i=0;
+            anime.SetBool("doDamaze",false);
+            anime.SetBool("doIdle",true);
+            yield break;
+        }
+        yield return null;
+    }
 }
