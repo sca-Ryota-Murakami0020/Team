@@ -405,6 +405,14 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            hp--;
+            HpDisplay();
+            oldHp = hp;
+            //anime.SetBool("doDamaze");
+        }
+
         if (other.gameObject.CompareTag("Ground"))
         {
             if (jumpFlag == true)

@@ -154,7 +154,6 @@ public class PlayerC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
         //gm = FindObjectOfType<GManager>();
@@ -184,10 +183,6 @@ public class PlayerC : MonoBehaviour
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x, 0, mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
         Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
-
-        //Debug.Log(hp);
-        //Debug.Log(Time.timeScale);
-        //anime.SetBool("doIdle", true);
        
         //　落ちている状態
         if (fallFlag)
@@ -249,157 +244,6 @@ public class PlayerC : MonoBehaviour
             PlayerRisetController();
         }
 
-        /*
-        //十字キー操作
-        //左方向に向いて移動したら
-        if (Input.GetKey(KeyCode.A))
-        {
-            //左向きの画像に変更する
-            //playerDirection = PlayerDirection.LEFT;
-            //sr.sprite = leftImage;
-            moveFlag = true;
-            //anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
-
-            if (jumpFlag == false)
-            {
-                _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
-            }
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= mainCameraRightDer * (speed / 10) * Time.deltaTime;
-            }
-
-            //transform.rotation = left;
-        }
-
-        //右方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.D))
-        {
-            //右向きの画像に変更する
-            //playerDirection = PlayerDirection.RIGHT;
-            //sr.sprite = rightImage;
-            moveFlag = true;
-            //anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
-            }
-            if (jumpFlag == true)
-            {
-                _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
-            }
-        }
-
-        //上方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.W))
-        //anime.SetBool(doLanging.true)
-        {
-            //上向きの画像に変更する
-            //playerDirection = PlayerDirection.DOWN;
-            //sr.sprite = defaultImage;
-            moveFlag = true;
-            //anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
-            }
-
-            if (jumpFlag == true)
-            {
-                _parent.transform.position += mainCameraForwardDer * (speed / 10) * Time.deltaTime;
-            }
-
-        }
-        //下方向に向いて移動したら
-        else if (Input.GetKey(KeyCode.S))
-        {
-            moveFlag = true;
-            //anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
-            }
-
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= cameraDreNoY * (speed / 10) * Time.deltaTime;
-            }
-
-        }
-
-
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
-        {
-
-            moveFlag = true;
-            //anime.SetBool("doIdle", false);
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
-            if (jumpFlag == false)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * speed * Time.deltaTime;
-            }
-
-            if (jumpFlag == true)
-            {
-                _parent.transform.position -= cameraUpLeftDiaDer * (speed / 10) * Time.deltaTime;
-            }
-
-        }
-
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
-        {
-
-        }
-
-
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
-        {
-
-        }
-
-
-        else
-        {
-            moveFlag = false;
-            anime.SetBool("doIdle", true);
-            anime.SetBool("doWalk", false);
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && jumpFlag == false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
-        {
-            //ジャンプ時
-            anime.SetBool("doJump", true);
-            this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
-            jumpFlag = true;
-            jumpCount++;
-
-            //ジャンプから落下モーションへ
-            //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
-            //fallFlag = true;
-            anime.SetBool("doLanding", false);
-            //anime.SetBool("doJump",false);
-            anime.SetBool("doFall", true);
-            /* Debug.Log("Landing" + anime.GetBool("doLanding"));
-             Debug.Log("doJump" + anime.GetBool("doJump"));
-             Debug.Log("doIdle" + anime.GetBool("doIdle"));
-             Debug.Log("doFall" + anime.GetBool("doFall"));#region//移動＆ジャンプ方法 #endregion
-        }    
-        */
         #region//移動＆ジャンプ方法
         //十字キー操作
         //左方向に向いて移動したら
@@ -507,32 +351,6 @@ public class PlayerC : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            /*
-            var con = other.GetContact(0);
-
-            if (con.normal.x < 0.0f)
-            {
-                landFlag = true;
-                //専用の着地モーション
-                jumpFlag = false;
-                jumpCount = 0;
-
-            }
-
-            if (con.normal.z < 0.0f)
-            {
-                landFlag = true;
-                jumpFlag = false;
-                jumpCount = 0;
-            }
-
-
-            if (con.normal.y >= 0.0f)
-            {
-                if (jumpFlag == true)
-                {
-
-            }*/
             //落下モーションか着地モーションへ
             jumpFlag = false;
             anime.SetBool("doJump", false);
@@ -549,58 +367,14 @@ public class PlayerC : MonoBehaviour
                 Debug.Log("Landing" + anime.GetBool("doLanding"));
                 //Debug.Log("doIdle" + anime.GetBool("doIdle"));
                 //Debug.Log("doFall"+anime.GetBool("doFall"));
-            }
-        
+            }     
         jumpCount = 0;
-
-    }
-        /*if (other.gameObject.CompareTag("Wall"))
-        {
-            if (jumpFlag == true) 
-            {
-                jumpFlag = false;
-                anime.SetBool("doJump", false);
-                anime.SetBool("doIdle",true);
-            }
-            jumpCount = 0;
-        }*/
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        /*if (other.gameObject.CompareTag("Item"))
-        {
-            ItemPoint++;
-            other.gameObject.SetActive(false);
-        }*/
 
-        /*if (other.gameObject.CompareTag(""))
-        {
-            //SceneManager.LoadScene("IndoorScene");
-        }*/
-
-        /*if (other.gameObject.CompareTag("WireItem"))
-        {
-            wireItemFlag = true;
-        }*/
-
-        //プレイヤーが回復アイテムに触れたら
-        /*  if (other.gameObject.CompareTag("HpItem"))
-          {
-              int itemHp = 10;
-              //hp+アイテム取った時の回復量がMaxhpより多かったら回復量を減らす
-              if (hp + itemHp >= playerMaxhp)
-              {
-                  itemHp = playerMaxhp - hp;
-                  hp += itemHp;
-              }
-              else
-              {
-                  hp += itemHp;
-              }
-             // gm.HpRecoveryFlag = true;
-              other.gameObject.SetActive(false);
-          }*/
     }
 
     private void PlayerRisetController()
@@ -611,18 +385,6 @@ public class PlayerC : MonoBehaviour
         jumpCount = 0;
     }
 
-    /*private void Fallsituation()
-    {
-        Debug.Log("a");
-        jumpFlag = false;
-        fallFlag = true;
-        anime.SetBool("doLanding", false);
-        anime.SetBool("doJump", false);
-        anime.SetBool("doFall", true);
-        Debug.Log("Landing" + anime.GetBool("doLanding"));
-        Debug.Log("doIdle" + anime.GetBool("doIdle"));
-        Debug.Log("doFall" + anime.GetBool("doFall"));
-    }*/
 
     private IEnumerator StartSlowmotion()
     {
