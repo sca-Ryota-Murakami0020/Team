@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class totalGameManager : MonoBehaviour
@@ -38,7 +39,7 @@ public class totalGameManager : MonoBehaviour
     //１回のゲーム時間
     private float totalTime;
     //1プレイのリザルト用のタイム
-    private string time;
+    private string timeScore;
     //ハイスコアのデータ格納
     private string[] timer;
     //ハイスコア更新を促す用のフラグ
@@ -48,7 +49,9 @@ public class totalGameManager : MonoBehaviour
     //スコアの個数を数えるための変数
     private int loadCount;
 
-    private TimeC timeC;
+    [SerializeField] private Text nowPlayingText;
+
+    private PlayerC pl;
 
     private TextMovement textM;
     #endregion
@@ -140,8 +143,8 @@ public class totalGameManager : MonoBehaviour
 
     public string Time
     {
-        get { return this.time; }
-        set { this.time = value; }
+        get { return this.timeScore; }
+        set { this.timeScore = value; }
     }
 
     public int LoadCout
@@ -175,6 +178,8 @@ public class totalGameManager : MonoBehaviour
         {
             timer[i] = i.ToString();
         }
+        nowPlayingText = GetComponentInChildren<Text>();
+        pl = GameObject.Find("Player").GetComponent<PlayerC>();
     }
 
     // Update is called once per frame
@@ -256,22 +261,19 @@ public class totalGameManager : MonoBehaviour
         #region //時間計測（村上担当）
         if (startFlag == true)
         {
-            totalTime = timeC.TotalTime;
+            totalTime += Time.deltaTime;
         }
+        if(!pl.AliveFlag) LoadGameClear();
         #endregion
     }
 
     #region //リザルト反映の処理
-    public void LoadGameOver()
+    public void LoadGameClear()
     {
-        //Debug.Log("LoadCount" + loadCount);
-
         if (loadCount == 0)
         {
             bestTime[loadCount] = totalTime;
-            //timer[loadCount] = "1位:" + (bestTime[loadCount] / 3600).ToString("00") + ":" + (bestTime[loadCount] / 120).ToString("00") + ":" + ((int)bestTime[loadCount] % 60).ToString("00");
         }
-
         //２回目プレイ～３回目時の記録を記録
         if (loadCount >= 1 && loadCount <= 2)
         {
@@ -288,12 +290,10 @@ public class totalGameManager : MonoBehaviour
                             bestTime[j] = bestTime[i];
                             bestTime[i] = btt;
                         }
-                    }
-                    //timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");                      
+                    }                    
                 }
             }
         }
-
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCount >= 3)
         {
@@ -311,15 +311,14 @@ public class totalGameManager : MonoBehaviour
                         Debug.Log("j: " + bestTime[j]);
                     }
                 }
-                //timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
             }
         }
 
         //ゲーム中に表示するタイマー表示に与える変数
-        time = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
+        timeScore = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
+
         for (int i = 0; i <= 2; i++)
         {
-            //if (loadCount >= 3) Debug.Log("olt"+ i + " " + bestTime[i]);
             timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
         }
         loadCount += 1;
