@@ -95,8 +95,27 @@ public class Player : MonoBehaviour
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
 
+
+    // 画像描画用のコンポーネント
+    Renderer sr;
+    STATE state;
+    //点滅感覚
+    [SerializeField]
+    private float flashInterval;
+
+
+
     [SerializeField]
     private GameObject[] heartArray = new GameObject[3];
+
+
+    //プレイヤーの状態用列挙型（ノーマル、ダメージ、無敵の3種類）
+    enum STATE
+    {
+        NOMAL,
+        DAMAGED,
+        MUTEKI
+    }
 
     //ゲッター&セッター
     public float PlayerSpeed

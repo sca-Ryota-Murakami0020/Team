@@ -400,6 +400,7 @@ MonoBehaviour:
   takeDamageDistance: 3
   timeScale: 0.1
   mainCamera: {fileID: 1536325002}
+  flashInterval: 0
   heartArray:
   - {fileID: 1952839354}
   - {fileID: 1212128531}
