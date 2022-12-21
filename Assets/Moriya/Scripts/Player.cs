@@ -410,7 +410,10 @@ public class Player : MonoBehaviour
             hp--;
             HpDisplay();
             oldHp = hp;
-            //anime.SetBool("doDamaze");
+            //anime.SetBool("doDamaze",true);
+            //Debug.Log(anime.GetBool("doDamaze"));
+            anime.SetTrigger("domazeed");
+            //Debug.Log(anime.GetTrigger("domazeed"));
         }
 
         if (other.gameObject.CompareTag("Ground"))
