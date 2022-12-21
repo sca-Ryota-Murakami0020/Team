@@ -141,7 +141,7 @@ public class totalGameManager : MonoBehaviour
         set { this.timer = value; }
     }
 
-    public string Time
+    public string DispTime
     {
         get { return this.timeScore; }
         set { this.timeScore = value; }
@@ -261,10 +261,12 @@ public class totalGameManager : MonoBehaviour
         #region //時間計測（村上担当）
         if (startFlag == true)
         {
-            totalTime += Time.deltaTime;
+            this.totalTime += Time.deltaTime;
+            nowPlayingText.text = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
         }
         if(!pl.AliveFlag) LoadGameClear();
         #endregion
+
     }
 
     #region //リザルト反映の処理
@@ -333,7 +335,6 @@ public class totalGameManager : MonoBehaviour
         {
             startFlag = true;
             //Stage2が読み込まれたときにしたい処理
-            timeC = FindObjectOfType<TimeC>();
             //if(loadCount >= 3) bestTime[3] = 0.0f;
         }
 
