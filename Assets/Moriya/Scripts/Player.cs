@@ -122,12 +122,6 @@ public class Player : MonoBehaviour
         set {this.jumpCount = value; }
     }
 
-    /*public bool WireItemFlag
-    {
-        get { return this.wireItemFlag; }
-        set { this.wireItemFlag = value; }
-    }*/
-
     public int ItemPoint
     {
         get { return this.itemPoint; }
@@ -487,11 +481,11 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     { 
         //ƒAƒCƒeƒ€‚É“–‚½‚Á‚½‚ç
-        /*if (other.gameObject.CompareTag("Item"))
+        if (other.gameObject.CompareTag("Item"))
         {
             itemPoint++;
             other.gameObject.SetActive(false);
-        }*/
+        }
 
         //
         /*if (other.gameObject.CompareTag(""))
