@@ -26,8 +26,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Animator anime = null;
 
-    //ダメージ
-    private bool damageFlag = false;
+    //落下してダメージ判定になった時のフラグ
+    private bool fallDamageFlag;
+    //落下したときのダメージが入ったとき
+    private bool fallDamageHitFlag = false;
     //移動
     private bool moveFlag = false;
     //ジャンプ
@@ -79,7 +81,7 @@ public class Player : MonoBehaviour
     private float slowTime = 1f;
     //　経過時間
     private float elapsedTime = 0f;
-    private bool fallDamegeFlag;
+    
 
     //プレイヤーのダメージモーション時間
     private float damazeAnimeTime = 0;
@@ -97,13 +99,17 @@ public class Player : MonoBehaviour
 
 
     // 画像描画用のコンポーネント
-    Renderer sr;
+    [SerializeField]
+    SkinnedMeshRenderer smr;
     STATE state;
     //点滅感覚
     [SerializeField]
     private float flashInterval;
-
-
+    //点滅させるときのループカウント
+    [SerializeField] 
+    private int loopCount;
+    //当たったかどうかのフラグ
+    private bool isHit;
 
     [SerializeField]
     private GameObject[] heartArray = new GameObject[3];
@@ -114,10 +120,16 @@ public class Player : MonoBehaviour
     {
         NOMAL,
         DAMAGED,
-        MUTEKI
+
     }
 
     //ゲッター&セッター
+    public SkinnedMeshRenderer Smr
+    {
+        get { return this.smr; }
+        set { this.smr = value; }
+    }
+
     public float PlayerSpeed
     {
         get { return this.speed; }
@@ -195,6 +207,12 @@ public class Player : MonoBehaviour
         //Debug.Log(hp);
         //Debug.Log(Time.timeScale);
 
+        // ステートがダメージならリターン
+        if (state == STATE.DAMAGED)
+        {
+            return;
+        }
+
         //カメラの角度取得と単位ベクトル化
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
         mainCameraRightDer = mainCamera.transform.right.normalized;
@@ -208,8 +226,18 @@ public class Player : MonoBehaviour
         if (hp < oldHp && hp>0)
         {
             HpDisplay();
+            state = STATE.DAMAGED;
+            StartCoroutine(_hit());
             oldHp = hp;
         }
+
+        //ゲームオーバーシーンに飛ぶ式
+        if (hp <= 0)
+        {
+            //SceneManager.LoadScene("GameOverScene");
+            PlayerRisetController();
+        }
+
 
 
         #region//落下状態
@@ -230,15 +258,15 @@ public class Player : MonoBehaviour
                 if(fallenDistance >= takeDamageDistance)
                 {
                     //フラグたてる
-                    fallDamegeFlag = true;
+                    fallDamageFlag = true;
                     //
                     StartCoroutine("StartSlowmotion");
                 }
-                if(damageFlag == true)
+                if(fallDamageHitFlag == true)
                 {
                     hp--;
                     //StartCoroutine("PlayerDamaze");
-                    damageFlag = false;
+                    fallDamageHitFlag = false;
                 }
                 fallFlag = false;
               
@@ -271,13 +299,7 @@ public class Player : MonoBehaviour
 
         }
 
-        //ゲームオーバーシーンに飛ぶ式
-        if (hp <= 0)
-        {
-            //SceneManager.LoadScene("GameOverScene");
-            PlayerRisetController();
-        }
-
+       
         #region//移動＆ジャンプ方法
         //十字キー操作
         //左方向に向いて移動したら
@@ -590,10 +612,10 @@ public class Player : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             //Debug.Log("elapsed"+elapsedTime);
             //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
+            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamageFlag == true)
             {
-                fallDamegeFlag = false;
-                damageFlag = true;
+                fallDamageFlag = false;
+                fallDamageHitFlag = true;
             }
             //スローモーション解除
             if (elapsedTime > slowTime)
@@ -606,6 +628,33 @@ public class Player : MonoBehaviour
             }
             yield return null;
         };
+    }
+
+    private IEnumerator _hit()
+    {
+        isHit = true;
+        //点滅ループ開始
+        for (int i = 0; i < loopCount; i++)
+        {
+            if (isHit == false)
+            {
+                continue;
+            }
+            //flashInterval待ってから
+            yield return new WaitForSeconds(flashInterval);
+            //spriteRendererをオフ
+            smr.enabled = false;
+
+            //flashInterval待ってから
+            yield return new WaitForSeconds(flashInterval);
+            //spriteRendererをオン
+            smr.enabled = true;
+
+        }
+        //デフォルト状態にする
+        state = STATE.NOMAL;
+        //点滅ループが抜けたら当たりフラグをfalse(当たってない状態)
+        isHit = false;
     }
     #endregion
 
