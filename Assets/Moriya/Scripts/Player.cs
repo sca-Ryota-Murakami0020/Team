@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     //プレイヤーステータス
     private int hp = 3;
+    private int oldHp = 0;
     private float speed = 10.0f;
     private float jumpSpeed =10.0f;
     private float fallSpeed = -0.1f; 
@@ -88,14 +89,14 @@ public class Player : MonoBehaviour
     //子オブジェクト
     private GameObject child;
 
-
-
- 
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
+
+    [SerializeField]
+    private GameObject[] heartArray = new GameObject[3];
 
     //ゲッター&セッター
     public float PlayerSpeed
@@ -150,6 +151,7 @@ public class Player : MonoBehaviour
 
         //hp初期化
         hp = playerMaxhp;
+        oldHp = hp;
  
         //親オブジェクト取得
         _parent = transform.root.gameObject;
@@ -182,6 +184,14 @@ public class Player : MonoBehaviour
 
         //何もなかったら待機モーション
         //anime.SetBool("doIdle", true);
+
+        //hpが減った時の処理
+        if (hp < oldHp && hp>0)
+        {
+            HpDisplay();
+            oldHp = hp;
+        }
+
 
         #region//落下状態
         //　落ちている状態
@@ -496,16 +506,18 @@ public class Player : MonoBehaviour
         //プレイヤーが回復アイテムに触れたら
       /*  if (other.gameObject.CompareTag("HpItem"))
         {
-            int itemHp = 3;
+            int itemHp = 2;
             //hp+アイテム取った時の回復量がMaxhpより多かったら回復量を減らす
             if (hp + itemHp >= playerMaxhp)
             {
                 itemHp = playerMaxhp - hp;
                 hp += itemHp;
+                oldHp = hp;
             }
             else
             {
                 hp += itemHp;
+                oldHp = hp;
             }
            // gm.HpRecoveryFlag = true;
             other.gameObject.SetActive(false);
@@ -520,6 +532,12 @@ public class Player : MonoBehaviour
         speed = rSpeed;
         jumpCount = 0;
         itemPoint = 0;
+    }
+
+    //Hp減った時の処理
+    private void HpDisplay()
+    {
+        heartArray[hp].gameObject.SetActive(false);
     }
 
     #region//コルーチン
