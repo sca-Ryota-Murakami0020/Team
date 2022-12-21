@@ -519,6 +519,7 @@ public class Player : MonoBehaviour
         hp = playerMaxhp;
         speed = rSpeed;
         jumpCount = 0;
+        itemPoint = 0;
     }
 
     #region//ƒRƒ‹[ƒ`ƒ“
