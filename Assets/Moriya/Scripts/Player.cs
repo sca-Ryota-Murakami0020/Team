@@ -229,7 +229,7 @@ public class Player : MonoBehaviour
         //anime.SetBool("doIdle", true);
 
         //hpÇ™å∏Ç¡ÇΩéûÇÃèàóù
-        if (hp < oldHp && hp>1)
+        if (hp < oldHp && hp>=1)
         {
             HpDisplay();
             state = STATE.DAMAGED;
@@ -252,12 +252,13 @@ public class Player : MonoBehaviour
         //Å@óéÇøÇƒÇ¢ÇÈèÛë‘
         if (fallFlag == true)
         {
-            /*if(jumpFlag == false && moveFlag == true)
+            if(jumpFlag == false && moveFlag == true)
             {
                 anime.SetBool("doFall", true);
                 anime.SetBool("doWalk", true);
                 anime.SetBool("doJump",false);
-            }*/
+                anime.SetBool("doLandRolling", false);
+            }
             Debug.Log("if");
            
             //èôÅXÇ…óéâ∫ë¨ìxÇâ¡ë¨Ç≥ÇπÇÈ
@@ -281,6 +282,13 @@ public class Player : MonoBehaviour
                 {
                     hp--;
                     fallDamageHitFlag = false;
+                    anime.SetTrigger("domazeed");
+                    anime.SetBool("doFall", false);
+                }
+                else// if(fallDamageHitFlag == false)
+                {
+                    anime.SetBool("doFall",false);
+                    anime.SetBool("doLandRolling", true);
                 }
                 fallFlag = false;            
             }
@@ -319,7 +327,7 @@ public class Player : MonoBehaviour
          if (Input.GetKey(KeyCode.A))
          {
             moveFlag = true;
-            //if(fallFlag == false)
+            if(fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -340,7 +348,7 @@ public class Player : MonoBehaviour
          if (Input.GetKey(KeyCode.D))
          {
             moveFlag = true;
-            //if (fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -360,7 +368,7 @@ public class Player : MonoBehaviour
          if (Input.GetKey(KeyCode.W))
          {
             moveFlag = true;
-            //if (fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -383,7 +391,7 @@ public class Player : MonoBehaviour
          if (Input.GetKey(KeyCode.S))
          {
             moveFlag = true;
-            //if (fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -402,8 +410,8 @@ public class Player : MonoBehaviour
 
         if(!Input.anyKey)
         {
-            //moveFlag = false;
-            //if(fallFlag == false)
+            moveFlag = false;
+            if(fallFlag == false)
             {
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
