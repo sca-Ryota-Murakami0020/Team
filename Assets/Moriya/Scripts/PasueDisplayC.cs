@@ -134,6 +134,11 @@ public class PasueDisplayC : MonoBehaviour
         playerC.PlayerHp = playerC.PlayerMaxHp;
         playerC.PlayerSpeed = 10.0f;
         playerC.JumpCount = 0;
+        for (int i = 0; i < playerC.PlayerHp; i++)
+        {
+            playerC.HeartArray[i].gameObject.SetActive(true);
+        }
+
     }
 
 }

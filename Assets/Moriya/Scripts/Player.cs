@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     private bool landFlag = false;
     //ローリング中
     private bool rollingJumpFlag = false;
+    //ゲームオーバー
+    private bool gameOverFlag = false;
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -160,6 +162,11 @@ public class Player : MonoBehaviour
         set { this.itemPoint = value; }
     }
 
+    public GameObject[] HeartArray
+    {
+        get { return this.heartArray; }
+        set { this.heartArray = value; }
+    }
 
     //シングルトン
     /*private void Awake()
@@ -223,7 +230,7 @@ public class Player : MonoBehaviour
         //anime.SetBool("doIdle", true);
 
         //hpが減った時の処理
-        if (hp < oldHp && hp>0)
+        if (hp < oldHp && hp>1)
         {
             HpDisplay();
             state = STATE.DAMAGED;
@@ -234,8 +241,12 @@ public class Player : MonoBehaviour
         //ゲームオーバーシーンに飛ぶ式
         if (hp <= 0)
         {
-            //SceneManager.LoadScene("GameOverScene");
-            PlayerRisetController();
+            gameOverFlag = true;
+            anime.SetTrigger("lose");
+            if (gameOverFlag == true)
+            {
+                StartCoroutine(GameOver());
+            }
         }
 
         #region//落下状態
@@ -259,13 +270,11 @@ public class Player : MonoBehaviour
                 {
                     //フラグたてる
                     fallDamageFlag = true;
-                    //
                     StartCoroutine("StartSlowmotion");
                 }
                 if(fallDamageHitFlag == true)
                 {
                     hp--;
-                    //StartCoroutine("PlayerDamaze");
                     fallDamageHitFlag = false;
                 }
                 fallFlag = false;            
@@ -299,7 +308,6 @@ public class Player : MonoBehaviour
 
         }
 
-       
         #region//移動＆ジャンプ方法
         //十字キー操作
         //左方向に向いて移動したら
@@ -599,6 +607,11 @@ public class Player : MonoBehaviour
         speed = rSpeed;
         jumpCount = 0;
         itemPoint = 0;
+        for(int i = 0; i <hp; i++)
+        {
+            heartArray[i].gameObject.SetActive(true);
+        }
+      
     }
 
     //Hp減った時の処理
@@ -681,6 +694,16 @@ public class Player : MonoBehaviour
         state = STATE.NOMAL;
         //点滅ループが抜けたら当たりフラグをfalse(当たってない状態)
         isHit = false;
+    }
+
+    private IEnumerator GameOver()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            PlayerRisetController();
+            //SceneManager.LoadScene("GameOverScene");
+        }
     }
     #endregion
 
