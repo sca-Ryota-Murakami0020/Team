@@ -365,15 +365,17 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
+            
             if (jumpFlag == false)
             {
-                 _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
+                 _parent.transform.position += cameraDreNoY * speed * Time.deltaTime;
             }
 
             if(jumpFlag == true)
             {
-                 _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
+                 _parent.transform.position += cameraDreNoY * (speed/10) * Time.deltaTime;
             }
+            
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
 
