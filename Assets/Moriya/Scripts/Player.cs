@@ -424,7 +424,7 @@ public class Player : MonoBehaviour
             if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
-                //anime.SetBool("doJump", true);
+                anime.SetTrigger("RollingJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
                 jumpCount++;
@@ -476,6 +476,7 @@ public class Player : MonoBehaviour
             if (rollingJumpFlag == true && jumpFlag == true)
             {
                 jumpFlag = false;
+                rollingJumpFlag = false;
                 //ローリングジャンプアニメーション
                 //;
                 anime.SetBool("doLanding", true);
@@ -515,17 +516,16 @@ public class Player : MonoBehaviour
                 }
             }
 
-            if(jumpFlag == false)
+            /*if(jumpFlag == false)
             {
                 rollingJumpFlag = true;
-            }
+            }*/
 
 
             if (rollingJumpFlag == true && jumpFlag == true)
             {
                 jumpFlag = false;
                 //ローリングジャンプアニメーション
-                //;
                 anime.SetBool("doLanding", true);
                 anime.SetBool("doIdle", false);
                 //着地モーションから待機モーションへ
