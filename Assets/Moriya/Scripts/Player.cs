@@ -117,12 +117,11 @@ public class Player : MonoBehaviour
     private GameObject[] heartArray = new GameObject[3];
 
 
-    //プレイヤーの状態用列挙型（ノーマル、ダメージ、無敵の3種類）
+    //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
     {
         NOMAL,
         DAMAGED,
-
     }
 
     //ゲッター&セッター
@@ -251,10 +250,16 @@ public class Player : MonoBehaviour
 
         #region//落下状態
         //　落ちている状態
-        if (fallFlag)
+        if (fallFlag == true)
         {
-            //Debug.Log("if");
-            anime.SetTrigger("fall");
+            /*if(jumpFlag == false && moveFlag == true)
+            {
+                anime.SetBool("doFall", true);
+                anime.SetBool("doWalk", true);
+                anime.SetBool("doJump",false);
+            }*/
+            Debug.Log("if");
+           
             //徐々に落下速度を加速させる
             transform.position -= transform.up * Time.deltaTime * fallSpeed;
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
@@ -280,7 +285,7 @@ public class Player : MonoBehaviour
                 fallFlag = false;            
             }
         }
-        if(!fallFlag)
+        else
         {
             //　地面にレイが届いていなければ落下地点を設定
             if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
@@ -313,20 +318,20 @@ public class Player : MonoBehaviour
         //左方向に向いて移動したら
          if (Input.GetKey(KeyCode.A))
          {
-            //moveFlag = true;
-            if(fallFlag)
+            moveFlag = true;
+            //if(fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
-                if (jumpFlag == false)
-                {
-                    _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
-                }
-                if(jumpFlag == true)
-                {
-                    _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
-                }
+            if (jumpFlag == false)
+            {
+              _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
+            }
+            if(jumpFlag == true)
+            {
+               _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
+            }
 
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
@@ -334,69 +339,69 @@ public class Player : MonoBehaviour
          //右方向に向いて移動したら
          if (Input.GetKey(KeyCode.D))
          {
-            //moveFlag = true;
-            if (fallFlag)
+            moveFlag = true;
+            //if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
-                if (jumpFlag == false)
-                {
-                    _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
-                }
-                if(jumpFlag == true)
-                {
-                    _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
-                }
+            if (jumpFlag == false)
+            {
+                _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
+            }
+            if(jumpFlag == true)
+            {
+                _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
+            }
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
 
          //上方向に向いて移動したら
          if (Input.GetKey(KeyCode.W))
          {
-            //moveFlag = true;
-            if (fallFlag)
+            moveFlag = true;
+            //if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
-                if (jumpFlag == false)
-                {
-                     _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
-                }
+            if (jumpFlag == false)
+            {
+                 _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
+            }
 
-                 if(jumpFlag == true)
-                 {
-                     _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
-                 }
+            if(jumpFlag == true)
+            {
+                 _parent.transform.position += mainCameraForwardDer * (speed/10) * Time.deltaTime;
+            }
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
 
          //下方向に向いて移動したら
          if (Input.GetKey(KeyCode.S))
          {
-            //moveFlag = true;
-            if (fallFlag)
+            moveFlag = true;
+            //if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
             if (jumpFlag == false)
-                {
-                    _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
-                }
+            {
+               _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
+            }
 
-                if(jumpFlag == true)
-                {
-                    _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
-                }
+            if(jumpFlag == true)
+            {
+               _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
+            }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
 
         if(!Input.anyKey)
         {
             //moveFlag = false;
-            if(fallFlag)
+            //if(fallFlag == false)
             {
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
@@ -433,14 +438,13 @@ public class Player : MonoBehaviour
             hp--;
             HpDisplay();
             oldHp = hp;
-            //anime.SetBool("doDamaze",true);
-            //Debug.Log(anime.GetBool("doDamaze"));
             anime.SetTrigger("domazeed");
-            //Debug.Log(anime.GetTrigger("domazeed"));
         }
 
         if (other.gameObject.CompareTag("Ground"))
         {
+            //fallFlag = false;
+            Debug.Log("じめん");
             if (jumpFlag == true)
             {
                     //落下モーションか着地モーションへ
@@ -706,23 +710,4 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
-
-    /*private IEnumerator PlayerDamaze()
-    {
-        int i =0;
-        if(i <2)
-        {
-            anime.SetBool("doDamaze", true);
-            i++;
-        }
-        if(i>=2)
-        {
-            Debug.Log("ku");
-            i=0;
-            anime.SetBool("doDamaze",false);
-            anime.SetBool("doIdle",true);
-            yield break;
-        }
-        yield return null;
-    }*/
 }
