@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
     //ゲームオーバー
     private bool gameOverFlag = false;
 
+    private bool sameTransFlag = false;
+
     //　レイを飛ばす場所
     [SerializeField]
     private Transform rayPosition;
@@ -116,6 +118,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject[] heartArray = new GameObject[3];
 
+    private Vector3 playerTrans;
+    Vector3 oldTrans;
+    private Vector3 newTrans ;
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -209,6 +214,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerTrans.y = transform.position.y;
+
         Debug.Log(fallFlag);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red);
 
@@ -308,10 +315,8 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていなければ落下地点を設定
             if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")))
             {
-               Vector3 trans = transform.position;
-               Vector3 oldTrans = new Vector3(0, trans.y, 0);
-               Vector3 newTrans = new Vector3(0, transform.position.y, 0);
-              //if (newTrans != oldTrans)
+               StartCoroutine(PlayerTransform());
+              if (sameTransFlag == true)
               { 
                 Debug.Log(LayerMask.GetMask("Ground"));
 
@@ -324,8 +329,8 @@ public class Player : MonoBehaviour
                 Debug.Log(" fallenPosition" + fallenPosition);
                 fallenDistance = 0;
                 fallFlag = true;
+                sameTransFlag = false;
               }
-             
             }
         }
         #endregion
@@ -725,13 +730,28 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
             PlayerRisetController();
             //SceneManager.LoadScene("GameOverScene");
+            break;
         }
     }
 
-    //private IEnumerator PlayerTransform()
-    //{
-
-    //}
+    private IEnumerator PlayerTransform()
+    {
+        while (true)
+        {
+            oldTrans = new Vector3(0, playerTrans.y, 0);
+            yield return new WaitForSeconds(1.5F);
+            newTrans = new Vector3(0, transform.position.y, 0);
+            if(oldTrans != newTrans)
+            {
+                sameTransFlag = true;
+            }
+            if(oldTrans == newTrans)
+            {
+                sameTransFlag = false;
+            }
+            break;
+        }
+    }
 
 
     #endregion
