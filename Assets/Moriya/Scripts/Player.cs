@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class Player : MonoBehaviour
 {
-    //プレイヤーステータス
+    #region//プレイヤーステータス
     private int hp = 3;
     private int oldHp = 0;
     private float speed = 10.0f;
@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     private int itemPoint = 0;
     private int jumpCount = 0;
     //private bool pJumpFlag = false;
+    #endregion
 
     //プレイヤーのTransformの定義
     [SerializeField]
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Animator anime = null;
 
+    #region//状況に応じて使用するフラグ
     //落下してダメージ判定になった時のフラグ
     private bool fallDamageFlag;
     //落下したときのダメージが入ったとき
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
     private bool gameOverFlag = false;
 
     private bool sameTransFlag = false;
+    #endregion
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -130,7 +133,7 @@ public class Player : MonoBehaviour
         DAMAGED,
     }
 
-    //ゲッター&セッター
+    #region//ゲッター&セッター
     public SkinnedMeshRenderer Smr
     {
         get { return this.smr; }
@@ -178,7 +181,7 @@ public class Player : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
     }*/
-
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -217,9 +220,10 @@ public class Player : MonoBehaviour
     {
         playerTrans.y = transform.position.y;
 
-        Debug.Log(fallFlag);
+        Debug.Log(rollingJumpFlag);
+        //Debug.Log(fallFlag);
         
-        Debug.DrawLine(Vector3.zero, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
         //Debug.Log(hp);
         //Debug.Log(Time.timeScale);
@@ -273,7 +277,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doJump",false);
                 anime.SetBool("doLandRolling", false);
             }
-            Debug.Log("if");
+            //Debug.Log("if");
            
             //徐々に落下速度を加速させる
             //transform.position -= transform.up * Time.deltaTime * fallSpeed;
@@ -287,7 +291,7 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
-
+                Debug.Log("届いてる");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
@@ -325,9 +329,9 @@ public class Player : MonoBehaviour
                 //その時に落下状態を判別するためfallFlagをtrueにする
 
                 //　最初の落下地点を設定
-                Debug.Log("else");
+                //Debug.Log("else");
                 fallenPosition = transform.position.y;
-                Debug.Log(" fallenPosition" + fallenPosition);
+                //Debug.Log(" fallenPosition" + fallenPosition);
                 fallenDistance = 0;
                 fallFlag = true;
                 sameTransFlag = false;
@@ -450,7 +454,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
-            if(rollingJumpFlag == true)
+            /*if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
                 anime.SetTrigger("RollingJump");
@@ -460,7 +464,7 @@ public class Player : MonoBehaviour
                 jumpCount++;
                 anime.SetBool("doLanding", false);
                
-            }
+            }*/
             if(rollingJumpFlag == false)
             {
                 //ジャンプ時
@@ -525,12 +529,18 @@ public class Player : MonoBehaviour
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
                 }
             }
+
+            if(rollingJumpFlag && !jumpFlag)
+            {
+                rollingJumpFlag = false;
+            }
+
             jumpCount = 0;
         }
 
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
-            Debug.Log("反応した");
+            //Debug.Log("反応した");
             if (jumpFlag == true)
             {
                 //落下モーションか着地モーションへ
@@ -590,6 +600,14 @@ public class Player : MonoBehaviour
             }
             jumpCount = 0;
         }*/
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("RollingJumpPoint"))
+        {
+            rollingJumpFlag = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

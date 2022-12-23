@@ -7,17 +7,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerC : MonoBehaviour
 {
-    //プレイヤーステータス
+    #region//プレイヤーステータス
     private int hp = 3;
+    private int oldHp = 0;
     private float speed = 10.0f;
     private float jumpSpeed = 10.0f;
     private float fallSpeed = -0.1f;
     private int playerMaxhp = 3;
     private int itemPoint = 0;
     private int jumpCount = 0;
-    private bool aliveFlag;
-    private bool fuckFlag;
+    //private bool aliveFlag;
     //private bool pJumpFlag = false;
+    #endregion
 
     //プレイヤーのTransformの定義
     [SerializeField]
@@ -27,8 +28,11 @@ public class PlayerC : MonoBehaviour
     [SerializeField]
     private Animator anime = null;
 
-    //ダメージ
-    private bool damageFlag = false;
+    #region//状況に応じて使用するフラグ
+    //落下してダメージ判定になった時のフラグ
+    private bool fallDamageFlag;
+    //落下したときのダメージが入ったとき
+    private bool fallDamageHitFlag = false;
     //移動
     private bool moveFlag = false;
     //ジャンプ
@@ -37,6 +41,13 @@ public class PlayerC : MonoBehaviour
     private bool fallFlag = false;
     //着地中
     private bool landFlag = false;
+    //ローリング中
+    private bool rollingJumpFlag = false;
+    //ゲームオーバー
+    private bool gameOverFlag = false;
+
+    private bool sameTransFlag = false;
+    #endregion
 
     //　レイを飛ばす場所
     [SerializeField]
@@ -68,12 +79,7 @@ public class PlayerC : MonoBehaviour
     //GMとポーズ画面関係のスプリクトの定義
     // private GManager gm;
     private PasueDisplayC pasueDisplayC;
-
-    //プレイヤー角度計算
-    private Quaternion left;
-    private Quaternion up;
-    private Quaternion right;
-    private Quaternion down;
+    private PlayerWallCon playerWallConC;
 
 
     //　Time.timeScaleに設定する値
@@ -83,19 +89,57 @@ public class PlayerC : MonoBehaviour
     private float slowTime = 1f;
     //　経過時間
     private float elapsedTime = 0f;
-    private bool fallDamegeFlag;
+
+
+    //プレイヤーのダメージモーション時間
+    private float damazeAnimeTime = 0;
 
     //親オブジェクト
     private GameObject _parent;
+    //子オブジェクト
+    private GameObject child;
 
     //カメラ
     [SerializeField]
     private GameObject mainCamera;
-    private Quaternion mainCameraQuat;
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
 
-    //ゲッター&セッター
+
+    // 画像描画用のコンポーネント
+    [SerializeField]
+    SkinnedMeshRenderer smr;
+    STATE state;
+    //点滅感覚
+    [SerializeField]
+    private float flashInterval;
+    //点滅させるときのループカウント
+    [SerializeField]
+    private int loopCount;
+    //当たったかどうかのフラグ
+    private bool isHit;
+
+    [SerializeField]
+    private GameObject[] heartArray = new GameObject[3];
+
+    private Vector3 playerTrans;
+    Vector3 oldTrans;
+    private Vector3 newTrans;
+
+    //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
+    enum STATE
+    {
+        NOMAL,
+        DAMAGED,
+    }
+
+    #region//ゲッター&セッター
+    public SkinnedMeshRenderer Smr
+    {
+        get { return this.smr; }
+        set { this.smr = value; }
+    }
+
     public float PlayerSpeed
     {
         get { return this.speed; }
@@ -126,105 +170,182 @@ public class PlayerC : MonoBehaviour
         set { this.itemPoint = value; }
     }
 
-    public int Hp
+    public GameObject[] HeartArray
     {
-        get { return this.hp; }
-        set { this.hp = value; }
+        get { return this.heartArray; }
+        set { this.heartArray = value; }
     }
 
-    public bool AliveFlag
+    /*public bool AliveFlag
     {
-        get { return this.aliveFlag; }
-        set { this.aliveFlag = value; }
+        get { return this.aliveFlag;}
+        set { this.aliveFlag = value;}
     }
-    public bool FuckFlag
-    {
-        get { return this.fuckFlag; }
-        set { this.fuckFlag = value; }
-    }
-
-
     //シングルトン
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-    }
-
+    }*/
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+
+        //コンポーネント
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
         //gm = FindObjectOfType<GManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
-        hp = playerMaxhp;
+        playerWallConC = FindObjectOfType<PlayerWallCon>();
         this.anime = GetComponent<Animator>();
+
+        //hp初期化
+        hp = playerMaxhp;
+        oldHp = hp;
 
         //親オブジェクト取得
         _parent = transform.root.gameObject;
 
+        //子オブジェクト取得
+        child = transform.GetChild(2).gameObject;
+
+
+        //アニメーション初期化
         anime.SetBool("doIdle", true);
 
         //落ちた時に使う数値リセット
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
-
-        mainCameraQuat = mainCamera.transform.rotation;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        playerTrans.y = transform.position.y;
+
+        Debug.Log(rollingJumpFlag);
+        //Debug.Log(fallFlag);
+
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
+
+        //Debug.Log(hp);
+        //Debug.Log(Time.timeScale);
+
+        // ステートがダメージならリターン
+        if (state == STATE.DAMAGED)
+        {
+            return;
+        }
+
+        //カメラの角度取得と単位ベクトル化
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
         mainCameraRightDer = mainCamera.transform.right.normalized;
         Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x, 0, mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
-        Vector3 cameraUpLeftDiaDer = new Vector3(mainCameraRightDer.x, 0, mainCameraForwardDer.z);
-       
-        //　落ちている状態
-        if (fallFlag)
+
+        //何もなかったら待機モーション
+        //anime.SetBool("doIdle", true);
+
+        //hpが減った時の処理
+        if (hp < oldHp && hp >= 1)
         {
+            HpDisplay();
+            oldHp = hp;
+            state = STATE.DAMAGED;
+            StartCoroutine(_hit());
+
+        }
+
+        //ゲームオーバーシーンに飛ぶ式
+        if (hp == 0)
+        {
+            gameOverFlag = true;
+            anime.SetTrigger("lose");
+            if (gameOverFlag == true)
+            {
+                StartCoroutine(GameOver());
+            }
+        }
+
+        #region//落下状態
+        //　落ちている状態
+        //スタートでは落下状態ではないのでfallFlagはfalseとなっている
+
+        if (fallFlag == true)
+        {
+            if (jumpFlag == false && moveFlag == true)
+            {
+                anime.SetBool("doFall", true);
+                anime.SetBool("doWalk", true);
+                anime.SetBool("doJump", false);
+                anime.SetBool("doLandRolling", false);
+            }
+            //Debug.Log("if");
+
             //徐々に落下速度を加速させる
-            transform.position += transform.up * Time.deltaTime * fallSpeed;
+            //transform.position -= transform.up * Time.deltaTime * fallSpeed;
+            //Debug.Log("自分の位置"+transform.position.y);
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
-            //Debug.Log(fallenPosition);
+            //Debug.Log("fallenPosition" + fallenPosition);
+
 
             //　地面にレイが届いていたら
-            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
+                Debug.Log("届いてる");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
                 {
-                    StartCoroutine("StartSlowmotion");
                     //フラグたてる
-                    fallDamegeFlag = true;
+                    fallDamageFlag = true;
+                    StartCoroutine("StartSlowmotion");
                 }
-                if (damageFlag == true)
+                if (fallDamageHitFlag == true)
                 {
                     hp--;
-                    damageFlag = false;
+                    fallDamageHitFlag = false;
+                    anime.SetTrigger("domazeed");
+                    anime.SetBool("doFall", false);
                 }
+                else// if(fallDamageHitFlag == false)
+                {
+                    anime.SetBool("doFall", false);
+                    anime.SetBool("doLandRolling", true);
+                }
+                Debug.Log("入ってるのでは");
                 fallFlag = false;
             }
         }
         else
         {
+            //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
             //　地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
-                //　最初の落下地点を設定
-                fallenPosition = transform.position.y;
-                fallenDistance = 0;
-                fallFlag = true;
+                //StartCoroutine(PlayerTransform());
+                //if (sameTransFlag == true)
+                {
+                    //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+                    //その時に落下状態を判別するためfallFlagをtrueにする
+
+                    //　最初の落下地点を設定
+                    //Debug.Log("else");
+                    fallenPosition = transform.position.y;
+                    //Debug.Log(" fallenPosition" + fallenPosition);
+                    fallenDistance = 0;
+                    fallFlag = true;
+                    sameTransFlag = false;
+                }
             }
         }
+        #endregion
 
+        //アニメーションしたら加速
         if (speedAccelerationFlag == true)
         {
             speedCTime++;
@@ -238,27 +359,24 @@ public class PlayerC : MonoBehaviour
 
         }
 
-        if (hp <= 0)
-        {
-            //SceneManager.LoadScene("OneStage");
-            PlayerRisetController();
-        }
-
         #region//移動＆ジャンプ方法
         //十字キー操作
         //左方向に向いて移動したら
         if (Input.GetKey(KeyCode.A))
         {
             moveFlag = true;
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
             if (jumpFlag == false)
             {
                 _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
             }
             if (jumpFlag == true)
             {
-                _parent.transform.position -= mainCameraRightDer * (speed / 10) * Time.deltaTime;
+                _parent.transform.position -= mainCameraRightDer * (speed) * Time.deltaTime;
             }
 
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
@@ -268,15 +386,18 @@ public class PlayerC : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             moveFlag = true;
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
             if (jumpFlag == false)
             {
                 _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
             }
             if (jumpFlag == true)
             {
-                _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * (speed) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
         }
@@ -285,17 +406,22 @@ public class PlayerC : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             moveFlag = true;
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
+
             if (jumpFlag == false)
             {
-                _parent.transform.position += mainCameraForwardDer * speed * Time.deltaTime;
+                _parent.transform.position += cameraDreNoY * speed * Time.deltaTime;
             }
 
             if (jumpFlag == true)
             {
-                _parent.transform.position += mainCameraForwardDer * (speed / 10) * Time.deltaTime;
+                _parent.transform.position += cameraDreNoY * (speed) * Time.deltaTime;
             }
+
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
         }
 
@@ -303,8 +429,11 @@ public class PlayerC : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             moveFlag = true;
-            anime.SetBool("doWalk", true);
-            anime.SetBool("doIdle", false);
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
             if (jumpFlag == false)
             {
                 _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
@@ -312,7 +441,7 @@ public class PlayerC : MonoBehaviour
 
             if (jumpFlag == true)
             {
-                _parent.transform.position -= cameraDreNoY * (speed / 10) * Time.deltaTime;
+                _parent.transform.position -= cameraDreNoY * (speed) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
         }
@@ -320,72 +449,231 @@ public class PlayerC : MonoBehaviour
         if (!Input.anyKey)
         {
             moveFlag = false;
-            anime.SetBool("doIdle", true);
-            anime.SetBool("doWalk", false);
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", true);
+                anime.SetBool("doWalk", false);
+            }
         }
 
 
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && jumpFlag == false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
-            //ジャンプ時
-            anime.SetBool("doJump", true);
-            this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
-            jumpFlag = true;
-            jumpCount++;
-
-            //ジャンプから落下モーションへ
-            //if(anime.GetCurrentAnimatorStateInfo().normalizedTime)
-            //fallFlag = true;
-            anime.SetBool("doLanding", false);
-            //anime.SetBool("doJump",false);
-            anime.SetBool("doFall", true);
-            /* Debug.Log("Landing" + anime.GetBool("doLanding"));
-             Debug.Log("doJump" + anime.GetBool("doJump"));
-             Debug.Log("doIdle" + anime.GetBool("doIdle"));
-             Debug.Log("doFall" + anime.GetBool("doFall"));*/
+            /*if(rollingJumpFlag == true)
+            {
+                //ローリングジャンプ時
+                anime.SetTrigger("RollingJump");
+                
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpFlag = true;
+                jumpCount++;
+                anime.SetBool("doLanding", false);
+               
+            }*/
+            if (rollingJumpFlag == false)
+            {
+                //ジャンプ時
+                anime.SetBool("doJump", true);
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpFlag = true;
+                jumpCount++;
+                anime.SetBool("doLanding", false);
+            }
         }
         #endregion
+
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            hp--;
+            HpDisplay();
+            oldHp = hp;
+            anime.SetTrigger("domazeed");
+        }
+
         if (other.gameObject.CompareTag("Ground"))
         {
-            //落下モーションか着地モーションへ
-            jumpFlag = false;
-            anime.SetBool("doJump", false);
-            anime.SetBool("doFall", false);
-            anime.SetBool("doLanding", true);
-            anime.SetBool("doIdle", true);
-            landFlag = true;
-            Debug.Log("着地成功");
-            //着地モーションから待機モーションへ
+            //fallFlag = false;
+            Debug.Log("じめん");
+            if (jumpFlag == true)
+            {
+                //落下モーションか着地モーションへ
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
+
+            if (rollingJumpFlag == true && jumpFlag == true)
+            {
+                jumpFlag = false;
+                rollingJumpFlag = false;
+                //ローリングジャンプアニメーション
+                //;
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
+
+            if (rollingJumpFlag && !jumpFlag)
+            {
+                rollingJumpFlag = false;
+            }
+
+            jumpCount = 0;
+        }
+
+        if (other.gameObject.CompareTag("RollingJumpPoint"))
+        {
+            //Debug.Log("反応した");
+            if (jumpFlag == true)
+            {
+                //落下モーションか着地モーションへ
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                //anime.SetBool("doFall", false);
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    rollingJumpFlag = true;
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
+
             if (jumpFlag == false)
             {
-                anime.SetBool("doLanding", false);
-                anime.SetBool("doIdle", true);
-                Debug.Log("Landing" + anime.GetBool("doLanding"));
-                //Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                //Debug.Log("doFall"+anime.GetBool("doFall"));
-            }     
-        jumpCount = 0;
+                rollingJumpFlag = true;
+            }
+            jumpCount = 0;
+        }
+
+        /*if (playerWallConC.ClingFlag)
+        {
+
+            if (jumpFlag == true)
+            {
+                //落下モーションか着地モーションへ
+                jumpFlag = false;
+                //anime.SetBool("doJump", false);
+                //anime.SetBool("doFall", false);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));
+                }
+            }
+            jumpCount = 0;
+        }*/
+        /*if (other.gameObject.CompareTag("Wall"))
+        {
+            if (jumpFlag == true) 
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                anime.SetBool("doIdle",true);
+            }
+            jumpCount = 0;
+        }*/
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("RollingJumpPoint"))
+        {
+            rollingJumpFlag = false;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        //アイテムに当たったら
+        if (other.gameObject.CompareTag("Item"))
+        {
+            itemPoint++;
+            other.gameObject.SetActive(false);
+        }
 
+        //
+        /*if (other.gameObject.CompareTag(""))
+        {
+            //SceneManager.LoadScene("IndoorScene");
+        }*/
+
+        //プレイヤーが回復アイテムに触れたら
+        /*  if (other.gameObject.CompareTag("HpItem"))
+          {
+              int itemHp = 2;
+              //hp+アイテム取った時の回復量がMaxhpより多かったら回復量を減らす
+              if (hp + itemHp >= playerMaxhp)
+              {
+                  itemHp = playerMaxhp - hp;
+                  hp += itemHp;
+                  oldHp = hp;
+              }
+              else
+              {
+                  hp += itemHp;
+                  oldHp = hp;
+              }
+             // gm.HpRecoveryFlag = true;
+              other.gameObject.SetActive(false);
+          }*/
     }
 
+    //死んだときにリセットする値
     private void PlayerRisetController()
     {
         playerMaxhp = rMaxhp;
         hp = playerMaxhp;
         speed = rSpeed;
         jumpCount = 0;
+        itemPoint = 0;
+        for (int i = 0; i < hp; i++)
+        {
+            heartArray[i].gameObject.SetActive(true);
+        }
+
     }
 
+    //Hp減った時の処理
+    private void HpDisplay()
+    {
+        heartArray[hp].gameObject.SetActive(false);
+    }
 
+    #region//コルーチン
+    //スローモーションの元コルーチン
     private IEnumerator StartSlowmotion()
     {
         //slowmotion本体を起動
@@ -398,6 +686,7 @@ public class PlayerC : MonoBehaviour
         StopCoroutine("StartSlowmotion");
         StopCoroutine("Slowmotion");
     }
+    //スローモーションするコルーチン
     private IEnumerator Slowmotion()
     {
         //遅くする
@@ -414,10 +703,10 @@ public class PlayerC : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             //Debug.Log("elapsed"+elapsedTime);
             //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamegeFlag == true)
+            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamageFlag == true)
             {
-                fallDamegeFlag = false;
-                damageFlag = true;
+                fallDamageFlag = false;
+                fallDamageHitFlag = true;
             }
             //スローモーション解除
             if (elapsedTime > slowTime)
@@ -428,19 +717,78 @@ public class PlayerC : MonoBehaviour
                 StopCoroutine("Slowmotion");
                 break;
             }
-
             yield return null;
         };
     }
 
-    public void GameOver()
+    private IEnumerator _hit()
+    {
+        isHit = true;
+        //点滅ループ開始
+        for (int i = 0; i < loopCount; i++)
+        {
+            if (isHit == false)
+            {
+                continue;
+            }
+            //flashInterval待ってから
+            yield return new WaitForSeconds(flashInterval);
+            //spriteRendererをオフ
+            smr.enabled = false;
+
+            //flashInterval待ってから
+            yield return new WaitForSeconds(flashInterval);
+            //spriteRendererをオン
+            smr.enabled = true;
+
+        }
+        //デフォルト状態にする
+        state = STATE.NOMAL;
+        //点滅ループが抜けたら当たりフラグをfalse(当たってない状態)
+        isHit = false;
+    }
+
+    private IEnumerator GameOver()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            PlayerRisetController();
+            //SceneManager.LoadScene("GameOverScene");
+            break;
+        }
+    }
+
+    private IEnumerator PlayerTransform()
+    {
+        while (true)
+        {
+            oldTrans = new Vector3(0, playerTrans.y, 0);
+            yield return new WaitForSeconds(1.5F);
+            newTrans = new Vector3(0, transform.position.y, 0);
+            if (oldTrans != newTrans)
+            {
+                sameTransFlag = true;
+            }
+            if (oldTrans == newTrans)
+            {
+                sameTransFlag = false;
+            }
+            break;
+        }
+    }
+
+
+    #endregion
+
+
+}
+
+    /*    public void GameOver()
     {
         aliveFlag = false;
         SceneManager.LoadScene("GoalScene");
     }
-}
-
-    /*
     //RigidBody
     private Rigidbody rb;
     //プレイヤーの速さ
