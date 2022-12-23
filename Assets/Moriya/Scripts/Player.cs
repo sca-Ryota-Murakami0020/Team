@@ -209,6 +209,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red);
 
         //Debug.Log(hp);
         //Debug.Log(Time.timeScale);
@@ -232,13 +233,14 @@ public class Player : MonoBehaviour
         if (hp < oldHp && hp>=1)
         {
             HpDisplay();
+            oldHp = hp;
             state = STATE.DAMAGED;
             StartCoroutine(_hit());
-            oldHp = hp;
+            
         }
 
         //ゲームオーバーシーンに飛ぶ式
-        if (hp <= 0)
+        if (hp == 0)
         {
             gameOverFlag = true;
             anime.SetTrigger("lose");
@@ -283,7 +285,7 @@ public class Player : MonoBehaviour
                     hp--;
                     fallDamageHitFlag = false;
                     anime.SetTrigger("domazeed");
-                    anime.SetBool("doFall", false);
+                    anime.SetBool("doFall", false); 
                 }
                 else// if(fallDamageHitFlag == false)
                 {
@@ -295,9 +297,11 @@ public class Player : MonoBehaviour
         }
         else
         {
+
             //　地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
+                Debug.Log(LayerMask.GetMask("Ground"));
                 //　最初の落下地点を設定
                 Debug.Log("else");
                 fallenPosition = transform.position.y;
@@ -338,7 +342,7 @@ public class Player : MonoBehaviour
             }
             if(jumpFlag == true)
             {
-               _parent.transform.position -= mainCameraRightDer * (speed/10) * Time.deltaTime;
+               _parent.transform.position -= mainCameraRightDer * (speed/5) * Time.deltaTime;
             }
 
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
@@ -359,7 +363,7 @@ public class Player : MonoBehaviour
             }
             if(jumpFlag == true)
             {
-                _parent.transform.position += mainCameraRightDer * (speed / 10) * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * (speed /5) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
@@ -381,7 +385,7 @@ public class Player : MonoBehaviour
 
             if(jumpFlag == true)
             {
-                 _parent.transform.position += cameraDreNoY * (speed/10) * Time.deltaTime;
+                 _parent.transform.position += cameraDreNoY * (speed/5) * Time.deltaTime;
             }
             
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
@@ -403,7 +407,7 @@ public class Player : MonoBehaviour
 
             if(jumpFlag == true)
             {
-               _parent.transform.position -= cameraDreNoY * (speed/10) * Time.deltaTime;
+               _parent.transform.position -= cameraDreNoY * (speed/5) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
@@ -429,6 +433,7 @@ public class Player : MonoBehaviour
                 jumpFlag = true;
                 jumpCount++;
                 anime.SetBool("doLanding", false);
+                rollingJumpFlag = false;
             }
             //ジャンプ時
             anime.SetBool("doJump", true);
@@ -515,34 +520,10 @@ public class Player : MonoBehaviour
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
                 }
             }
-
-            /*if(jumpFlag == false)
-            {
-                rollingJumpFlag = true;
-            }*/
-
-
-            if (rollingJumpFlag == true && jumpFlag == true)
-            {
-                jumpFlag = false;
-                //ローリングジャンプアニメーション
-                anime.SetBool("doLanding", true);
-                anime.SetBool("doIdle", false);
-                //着地モーションから待機モーションへ
-                if (jumpFlag == false)
-                {
-                    anime.SetBool("doLanding", false);
-                    anime.SetBool("doIdle", true);
-                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                }
-            }
-
             jumpCount = 0;
         }
 
-        if (playerWallConC.ClingFlag)
+        /*if (playerWallConC.ClingFlag)
         {
 
             if (jumpFlag == true)
@@ -557,14 +538,13 @@ public class Player : MonoBehaviour
                 {
                     anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
-                    rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                    Debug.Log("doFall"+anime.GetBool("doFall"));
                 }
             }
             jumpCount = 0;
-        }
+        }*/
         /*if (other.gameObject.CompareTag("Wall"))
         {
             if (jumpFlag == true) 

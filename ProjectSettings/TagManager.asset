@@ -20,6 +20,7 @@ TagManager:
   - PositionD
   - ClingJudgement
   - WallJumpJudgement
+  - RollingJumpPoint
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Wall
+  - RollingJumpPoint
   - 
   - 
   - 
