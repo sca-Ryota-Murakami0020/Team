@@ -209,6 +209,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(fallFlag);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red);
 
         //Debug.Log(hp);
@@ -252,6 +253,8 @@ public class Player : MonoBehaviour
 
         #region//落下状態
         //　落ちている状態
+        //スタートでは落下状態ではないのでfallFlagはfalseとなっている
+
         if (fallFlag == true)
         {
             if(jumpFlag == false && moveFlag == true)
@@ -264,14 +267,18 @@ public class Player : MonoBehaviour
             Debug.Log("if");
            
             //徐々に落下速度を加速させる
-            transform.position -= transform.up * Time.deltaTime * fallSpeed;
+            //transform.position -= transform.up * Time.deltaTime * fallSpeed;
+            Debug.Log("自分の位置"+transform.position.y);
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
+            Debug.Log("fallenPosition" + fallenPosition);
+
 
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
             {
+
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if(fallenDistance >= takeDamageDistance)
@@ -297,16 +304,28 @@ public class Player : MonoBehaviour
         }
         else
         {
-
+            //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
             //　地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")))
             {
+               Vector3 trans = transform.position;
+               Vector3 oldTrans = new Vector3(0, trans.y, 0);
+               Vector3 newTrans = new Vector3(0, transform.position.y, 0);
+              //if (newTrans != oldTrans)
+              { 
                 Debug.Log(LayerMask.GetMask("Ground"));
+
+                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+                //その時に落下状態を判別するためfallFlagをtrueにする
+
                 //　最初の落下地点を設定
                 Debug.Log("else");
                 fallenPosition = transform.position.y;
+                Debug.Log(" fallenPosition" + fallenPosition);
                 fallenDistance = 0;
                 fallFlag = true;
+              }
+             
             }
         }
         #endregion
@@ -342,7 +361,7 @@ public class Player : MonoBehaviour
             }
             if(jumpFlag == true)
             {
-               _parent.transform.position -= mainCameraRightDer * (speed/5) * Time.deltaTime;
+               _parent.transform.position -= mainCameraRightDer * (speed) * Time.deltaTime;
             }
 
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
@@ -363,7 +382,7 @@ public class Player : MonoBehaviour
             }
             if(jumpFlag == true)
             {
-                _parent.transform.position += mainCameraRightDer * (speed /5) * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * (speed) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
@@ -385,7 +404,7 @@ public class Player : MonoBehaviour
 
             if(jumpFlag == true)
             {
-                 _parent.transform.position += cameraDreNoY * (speed/5) * Time.deltaTime;
+                 _parent.transform.position += cameraDreNoY * (speed) * Time.deltaTime;
             }
             
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
@@ -407,7 +426,7 @@ public class Player : MonoBehaviour
 
             if(jumpFlag == true)
             {
-               _parent.transform.position -= cameraDreNoY * (speed/5) * Time.deltaTime;
+               _parent.transform.position -= cameraDreNoY * (speed) * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
@@ -433,14 +452,17 @@ public class Player : MonoBehaviour
                 jumpFlag = true;
                 jumpCount++;
                 anime.SetBool("doLanding", false);
-                rollingJumpFlag = false;
+               
             }
-            //ジャンプ時
-            anime.SetBool("doJump", true);
-            this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
-            jumpFlag = true;
-            jumpCount++;
-            anime.SetBool("doLanding",false);
+            if(rollingJumpFlag == false)
+            {
+                //ジャンプ時
+                anime.SetBool("doJump", true);
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpFlag = true;
+                jumpCount++;
+                anime.SetBool("doLanding", false);
+            }
         }
         #endregion
 
@@ -499,8 +521,9 @@ public class Player : MonoBehaviour
             jumpCount = 0;
         }
 
-        if (other.gameObject.CompareTag("RollingPoint"))
+        if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
+            Debug.Log("反応した");
             if (jumpFlag == true)
             {
                 //落下モーションか着地モーションへ
@@ -519,6 +542,11 @@ public class Player : MonoBehaviour
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
                 }
+            }
+
+            if(jumpFlag == false)
+            {
+                rollingJumpFlag = true;
             }
             jumpCount = 0;
         }
@@ -699,5 +727,12 @@ public class Player : MonoBehaviour
             //SceneManager.LoadScene("GameOverScene");
         }
     }
+
+    //private IEnumerator PlayerTransform()
+    //{
+
+    //}
+
+
     #endregion
 }

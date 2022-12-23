@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5998762000903077718}
   - component: {fileID: 5998762000903077719}
   m_Layer: 6
-  m_Name: WallJumpPoint
-  m_TagString: WallJumpPoint
+  m_Name: RollingJumpPoint
+  m_TagString: RollingJumpPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
