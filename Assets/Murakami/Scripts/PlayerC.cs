@@ -16,7 +16,7 @@ public class PlayerC : MonoBehaviour
     private int playerMaxhp = 3;
     private int itemPoint = 0;
     private int jumpCount = 0;
-    //private bool aliveFlag;
+    private bool aliveFlag;
     //private bool pJumpFlag = false;
     #endregion
 
@@ -176,12 +176,12 @@ public class PlayerC : MonoBehaviour
         set { this.heartArray = value; }
     }
 
-    /*public bool AliveFlag
+    public bool AliveFlag
     {
         get { return this.aliveFlag;}
         set { this.aliveFlag = value;}
     }
-    //シングルトン
+    /*//シングルトン
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
