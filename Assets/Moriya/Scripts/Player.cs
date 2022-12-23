@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEditor;
 
 
 public class Player : MonoBehaviour
@@ -217,7 +218,8 @@ public class Player : MonoBehaviour
         playerTrans.y = transform.position.y;
 
         Debug.Log(fallFlag);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red);
+        
+        Debug.DrawLine(Vector3.zero, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
         //Debug.Log(hp);
         //Debug.Log(Time.timeScale);
@@ -275,37 +277,38 @@ public class Player : MonoBehaviour
            
             //徐々に落下速度を加速させる
             //transform.position -= transform.up * Time.deltaTime * fallSpeed;
-            Debug.Log("自分の位置"+transform.position.y);
+            //Debug.Log("自分の位置"+transform.position.y);
             //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
-            Debug.Log("fallenPosition" + fallenPosition);
+            //Debug.Log("fallenPosition" + fallenPosition);
 
 
             //　地面にレイが届いていたら
-            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")))
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
 
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
-                if(fallenDistance >= takeDamageDistance)
+                if (fallenDistance >= takeDamageDistance)
                 {
                     //フラグたてる
                     fallDamageFlag = true;
                     StartCoroutine("StartSlowmotion");
                 }
-                if(fallDamageHitFlag == true)
+                if (fallDamageHitFlag == true)
                 {
                     hp--;
                     fallDamageHitFlag = false;
                     anime.SetTrigger("domazeed");
-                    anime.SetBool("doFall", false); 
+                    anime.SetBool("doFall", false);
                 }
                 else// if(fallDamageHitFlag == false)
                 {
-                    anime.SetBool("doFall",false);
+                    anime.SetBool("doFall", false);
                     anime.SetBool("doLandRolling", true);
                 }
+                Debug.Log("入ってるのでは");
                 fallFlag = false;            
             }
         }
@@ -313,13 +316,11 @@ public class Player : MonoBehaviour
         {
             //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
             //　地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")))
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
-               StartCoroutine(PlayerTransform());
-              if (sameTransFlag == true)
+               //StartCoroutine(PlayerTransform());
+              //if (sameTransFlag == true)
               { 
-                Debug.Log(LayerMask.GetMask("Ground"));
-
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
 
@@ -453,6 +454,7 @@ public class Player : MonoBehaviour
             {
                 //ローリングジャンプ時
                 anime.SetTrigger("RollingJump");
+                
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
                 jumpCount++;
@@ -507,7 +509,7 @@ public class Player : MonoBehaviour
 
             if (rollingJumpFlag == true && jumpFlag == true)
             {
-                jumpFlag = false;
+                jumpFlag = false;       
                 rollingJumpFlag = false;
                 //ローリングジャンプアニメーション
                 //;
