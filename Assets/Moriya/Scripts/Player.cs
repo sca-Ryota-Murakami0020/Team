@@ -291,12 +291,6 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
             {
-
-                if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                {
-                    Debug.Log("届いている");
-                }
-
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
@@ -304,18 +298,23 @@ public class Player : MonoBehaviour
                     //フラグたてる
                     fallDamageFlag = true;
                     StartCoroutine("StartSlowmotion");
+                    if (fallDamageHitFlag == false)
+                    {
+                        anime.SetBool("doFall", false);
+                        anime.SetBool("doLandRolling", true);
+                    }
+                    if (fallDamageHitFlag == true)
+                    {
+                        hp--;
+                        fallDamageHitFlag = false;
+                        anime.SetTrigger("domazeed");
+                        anime.SetBool("doFall", false);
+                    }
                 }
-                if (fallDamageHitFlag == true)
+                else
                 {
-                    hp--;
-                    fallDamageHitFlag = false;
-                    anime.SetTrigger("domazeed");
-                    anime.SetBool("doFall", false);
-                }
-                if(fallDamageHitFlag == false)
-                {
-                    anime.SetBool("doFall", false);
-                    anime.SetBool("doLandRolling", true);
+                   anime.SetBool("doFall",false);
+                   anime.SetBool("doLandRolling",false);
                 }
                 Debug.Log("入ってるのでは");
                 fallFlag = false;            
