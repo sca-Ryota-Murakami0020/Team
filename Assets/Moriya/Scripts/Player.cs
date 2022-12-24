@@ -319,8 +319,9 @@ public class Player : MonoBehaviour
                 {
                    anime.SetBool("doFall",false);
                    anime.SetBool("doLandRolling",false);
+                   anime.SetBool("doLanding",true);
                    //’…’n‚Ìƒ‚[ƒVƒ‡ƒ“‚ğ“ü‚ê‚é
-
+                   Debug.Log("h");
                 }
                 fallFlag = false;            
             }

@@ -194,22 +194,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6883896875423174486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121518317850337274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0831f4980107d55409c1be26d7a03c36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentTran: {fileID: 1418898780249809995}
-  anime: {fileID: 5667396859790402249}
-  rayPosition: {fileID: 1601862031877883200}
-  rayRange: 0
-  takeDamageDistance: 3
-  timeScale: 0.1
-  mainCamera: {fileID: 0}

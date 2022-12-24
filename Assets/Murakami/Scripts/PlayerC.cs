@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerC : MonoBehaviour
-{
+{    private bool aliveFlag;
     #region//プレイヤーステータス
     private int hp = 3;
     private int oldHp = 0;
@@ -16,7 +16,6 @@ public class PlayerC : MonoBehaviour
     private int playerMaxhp = 3;
     private int itemPoint = 0;
     private int jumpCount = 0;
-    private bool aliveFlag;
     //private bool pJumpFlag = false;
     #endregion
 
@@ -41,11 +40,13 @@ public class PlayerC : MonoBehaviour
     private bool fallFlag = false;
     //着地中
     private bool landFlag = false;
-    //ローリング中
+    //ローリングジャンプ地点にふれたフラグ
     private bool rollingJumpFlag = false;
+    //ローリングジャンプをしたフラグ
+    private bool rollingJumpDidFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
-
+    //使わないけどコルーチン用
     private bool sameTransFlag = false;
     #endregion
 
@@ -181,8 +182,9 @@ public class PlayerC : MonoBehaviour
         get { return this.aliveFlag;}
         set { this.aliveFlag = value;}
     }
-    /*//シングルトン
-    private void Awake()
+
+    //シングルトン
+    /*private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
     }*/
@@ -225,7 +227,7 @@ public class PlayerC : MonoBehaviour
     {
         playerTrans.y = transform.position.y;
 
-        Debug.Log(rollingJumpFlag);
+        Debug.Log(rollingJumpDidFlag);
         //Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
@@ -292,11 +294,10 @@ public class PlayerC : MonoBehaviour
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             //Debug.Log("fallenPosition" + fallenPosition);
 
-
+            RaycastHit hit;
             //　地面にレイが届いていたら
-            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
             {
-                Debug.Log("届いてる");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
@@ -304,20 +305,26 @@ public class PlayerC : MonoBehaviour
                     //フラグたてる
                     fallDamageFlag = true;
                     StartCoroutine("StartSlowmotion");
+                    if (fallDamageHitFlag == false)
+                    {
+                        anime.SetBool("doFall", false);
+                        anime.SetBool("doLandRolling", true);
+                    }
+                    if (fallDamageHitFlag == true)
+                    {
+                        hp--;
+                        fallDamageHitFlag = false;
+                        anime.SetTrigger("domazeed");
+                        anime.SetBool("doFall", false);
+                    }
                 }
-                if (fallDamageHitFlag == true)
+                else
                 {
-                    hp--;
-                    fallDamageHitFlag = false;
-                    anime.SetTrigger("domazeed");
                     anime.SetBool("doFall", false);
+                    anime.SetBool("doLandRolling", false);
+                    //着地のモーションを入れる
+
                 }
-                else// if(fallDamageHitFlag == false)
-                {
-                    anime.SetBool("doFall", false);
-                    anime.SetBool("doLandRolling", true);
-                }
-                Debug.Log("入ってるのでは");
                 fallFlag = false;
             }
         }
@@ -333,7 +340,7 @@ public class PlayerC : MonoBehaviour
                     //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                     //その時に落下状態を判別するためfallFlagをtrueにする
 
-                    //　最初の落下地点を設定
+                    //最初の落下地点を設定
                     //Debug.Log("else");
                     fallenPosition = transform.position.y;
                     //Debug.Log(" fallenPosition" + fallenPosition);
@@ -453,23 +460,25 @@ public class PlayerC : MonoBehaviour
             {
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk", false);
+                Debug.Log("9");
             }
         }
 
 
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && jumpFlag == false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
-            /*if(rollingJumpFlag == true)
+            if (rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
+                Debug.Log("mi");
+                rollingJumpDidFlag = true;
                 anime.SetTrigger("RollingJump");
-                
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
                 jumpCount++;
                 anime.SetBool("doLanding", false);
-               
-            }*/
+
+            }
             if (rollingJumpFlag == false)
             {
                 //ジャンプ時
@@ -496,8 +505,29 @@ public class PlayerC : MonoBehaviour
 
         if (other.gameObject.CompareTag("Ground"))
         {
-            //fallFlag = false;
             Debug.Log("じめん");
+
+            if (rollingJumpDidFlag == true && jumpFlag == true)
+            {
+                Debug.Log("asuta");
+                jumpFlag = false;
+                rollingJumpDidFlag = false;
+                //ローリングジャンプアニメーションをきる
+                //;
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
+
+
             if (jumpFlag == true)
             {
                 //落下モーションか着地モーションへ
@@ -516,29 +546,11 @@ public class PlayerC : MonoBehaviour
                 }
             }
 
-            if (rollingJumpFlag == true && jumpFlag == true)
+            if (jumpFlag == false && fallFlag == true)
             {
-                jumpFlag = false;
-                rollingJumpFlag = false;
-                //ローリングジャンプアニメーション
-                //;
-                anime.SetBool("doLanding", true);
-                anime.SetBool("doIdle", false);
-                //着地モーションから待機モーションへ
-                if (jumpFlag == false)
-                {
-                    anime.SetBool("doLanding", false);
-                    anime.SetBool("doIdle", true);
-                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                }
+                anime.SetBool("doLandRolling", false);
             }
 
-            if (rollingJumpFlag && !jumpFlag)
-            {
-                rollingJumpFlag = false;
-            }
 
             jumpCount = 0;
         }
@@ -663,7 +675,6 @@ public class PlayerC : MonoBehaviour
         {
             heartArray[i].gameObject.SetActive(true);
         }
-
     }
 
     //Hp減った時の処理
@@ -784,94 +795,94 @@ public class PlayerC : MonoBehaviour
 
 }
 
-    /*    public void GameOver()
-    {
-        aliveFlag = false;
-        SceneManager.LoadScene("GoalScene");
-    }
-    //RigidBody
-    private Rigidbody rb;
-    //プレイヤーの速さ
-    private float speed = 2.0f;
-    //ジャンプ力
-    private float jumpPower = 10.5f;
-    //接地確認用フラグ
-    private bool jumpFlag;
-    //体力
-    private int hp;
-    //生存確認フラグ
-    private bool aliveFlag;
-    private bool fuckFlag;
-    private float mouseX;
-    private float mouseY;
+/*    public void GameOver()
+{
+    aliveFlag = false;
+    SceneManager.LoadScene("GoalScene");
+}
+//RigidBody
+private Rigidbody rb;
+//プレイヤーの速さ
+private float speed = 2.0f;
+//ジャンプ力
+private float jumpPower = 10.5f;
+//接地確認用フラグ
+private bool jumpFlag;
+//体力
+private int hp;
+//生存確認フラグ
+private bool aliveFlag;
+private bool fuckFlag;
+private float mouseX;
+private float mouseY;
 
-    //プロパティ
-    public int Hp
-    {
-        get { return this.hp;}
-        set { this.hp = value;}
-    }
+//プロパティ
+public int Hp
+{
+    get { return this.hp;}
+    set { this.hp = value;}
+}
 
-    public bool AliveFlag
-    {
-        get { return this.aliveFlag;}
-        set { this.aliveFlag = value;}
-    }
-    public bool FuckFlag
-    {
-        get { return this.fuckFlag;}
-        set { this.fuckFlag = value;}
-    }
+public bool AliveFlag
+{
+    get { return this.aliveFlag;}
+    set { this.aliveFlag = value;}
+}
+public bool FuckFlag
+{
+    get { return this.fuckFlag;}
+    set { this.fuckFlag = value;}
+}
 
-    // Start is called before the first frame update
-    void Start()
+// Start is called before the first frame update
+void Start()
+{
+    rb = GetComponent<Rigidbody>();
+    //camera = GameObject.Find("Main Camera");
+    jumpFlag = false;
+    this.hp = 3;
+    this.aliveFlag = true;
+    this.fuckFlag = false;
+}
+
+// Update is called once per frame
+void Update()
+{
+    //移動
+    float H = Input.GetAxis("Horizontal") * speed;
+    float V = Input.GetAxis("Vertical") * speed;
+    mouseX = Input.GetAxis("Mouse X");
+    mouseY = Input.GetAxis("Mouse Y");
+
+    rb.AddForce(H,0,V);
+
+    //ジャンプ
+    if (Input.GetKeyDown(KeyCode.Space) && jumpFlag == false)
     {
-        rb = GetComponent<Rigidbody>();
-        //camera = GameObject.Find("Main Camera");
+        rb.AddForce(0,Mathf.Pow(jumpPower,2),0);
+        jumpFlag = true;          
+    } 
+    //次のジャンプまでの間隔の計算
+    float i =+ Time.deltaTime;
+    if(i > 3.0f || jumpFlag == true)
+    {
         jumpFlag = false;
-        this.hp = 3;
-        this.aliveFlag = true;
-        this.fuckFlag = false;
+        i = 0.0f;
     }
-
-    // Update is called once per frame
-    void Update()
+    //体力０で処理
+    if(this.hp  <= 0)
     {
-        //移動
-        float H = Input.GetAxis("Horizontal") * speed;
-        float V = Input.GetAxis("Vertical") * speed;
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-
-        rb.AddForce(H,0,V);
-
-        //ジャンプ
-        if (Input.GetKeyDown(KeyCode.Space) && jumpFlag == false)
-        {
-            rb.AddForce(0,Mathf.Pow(jumpPower,2),0);
-            jumpFlag = true;          
-        } 
-        //次のジャンプまでの間隔の計算
-        float i =+ Time.deltaTime;
-        if(i > 3.0f || jumpFlag == true)
-        {
-            jumpFlag = false;
-            i = 0.0f;
-        }
-        //体力０で処理
-        if(this.hp  <= 0)
-        {
-            GameOver();
-        }
+        GameOver();
     }
+}
 
-    //ゲームオーバー処理
-    public void GameOver()
-    {
-        aliveFlag = false;
-        SceneManager.LoadScene("GoalScene");
-    }
-    */
+//ゲームオーバー処理
+public void GameOver()
+{
+    aliveFlag = false;
+    SceneManager.LoadScene("GoalScene");
+}
+*/
 
 /*
     playerText.text = "ライフ：" + pl.hp.ToString();
