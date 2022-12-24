@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     private bool rollingJumpFlag = false;
     //ローリングジャンプをしたフラグ
     private bool rollingJumpDidFlag = false;
+    //壁はりつきジャンプができる地点にふれたフラグ
+    private bool wallClingJumpFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
     //使わないけどコルーチン用
@@ -222,8 +224,8 @@ public class Player : MonoBehaviour
     {
         playerTrans.y = transform.position.y;
 
-        Debug.Log(rollingJumpDidFlag);
-        //Debug.Log(fallFlag);
+       //Debug.Log(rollingJumpDidFlag);
+        Debug.Log(fallFlag);
         
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
@@ -461,6 +463,11 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
+            if(wallClingJumpFlag == true)
+            {
+
+            }
+
             if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
@@ -473,7 +480,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doLanding", false);
                
             }
-            if(rollingJumpFlag == false)
+            if(rollingJumpFlag == false && wallClingJumpFlag == false)
             {
                 //ジャンプ時
                 anime.SetBool("doJump", true);
@@ -521,7 +528,6 @@ public class Player : MonoBehaviour
                 }
             }
 
-          
             if (jumpFlag == true)
             {
                     //落下モーションか着地モーションへ
@@ -579,6 +585,38 @@ public class Player : MonoBehaviour
             jumpCount = 0;
         }
 
+        if (other.gameObject.CompareTag("ClingJudgement"))
+        {
+            if (jumpFlag == true)
+            {
+                //落下モーションか着地モーションへ
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+                //anime.SetBool("doFall", false);
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    rollingJumpFlag = true;
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
+
+            if (jumpFlag == false)
+            {
+                wallClingJumpFlag = true;
+            }
+            jumpCount = 0;
+        }
+
+
+
+
         /*if (playerWallConC.ClingFlag)
         {
 
@@ -601,16 +639,16 @@ public class Player : MonoBehaviour
             }
             jumpCount = 0;
         }*/
-        /*if (other.gameObject.CompareTag("Wall"))
-        {
-            if (jumpFlag == true) 
+            /*if (other.gameObject.CompareTag("Wall"))
             {
-                jumpFlag = false;
-                anime.SetBool("doJump", false);
-                anime.SetBool("doIdle",true);
-            }
-            jumpCount = 0;
-        }*/
+                if (jumpFlag == true) 
+                {
+                    jumpFlag = false;
+                    anime.SetBool("doJump", false);
+                    anime.SetBool("doIdle",true);
+                }
+                jumpCount = 0;
+            }*/
     }
 
     private void OnCollisionExit(Collision collision)
@@ -618,6 +656,12 @@ public class Player : MonoBehaviour
         if(collision.gameObject.CompareTag("RollingJumpPoint"))
         {
             rollingJumpFlag = false;
+        }
+
+
+        if (collision.gameObject.CompareTag("ClingJudgement"))
+        {
+            wallClingJumpFlag = false; 
         }
     }
 
