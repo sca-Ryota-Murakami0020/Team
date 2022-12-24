@@ -312,7 +312,7 @@ public class Player : MonoBehaviour
                     anime.SetTrigger("domazeed");
                     anime.SetBool("doFall", false);
                 }
-                else// if(fallDamageHitFlag == false)
+                if(fallDamageHitFlag == false)
                 {
                     anime.SetBool("doFall", false);
                     anime.SetBool("doLandRolling", true);
@@ -535,10 +535,15 @@ public class Player : MonoBehaviour
                 }
             }
 
-            if(rollingJumpFlag && !jumpFlag)
+            if(jumpFlag == false && fallFlag == true)
+            {
+                anime.SetBool("doLandRolling",false);
+            }
+
+            /*if(rollingJumpFlag == true  && jumpFlag == false)
             {
                 rollingJumpFlag = false;
-            }
+            }*/
 
             jumpCount = 0;
         }
