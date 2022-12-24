@@ -220,8 +220,8 @@ public class Player : MonoBehaviour
     {
         playerTrans.y = transform.position.y;
 
-        Debug.Log(rollingJumpFlag);
-        //Debug.Log(fallFlag);
+        //Debug.Log(rollingJumpFlag);
+        Debug.Log(fallFlag);
         
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
@@ -287,11 +287,16 @@ public class Player : MonoBehaviour
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             //Debug.Log("fallenPosition" + fallenPosition);
 
-
+            RaycastHit hit;
             //　地面にレイが届いていたら
-            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
+            if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
             {
-                Debug.Log("届いてる");
+
+                if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
+                {
+                    Debug.Log("届いている");
+                }
+
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
@@ -328,8 +333,8 @@ public class Player : MonoBehaviour
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
 
-                //　最初の落下地点を設定
-                //Debug.Log("else");
+                //最初の落下地点を設定
+                Debug.Log("else");
                 fallenPosition = transform.position.y;
                 //Debug.Log(" fallenPosition" + fallenPosition);
                 fallenDistance = 0;
@@ -454,7 +459,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 &&jumpFlag ==false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
-            /*if(rollingJumpFlag == true)
+            if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
                 anime.SetTrigger("RollingJump");
@@ -464,7 +469,7 @@ public class Player : MonoBehaviour
                 jumpCount++;
                 anime.SetBool("doLanding", false);
                
-            }*/
+            }
             if(rollingJumpFlag == false)
             {
                 //ジャンプ時
