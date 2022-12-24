@@ -314,7 +314,8 @@ public class Player : MonoBehaviour
                 else
                 {
                    anime.SetBool("doFall",false);
-                   anime.SetBool("doLandRolling",false);
+                   //anime.SetBool("doLandRolling",false);
+
                 }
                 Debug.Log("“ü‚Á‚Ä‚é‚Ì‚Å‚Í");
                 fallFlag = false;            
