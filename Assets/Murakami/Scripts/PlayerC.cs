@@ -82,7 +82,6 @@ public class PlayerC : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private PlayerWallCon playerWallConC;
 
-
     //Å@Time.timeScaleÇ…ê›íËÇ∑ÇÈíl
     [SerializeField]
     private float timeScale = 0.1f;
@@ -460,7 +459,7 @@ public class PlayerC : MonoBehaviour
             {
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk", false);
-                Debug.Log("9");
+                Debug.Log("í‚é~íÜ");
             }
         }
 

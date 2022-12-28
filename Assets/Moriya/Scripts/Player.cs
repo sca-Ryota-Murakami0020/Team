@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     #region//プレイヤーステータス
     private int hp = 3;
     private int oldHp = 0;
-    private float speed = 10.0f;
+    private float speed = 5.0f;
     private float jumpSpeed =10.0f;
     private float fallSpeed = -0.1f; 
     private int playerMaxhp = 3;
@@ -85,7 +85,6 @@ public class Player : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private PlayerWallCon playerWallConC;
 
-
     //　Time.timeScaleに設定する値
     [SerializeField]
     private float timeScale = 0.1f;
@@ -94,7 +93,6 @@ public class Player : MonoBehaviour
     //　経過時間
     private float elapsedTime = 0f;
     
-
     //プレイヤーのダメージモーション時間
     private float damazeAnimeTime = 0;
  
@@ -108,7 +106,6 @@ public class Player : MonoBehaviour
     private GameObject mainCamera;
     private Vector3 mainCameraForwardDer;
     private Vector3 mainCameraRightDer;
-
 
     // 画像描画用のコンポーネント
     [SerializeField]
@@ -129,6 +126,7 @@ public class Player : MonoBehaviour
     private Vector3 playerTrans;
     Vector3 oldTrans;
     private Vector3 newTrans;
+
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -190,7 +188,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         //コンポーネント
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
@@ -209,7 +206,6 @@ public class Player : MonoBehaviour
         //子オブジェクト取得
         child =transform.GetChild(2).gameObject;
         
-
         //アニメーション初期化
         anime.SetBool("doIdle",true);
 
@@ -224,8 +220,10 @@ public class Player : MonoBehaviour
     {
         playerTrans.y = transform.position.y;
 
-       //Debug.Log(rollingJumpDidFlag);
-        Debug.Log(fallFlag);
+        //Debug.Log(rollingJumpDidFlag);
+        Debug.Log("fallFlag:" + fallFlag);
+        //Debug.Log("Idle" + anime.GetBool("doIdle"));
+        //Debug.Log("walk" + anime.GetBool("doWalk"));
         
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
@@ -248,13 +246,12 @@ public class Player : MonoBehaviour
         //anime.SetBool("doIdle", true);
 
         //hpが減った時の処理
-        if (hp < oldHp && hp>=1)
+        if (hp < oldHp && hp >= 1)
         {
             HpDisplay();
             oldHp = hp;
             state = STATE.DAMAGED;
             StartCoroutine(_hit());
- 
         }
 
         //ゲームオーバーシーンに飛ぶ式
@@ -281,12 +278,11 @@ public class Player : MonoBehaviour
                 anime.SetBool("doJump",false);
                 anime.SetBool("doLandRolling", false);
             }
-            //Debug.Log("if");
-           
+            //Debug.Log("if");        
             //徐々に落下速度を加速させる
             //transform.position -= transform.up * Time.deltaTime * fallSpeed;
             //Debug.Log("自分の位置"+transform.position.y);
-            //　落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+            //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             //Debug.Log("fallenPosition" + fallenPosition);
@@ -325,31 +321,31 @@ public class Player : MonoBehaviour
                    anime.SetBool("doLandRolling",false);
                    anime.SetBool("doLanding",true);
                    //着地のモーションを入れる
-                   Debug.Log("h");
+                   Debug.Log("着地モーションの出力");
                 }
+                Debug.Log("fallFlagをfalseに変換する");
                 fallFlag = false;            
             }
         }
         else
         {
             //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
-            //　地面にレイが届いていなければ落下地点を設定
+            //地面にレイが届いていなければ落下地点を設定
             if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
             {
-               //StartCoroutine(PlayerTransform());
+              //StartCoroutine(PlayerTransform());
               //if (sameTransFlag == true)
-              { 
+              //{ 
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
-
                 //最初の落下地点を設定
                 //Debug.Log("else");
                 fallenPosition = transform.position.y;
-                //Debug.Log(" fallenPosition" + fallenPosition);
+                //Debug.Log("fallenPosition" + fallenPosition);
                 fallenDistance = 0;
                 fallFlag = true;
                 sameTransFlag = false;
-              }
+              //}
             }
         }
         #endregion
@@ -379,15 +375,16 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
+
             if (jumpFlag == false)
             {
               _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
             }
+
             if(jumpFlag == true)
             {
                _parent.transform.position -= mainCameraRightDer * (speed) * Time.deltaTime;
             }
-
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
 
@@ -400,10 +397,12 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
+
             if (jumpFlag == false)
             {
                 _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
             }
+
             if(jumpFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * (speed) * Time.deltaTime;
@@ -458,8 +457,11 @@ public class Player : MonoBehaviour
         if(!Input.anyKey)
         {
             moveFlag = false;
+            //Debug.Log("停止中");
+            //Debug.Log("fallFlag:" + fallFlag);
             if(fallFlag == false)
             {
+                Debug.Log("停止中");
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
             }              
@@ -476,15 +478,15 @@ public class Player : MonoBehaviour
             if(rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
-                Debug.Log("mi");
+                //Debug.Log("mi");
                 rollingJumpDidFlag = true;
                 anime.SetTrigger("RollingJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
                 jumpCount++;
-                anime.SetBool("doLanding", false);
-               
+                anime.SetBool("doLanding", false);              
             }
+
             if(rollingJumpFlag == false && wallClingJumpFlag == false)
             {
                 //ジャンプ時
@@ -496,7 +498,6 @@ public class Player : MonoBehaviour
             }
         }
         #endregion
-
     }
 
     private void OnCollisionEnter(Collision other)
@@ -559,8 +560,8 @@ public class Player : MonoBehaviour
                 anime.SetBool("doLandRolling",false);
             }
 
-
             jumpCount = 0;
+
         }
 
         if (other.gameObject.CompareTag("RollingJumpPoint"))
@@ -627,7 +628,6 @@ public class Player : MonoBehaviour
 
         /*if (playerWallConC.ClingFlag)
         {
-
             if (jumpFlag == true)
             {
                 //落下モーションか着地モーションへ
@@ -743,6 +743,7 @@ public class Player : MonoBehaviour
         StopCoroutine("StartSlowmotion");
         StopCoroutine("Slowmotion");
     }
+
     //スローモーションするコルーチン
     private IEnumerator Slowmotion()
     {
@@ -797,7 +798,6 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(flashInterval);
             //spriteRendererをオン
             smr.enabled = true;
-
         }
         //デフォルト状態にする
         state = STATE.NOMAL;
@@ -844,8 +844,7 @@ public class Player : MonoBehaviour
             anime.SetBool("doDamaze",false);
             anime.SetBool("doIdle",true);
             break;
-        }
-        
+        }      
     }
     #endregion
 }
