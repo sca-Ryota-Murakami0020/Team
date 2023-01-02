@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CameraC : MonoBehaviour
 {
+    #region//stageが変わっても変わらない変数
     //視点となるオブジェクト
     [SerializeField] private GameObject Player = null;
     //旋回した時のx座標
@@ -12,47 +13,34 @@ public class CameraC : MonoBehaviour
     //旋回した時のｚ座標
     private float zpos;
     //実際にカメラを向ける座標//カメラとプレイヤーとの距離
-    private Vector3 D = Vector3.zero;//Lookpos
+    private Vector3 D= Vector3.zero;//Lookpos
     //Playerを追従しないでカメラの向きだけ変える範囲
     private float lookPlayerdistance = 0.1f;
-    //PLayerを追従する速度
-    private float cameraSpeed = 4.0f;//=followSmooth 
-    //視点からカメラまでの距離
-    private float cameraDistance = 15.5f;
-    //デフォルトの高さ
-    private float cameraHeight = 10.5f;
-    //現在のカメラの高さ
-    private float nowCameraHeight = 3.0f;//currentCameraHeight = 1.0f;
-    //視点からカメラの距離の遊び
-    private float cPDistance = 0.5f;//cameraPlayDiatance = 0.3f; 
-    //離れる時の速度
-    private float leaveCamera = 10.0f;//leaveSmooth
-    //カメラの最低高度
-    private float cameraHeightMin = -5.0f;
-    //カメラの最高高度
-    private float cameraHeightMax = 8.5f;
     //横方向のマウスの移動量
     private float mousex;
     //縦方向のマウスの移動量
     private float mousey;
+    #endregion
 
-    private Vector3 dir;
+    #region//stageによって変わる数値
+    //PLayerを追従する速度
+    [SerializeField] private float cameraSpeed;// = 4.0f;//=followSmooth 
+    //視点からカメラまでの距離
+    [SerializeField] private float cameraDistance;// = 1.5f;
+    //デフォルトの高さ
+    [SerializeField] private float cameraHeight;// = 1.0f;
+    //現在のカメラの高さ
+    [SerializeField] private float nowCameraHeight;// = 1.0f;//currentCameraHeight = 1.0f;
+    //視点からカメラの距離の遊び
+    [SerializeField] private float cPDistance;// = 0.3f;//cameraPlayDiatance = 0.3f; 
+    //離れる時の速度
+    [SerializeField] private float leaveCamera;// = 20.0f;//leaveSmooth
+    //カメラの最低高度
+    [SerializeField] private float cameraHeightMin;// = -5.0f;
+    //カメラの最高高度
+    [SerializeField] private float cameraHeightMax;// = 8.5f;
+    #endregion
 
-    private Vector3 cameraPos;
-
-    private Vector3 cameraFor;
-
-    private Vector3 CameraPos
-    {
-        get { return this.cameraPos;}
-        set { this.cameraPos = value;}
-    }
-
-    private Vector3 CameraFor
-    {
-        get { return this.cameraFor;}
-        set { this.CameraFor = value;}
-    }
 
     //視点とカメラ座標を随時更新
     void Update()
@@ -62,7 +50,7 @@ public class CameraC : MonoBehaviour
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
 
-        if (Mathf.Abs(mousex) > 0.008f || Mathf.Abs(mousey) > 0.005f)
+        if (Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.06f)
         {
             Roll(mousex, mousey);
         }
@@ -83,12 +71,13 @@ public class CameraC : MonoBehaviour
             //一定範囲を超えたら目標に視点に近づける
             float move_distance = (distance - lookPlayerdistance) * (Time.deltaTime * cameraSpeed);
             D += vec.normalized * move_distance;
+            //Debug.Log("UpdateLook");
+            //Debug.Log("D" + D);
         }
         if (Input.GetKey(KeyCode.RightShift))
         {
             Reset();
         }
-        this.cameraFor = D;
     }
 
     //カメラ座標の制御
@@ -110,7 +99,6 @@ public class CameraC : MonoBehaviour
 
         //新しいカメラの位置を求める
         Vector3 camera_pos = this.transform.position + (xz_vec.normalized * move_distance);
-        cameraPos = camera_pos;
 
         //高さは現在紫檀を常に一定で維持する
         camera_pos.y = D.y + nowCameraHeight;
@@ -125,7 +113,7 @@ public class CameraC : MonoBehaviour
         Vector3 pos = this.transform.position;
 
         //横移動
-        pos += this.transform.right * x;
+        pos += this.transform.right * x / 5.0f;
 
         //縦移動
         nowCameraHeight = Mathf.Clamp(nowCameraHeight + y, cameraHeightMin, cameraHeightMax);
@@ -165,7 +153,6 @@ public class CameraC : MonoBehaviour
         //視点を更新する
         this.transform.LookAt(D);
 
-        this.cameraFor = D;
     }
 }
 
