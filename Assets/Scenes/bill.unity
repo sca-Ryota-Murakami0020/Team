@@ -2677,14 +2677,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1996700184}
-  cameraSpeed: 4
-  cameraDistance: 1.5
+  cameraSpeed: 2
+  cameraDistance: 3
   cameraHeight: 1
   nowCameraHeight: 1
   cPDistance: 0.3
-  leaveCamera: 20
-  cameraHeightMin: -5
-  cameraHeightMax: 8.5
+  leaveCamera: 10
+  cameraHeightMin: -1
+  cameraHeightMax: 3
 --- !u!82 &1860959585
 AudioSource:
   m_ObjectHideFlags: 0

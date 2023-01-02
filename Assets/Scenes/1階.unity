@@ -4685,6 +4685,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1369443315}
+  cameraSpeed: 2
+  cameraDistance: 3
+  cameraHeight: 2
+  nowCameraHeight: 2
+  cPDistance: 0.3
+  leaveCamera: 20
+  cameraHeightMin: -2
+  cameraHeightMax: 5
 --- !u!224 &1640370851
 RectTransform:
   m_ObjectHideFlags: 0

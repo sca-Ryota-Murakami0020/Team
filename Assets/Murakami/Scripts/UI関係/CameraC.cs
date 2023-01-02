@@ -50,7 +50,7 @@ public class CameraC : MonoBehaviour
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
 
-        if (Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.06f)
+        if (Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f)
         {
             Roll(mousex, mousey);
         }
