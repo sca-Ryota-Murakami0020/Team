@@ -31,6 +31,8 @@ public class totalGameManager : MonoBehaviour
     private bool jumpFlag = false;
     //移動したときの効果音フラグ
     private bool moveFlag = false;
+    //Hpが０になったときの効果音
+    private bool disappearHpFlag = false;
     #endregion
 
     #region//タイム関係ステータス
@@ -111,43 +113,49 @@ public class totalGameManager : MonoBehaviour
         set { this.decisionFlag = value; }
     }
 
-    private bool ReturnFlag//取り消し時
+    public bool ReturnFlag//取り消し時
     {
         get { return this.returnFlag; }
         set { this.returnFlag = value; }
     }
 
-    public float[] BestTime
+    public bool DisappeareHp//HP0になった時
+    {
+        get { return this.disappearHpFlag;}
+        set { this.disappearHpFlag = value;}
+    }
+
+    public float[] BestTime//
     {
         get { return this.bestTime; }
         set { this.bestTime = value; }
     }
 
-    public float TotalTime
+    public float TotalTime//
     {
         get { return this.totalTime; }
         set { this.totalTime = value; }
     }
 
-    public bool CounterFlag
+    public bool CounterFlag//
     {
         get { return this.counterFlag; }
         set { this.counterFlag = value; }
     }
 
-    public string[] TimeText
+    public string[] TimeText//
     {
         get { return this.timer; }
         set { this.timer = value; }
     }
 
-    public string DispTime
+    public string DispTime//
     {
         get { return this.timeScore; }
         set { this.timeScore = value; }
     }
 
-    public int LoadCout
+    public int LoadCout//
     {
         get { return this.loadCount; }
         set { this.loadCount = value; }
@@ -254,7 +262,14 @@ public class totalGameManager : MonoBehaviour
         {
             audios.clip = bgms[10];
             audios.Play();
-            decisionFlag = false;
+            returnFlag = false;
+        }
+
+        if(disappearHpFlag == true)
+        {
+            audios.clip = bgms[11];
+            audios.Play();
+            disappearHpFlag = false;
         }
         #endregion
 
