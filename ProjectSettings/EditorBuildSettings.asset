@@ -4,5 +4,38 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/FirstLoadTitle.unity"
+    guid: 29247205c0cfc5a48a8fb0bb233ad880
+  - enabled: 1
+    path: Assets/Scenes/TitleScene.unity
+    guid: 0c8f8ec99004ebd439db4e0def9f5a31
+  - enabled: 1
+    path: "Assets/Scenes/\u64CD\u4F5C\u8AAC\u660E.unity"
+    guid: f905e088b877eb74da5ac2cec7ad7808
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadBill.unity"
+    guid: 1d10bd2119e30ac4396e8e2db80c32b9
+  - enabled: 1
+    path: Assets/Scenes/bill.unity
+    guid: dc02210a7632e5249b541e463dffbda0
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadFirstStage.unity"
+    guid: 203d6e1088e16604389ffaf1bbefb3a2
+  - enabled: 1
+    path: "Assets/Scenes/1\u968E.unity"
+    guid: df3769bcd414f21498a42faf05fc593a
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/AnyLoadTitle.unity"
+    guid: 087b21bf5481ac04abf072e1a0b0dc7e
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: b7732543fde2127499ad3c712b3f5173
+  - enabled: 1
+    path: Assets/Scenes/GoalScene.unity
+    guid: dcbcf1237cfe61d44b8ae8e2948b218d
+  - enabled: 1
+    path: "Assets/Scenes/\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u30B7\u30FC\u30F3.unity"
+    guid: 76b96ca7f0e845241b79dd27745e3e32
   m_configObjects: {}
