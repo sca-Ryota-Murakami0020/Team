@@ -11,8 +11,9 @@ public class Player : MonoBehaviour
     #region//プレイヤーステータス
     private int hp = 3;
     private int oldHp = 0;
-    private float speed = 5.0f;
-    private float jumpSpeed =10.0f;
+    [SerializeField] private float originSpeed = 5.0f;
+    [SerializeField] private float jumpSpeed =10.0f;
+    private float speed;
     private float fallSpeed = -0.1f; 
     private int playerMaxhp = 3;
     private int itemPoint = 0;
@@ -71,6 +72,7 @@ public class Player : MonoBehaviour
     private bool speedAccelerationFlag = false;
     private float speedCTime = 0;
     private float speedTime = 10.0f;
+    private float accelSpeed;
 
     //初期化用
     private float rSpeed = 10.0f;
@@ -81,7 +83,7 @@ public class Player : MonoBehaviour
     private BoxCollider bc;
 
     //GMとポーズ画面関係のスプリクトの定義
-    // private GManager gm;
+    private totalGameManager gm;
     private PasueDisplayC pasueDisplayC;
     private PlayerWallCon playerWallConC;
 
@@ -191,13 +193,13 @@ public class Player : MonoBehaviour
         //コンポーネント
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
-        //gm = FindObjectOfType<GManager>();
+        gm = FindObjectOfType<totalGameManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         playerWallConC = FindObjectOfType<PlayerWallCon>();
         this.anime = GetComponent<Animator>();
 
         //hp初期化
-        hp = playerMaxhp;
+        hp = gm.PlayerHp;
         oldHp = hp;
  
         //親オブジェクト取得
@@ -213,6 +215,9 @@ public class Player : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
+
+        //スピードの初期化
+        speed = originSpeed;
     }
 
     // Update is called once per frame
@@ -222,9 +227,13 @@ public class Player : MonoBehaviour
 
         //Debug.Log(rollingJumpDidFlag);
         Debug.Log("fallFlag:" + fallFlag);
-        //Debug.Log("Idle" + anime.GetBool("doIdle"));
+        Debug.Log("HP:" + hp);
+        Debug.Log("GMHP:" + gm.PlayerHp);
+        //De//bug.Log("Idle" + anime.GetBool("doIdle"));
         //Debug.Log("walk" + anime.GetBool("doWalk"));
         
+        gm.PlayerHp = hp;
+
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
         //Debug.Log(hp);
@@ -302,7 +311,7 @@ public class Player : MonoBehaviour
                     {
                         anime.SetBool("doFall", false);
                         anime.SetBool("doLandRolling", true);
-
+                        speedAccelerationFlag = true;
                     }
                     if (fallDamageHitFlag == true)
                     {
@@ -321,9 +330,9 @@ public class Player : MonoBehaviour
                    anime.SetBool("doLandRolling",false);
                    anime.SetBool("doLanding",true);
                    //着地のモーションを入れる
-                   Debug.Log("着地モーションの出力");
+                   //Debug.Log("着地モーションの出力");
                 }
-                Debug.Log("fallFlagをfalseに変換する");
+                //Debug.Log("fallFlagをfalseに変換する");
                 fallFlag = false;            
             }
         }
@@ -353,11 +362,15 @@ public class Player : MonoBehaviour
         //アニメーションしたら加速
         if (speedAccelerationFlag == true)
         {
+            //StartCoroutine(StartAcceleration());
             speedCTime++;
-            speed +=5.0f;
+            accelSpeed = originSpeed * 1.2f;
+            speed = accelSpeed;
+            Debug.Log("加速処理にはいった");
             if(speedTime < speedCTime)
             {
-                speed-=5.0f;
+                Debug.Log("加速処理終了");
+                speed = originSpeed;
                 speedCTime = 0;
                 speedAccelerationFlag = false;
             }
@@ -461,7 +474,7 @@ public class Player : MonoBehaviour
             //Debug.Log("fallFlag:" + fallFlag);
             if(fallFlag == false)
             {
-                Debug.Log("停止中");
+                //Debug.Log("停止中");
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
             }              
@@ -512,11 +525,11 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("じめん");
+            //Debug.Log("じめん");
 
             if (rollingJumpDidFlag == true && jumpFlag == true)
             {
-                Debug.Log("asuta");
+                //Debug.Log("asuta");
                 jumpFlag = false;
                 rollingJumpDidFlag = false;
                 //anime.SetBool("RollingAriIdle",false);
@@ -577,7 +590,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 rollingJumpDidFlag = false;
                 anime.SetBool("RollingAriIdle",false);
-                Debug.Log("haitta");
+                //Debug.Log("haitta");
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
                 {
@@ -678,38 +691,13 @@ public class Player : MonoBehaviour
         //アイテムに当たったら
         if (other.gameObject.CompareTag("Item"))
         {
-            itemPoint++;
+            gm.PlayerIC++;
             other.gameObject.SetActive(false);
         }
-
-        //
-        /*if (other.gameObject.CompareTag(""))
-        {
-            //SceneManager.LoadScene("IndoorScene");
-        }*/
-
-        //プレイヤーが回復アイテムに触れたら
-      /*  if (other.gameObject.CompareTag("HpItem"))
-        {
-            int itemHp = 2;
-            //hp+アイテム取った時の回復量がMaxhpより多かったら回復量を減らす
-            if (hp + itemHp >= playerMaxhp)
-            {
-                itemHp = playerMaxhp - hp;
-                hp += itemHp;
-                oldHp = hp;
-            }
-            else
-            {
-                hp += itemHp;
-                oldHp = hp;
-            }
-           // gm.HpRecoveryFlag = true;
-            other.gameObject.SetActive(false);
-        }*/
     }
 
     //死んだときにリセットする値
+    /*
     private void PlayerRisetController()
     {
         playerMaxhp = rMaxhp;
@@ -721,7 +709,7 @@ public class Player : MonoBehaviour
         {
             heartArray[i].gameObject.SetActive(true);
         }
-    }
+    }*/
 
     //Hp減った時の処理
     private void HpDisplay()
@@ -769,7 +757,7 @@ public class Player : MonoBehaviour
             //スローモーション解除
             if (elapsedTime > slowTime)
             {
-                Debug.Log("とけた");
+                //Debug.Log("とけた");
                 Time.timeScale = 1f;
                 elapsedTime = 0.0f;
                 StopCoroutine("Slowmotion");
@@ -810,13 +798,13 @@ public class Player : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            PlayerRisetController();
+            //PlayerRisetController();
             //SceneManager.LoadScene("GameOverScene");
             break;
         }
     }
 
-    private IEnumerator PlayerTransform()
+    /*private IEnumerator PlayerTransform()
     {
         while (true)
         {
@@ -833,7 +821,7 @@ public class Player : MonoBehaviour
             }
             break;
         }
-    }
+    }*/
 
     private IEnumerator DamageTime()
     {
@@ -846,5 +834,10 @@ public class Player : MonoBehaviour
             break;
         }      
     }
+
+    /*private IEnumerator StartAcceleration()
+    {
+
+    }*/
     #endregion
 }

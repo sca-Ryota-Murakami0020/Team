@@ -21,6 +21,7 @@ TagManager:
   - ClingJudgement
   - WallJumpJudgement
   - RollingJumpPoint
+  - GoalPoint
   layers:
   - Default
   - TransparentFX

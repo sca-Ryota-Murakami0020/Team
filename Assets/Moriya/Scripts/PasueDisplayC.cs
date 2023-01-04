@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PasueDisplayC : MonoBehaviour
 {
     //ポーズ関係のスプリクト
-    private Player playerC;
+    private totalGameManager totalGM;
 
     //ポーズが開いたかのフラグ
     private bool menuFlag = false;
@@ -40,7 +40,7 @@ public class PasueDisplayC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerC = FindObjectOfType<Player>();
+        totalGM = FindObjectOfType<totalGameManager>();
     }
 
     // Update is called once per frame
@@ -85,10 +85,10 @@ public class PasueDisplayC : MonoBehaviour
             Application.Quit();
             //エディタ以外の操作
             #endif*/
-              // SceneManager.LoadScene("FirstScene");
+            ResetCommand();
+            SceneManager.LoadScene("LoadBill");
             Time.timeScale = 1f;
             menuFlag = false;
-            ResetCommand();
         }
         //tabキー押したとき
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -130,15 +130,13 @@ public class PasueDisplayC : MonoBehaviour
 
     private void ResetCommand()
     {
-        playerC.PlayerMaxHp = 3;
-        playerC.PlayerHp = playerC.PlayerMaxHp;
-        playerC.PlayerSpeed = 10.0f;
-        playerC.JumpCount = 0;
-        for (int i = 0; i < playerC.PlayerHp; i++)
+        totalGM.PlayerHp = 3;
+        totalGM.PlayerIC = 0;
+        totalGM.TimeCounter = false;
+        /*for (int i = 0; i < tatalGM.PlayerHp; i++)
         {
-            playerC.HeartArray[i].gameObject.SetActive(true);
-        }
-
+            tatalGM.HeartArray[i].gameObject.SetActive(true);
+        }*/
     }
 
 }

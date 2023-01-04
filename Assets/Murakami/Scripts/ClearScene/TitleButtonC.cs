@@ -19,6 +19,6 @@ public class TitleButtonC : MonoBehaviour
 
     public void GotoTitle()
     {
-        SceneManager.LoadScene("TitleScene");
+        SceneManager.LoadScene("AnyLoadTitle");
     }
 }

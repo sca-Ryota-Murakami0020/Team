@@ -51,13 +51,13 @@ public class PlayerWallCon : MonoBehaviour
         
         if (other.gameObject.CompareTag("WallJumpPoint"))
         {
-            Debug.Log("a");
+            //Debug.Log("a");
             wallJumpFlag = true;
         }
 
         if (other.gameObject.CompareTag("ClingPoint"))
         {
-            Debug.Log("i");
+            //Debug.Log("i");
             clingFlag = true;
         }
 

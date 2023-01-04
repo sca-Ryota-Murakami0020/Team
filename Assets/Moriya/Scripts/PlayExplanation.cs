@@ -16,7 +16,7 @@ public class PlayExplanation : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            SceneManager.LoadScene("FirstScene");
+            SceneManager.LoadScene("LoadBill");
         }
     }
 

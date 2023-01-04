@@ -27,15 +27,15 @@ EditorBuildSettings:
     path: "Assets/Scenes/1\u968E.unity"
     guid: df3769bcd414f21498a42faf05fc593a
   - enabled: 1
-    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/AnyLoadTitle.unity"
-    guid: 4fcb945eb21710f46bc9a8383ff1e971
+    path: Assets/Scenes/GoalScene.unity
+    guid: dcbcf1237cfe61d44b8ae8e2948b218d
   - enabled: 1
     path: Assets/Scenes/GameOverScene.unity
     guid: b7732543fde2127499ad3c712b3f5173
   - enabled: 1
-    path: Assets/Scenes/GoalScene.unity
-    guid: dcbcf1237cfe61d44b8ae8e2948b218d
-  - enabled: 1
     path: "Assets/Scenes/\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u30B7\u30FC\u30F3.unity"
     guid: 76b96ca7f0e845241b79dd27745e3e32
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/AnyLoadTitle.unity"
+    guid: 4fcb945eb21710f46bc9a8383ff1e971
   m_configObjects: {}

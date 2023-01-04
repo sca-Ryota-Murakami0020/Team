@@ -14,7 +14,7 @@ public class ItemCountCon : MonoBehaviour
     private float oldItemCount = 0;
     //GMとプレイヤーとカメラスプリクトの定義
     //private GManeger gmaneger;
-    private Player player;
+    private totalGameManager totalGM;
     //アイテム記録用変数
     private int item = 0;
 
@@ -23,11 +23,11 @@ public class ItemCountCon : MonoBehaviour
     {
         //GMとプレイヤーとカメラスプリクトの呼び出し
         //this.gmaneger = FindObjectOfType<GManeger>();
-        this.player = FindObjectOfType<Player>();
+        this.totalGM = FindObjectOfType<totalGameManager>();
         //テキストを使えるようにする
         itemText = GetComponent<Text>();
         //GMが定義されていたら
-        if (player != null)
+        if (totalGM != null)
         {
             //テキストを画面に出す
             itemText.text = "アイテムの数:" + item;
@@ -37,7 +37,7 @@ public class ItemCountCon : MonoBehaviour
     void Update()
     {
         // //倒した敵の数を表記変更する場合
-        item = player.ItemPoint;
+        item = totalGM.PlayerIC;
         //記録用変数とGMから持ってきた値を保存する変数の値が違ったら
         if (oldItemCount != item)
         {

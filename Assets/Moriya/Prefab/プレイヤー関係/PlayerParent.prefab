@@ -146,6 +146,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
   m_PrefabInstance: {fileID: 8798138640205495633}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &6314988335874278202 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5928395085533954453, guid: 742ae5de61975cc408add0a383bbf533, type: 3}
+  m_PrefabInstance: {fileID: 8798138640205495633}
+  m_PrefabAsset: {fileID: 0}
 --- !u!54 &4962767269887510644
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,3 +199,31 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4174694748530694819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563644905687810048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9543a206157dc8498127caba9f8349e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  jumpSpeed: 10
+  parentTran: {fileID: 3500261077386611486}
+  anime: {fileID: 2670541578645781811}
+  rayPosition: {fileID: 9048854286861818554}
+  rayRange: 0.5
+  takeDamageDistance: 3
+  timeScale: 0.1
+  mainCamera: {fileID: 0}
+  smr: {fileID: 6314988335874278202}
+  flashInterval: 0.2
+  loopCount: 12
+  heartArray:
+  - {fileID: 2799174092439215535, guid: b8f86f0beb0ac364b8d928331feafa1a, type: 3}
+  - {fileID: 3968110149181625485, guid: 5de7aff205f2f6f4f9b241d6768fd10a, type: 3}
+  - {fileID: 2628503446174141760, guid: d7e18c061c913e245853acd51169c3d7, type: 3}

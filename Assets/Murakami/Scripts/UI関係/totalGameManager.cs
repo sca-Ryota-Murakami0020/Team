@@ -45,17 +45,24 @@ public class totalGameManager : MonoBehaviour
     //ハイスコアのデータ格納
     private string[] timer;
     //ハイスコア更新を促す用のフラグ
-    private bool counterFlag;
+    //private bool counterFlag;
     //プレイ開始とプレイ終了の判定をするフラグ
-    private bool startFlag;
+    private bool timeCounter;
     //スコアの個数を数えるための変数
     private int loadCount;
 
-    [SerializeField] private Text nowPlayingText;
+    //[SerializeField] private Text nowPlayingText;
 
-    private PlayerC pl;
+    private Player pl;
 
     private TextMovement textM;
+    #endregion
+
+    #region//プレイヤー関係
+    //引き継ぐプレイヤーのHp
+    private int playerHp = 3;
+    //引き継ぐアイテムカウントの変数
+    private int playerItemCount = 0;
     #endregion
 
     #region//プロパティ
@@ -125,40 +132,59 @@ public class totalGameManager : MonoBehaviour
         set { this.disappearHpFlag = value;}
     }
 
-    public float[] BestTime//
+    public float[] BestTime//ハイスコアの数値格納配列
     {
         get { return this.bestTime; }
         set { this.bestTime = value; }
     }
 
-    public float TotalTime//
+    public float TotalTime//1プレイ時間
     {
         get { return this.totalTime; }
+
         set { this.totalTime = value; }
     }
 
-    public bool CounterFlag//
+    /*public bool CounterFlag//
     {
         get { return this.counterFlag; }
         set { this.counterFlag = value; }
-    }
+    }*/
 
-    public string[] TimeText//
+    public string[] TimeText//ハイスコアの文字列格納配列
     {
         get { return this.timer; }
         set { this.timer = value; }
     }
 
-    public string DispTime//
+    public string DispTime//プレイ中に表示するタイム表記
     {
         get { return this.timeScore; }
         set { this.timeScore = value; }
     }
 
-    public int LoadCout//
+    public int LoadCout//クリアした回数
     {
         get { return this.loadCount; }
         set { this.loadCount = value; }
+    }
+
+    public int PlayerHp//プレイヤーのＨｐ
+    {
+        get { return this.playerHp;}
+        set { this.playerHp = value;}
+    }
+
+    public int PlayerIC//プレイヤーの鍵の所持数
+    {
+        get { return this.playerItemCount;}
+        set { this.playerItemCount = value;}
+    }
+
+    public bool TimeCounter//計測中か判定する
+    {
+        get { return this.timeCounter;}
+        set { this.timeCounter = value;}
     }
     #endregion
 
@@ -170,11 +196,10 @@ public class totalGameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
-        startFlag = false;
+        timeCounter = false;
         //初期化
         SceneManager.sceneLoaded += StageLoaded;
         loadCount = 0;
@@ -186,8 +211,8 @@ public class totalGameManager : MonoBehaviour
         {
             timer[i] = i.ToString();
         }
-        nowPlayingText = GetComponentInChildren<Text>();
-        pl = GameObject.Find("Player").GetComponent<PlayerC>();
+        //nowPlayingText = GetComponentInChildren<Text>();
+        pl = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -274,12 +299,19 @@ public class totalGameManager : MonoBehaviour
         #endregion
 
         #region //時間計測（村上担当）
-        if (startFlag == true)
+        if (timeCounter == true)
         {
             this.totalTime += Time.deltaTime;
-            nowPlayingText.text = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
+            //nowPlayingText.text = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
         }
-        if(!pl.AliveFlag) LoadGameClear();
+
+        if(timeCounter == false)
+        {
+            this.totalTime = 0.0f;
+            //nowPlayingText.text = "00:00:00";
+        }
+
+        //if(!pl.AliveFlag) LoadGameClear();
         #endregion
 
     }
@@ -346,16 +378,23 @@ public class totalGameManager : MonoBehaviour
     #region//呼び出したシーンに応じての処理
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
     {
-        if (nextScene.name == "村上用")
+        if (nextScene.name == "bill")
         {
-            startFlag = true;
-            //Stage2が読み込まれたときにしたい処理
-            //if(loadCount >= 3) bestTime[3] = 0.0f;
+            timeCounter = true;
+            //nowPlayingText = GetComponentInChildren<Text>();
         }
 
-        if (nextScene.name == "村上用Title")
+        if (nextScene.name == "FirstStage")
         {
-            startFlag = false;
+            timeCounter = true;
+            //nowPlayingText = GetComponentInChildren<Text>();
+        }
+
+        if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene")
+        {
+            timeCounter = false;
+            playerHp = 3;
+            playerItemCount = 0;
         }
 
         if (nextScene.name == "GoalScene")
