@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class loadTitle : MonoBehaviour
 {
-    float maxload = 100f;
-    public Slider loadGazeSlider = null;
+    float maxload = 1.0f;
+    [SerializeField] private Slider loadGazeSlider = null;
     private float nowGaze = 0.0f;
     private GameObject LoadCanvas;
 
@@ -26,9 +26,9 @@ public class loadTitle : MonoBehaviour
     void Update()
     {
         nowGaze += Time.deltaTime;
-        loadGazeSlider.value = nowGaze / 3.0f;
+        loadGazeSlider.value = nowGaze / 5.0f;
         Debug.Log("Loading...");
-        if (loadGazeSlider.value == maxload)
+        if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadSceneAsync("TitleScene");
             Debug.Log("タイトルを呼び出した");

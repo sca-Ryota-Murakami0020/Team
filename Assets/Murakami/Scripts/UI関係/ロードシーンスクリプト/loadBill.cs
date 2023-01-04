@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 public class loadBill : MonoBehaviour
 {
     private float nowGaze = 0.0f;
-    private float maxload = 100f;
-    Slider loadGazeSlider;
+    private float maxload = 1.0f;
+    [SerializeField] private Slider loadGazeSlider;
+    private GameObject LoadCanvas;
 
     void Start()
     {
 
-        loadGazeSlider = GetComponent<Slider>();
+        loadGazeSlider = LoadCanvas.transform.Find("LoadBar").GetComponent<Slider>();
 
         //スライダーの最大値の設定
         loadGazeSlider.maxValue = maxload;
@@ -25,10 +26,10 @@ public class loadBill : MonoBehaviour
     void Update()
     {
         nowGaze += Time.deltaTime;
-        loadGazeSlider.value = nowGaze / 3.0f;
-        if (loadGazeSlider.value == maxload)
+        loadGazeSlider.value = nowGaze / 5.0f;
+        if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadSceneAsync("TitleScene");
+            SceneManager.LoadSceneAsync("bill");
             Debug.Log("ビルを呼び出した");
         }
     }
