@@ -228,7 +228,7 @@ public class Player : MonoBehaviour
         //Debug.Log(rollingJumpDidFlag);
         Debug.Log("fallFlag:" + fallFlag);
         Debug.Log("HP:" + hp);
-        Debug.Log("GMHP:" + gm.PlayerHp);
+        //Debug.Log("GMHP:" + gm.PlayerHp);
         //De//bug.Log("Idle" + anime.GetBool("doIdle"));
         //Debug.Log("walk" + anime.GetBool("doWalk"));
         
@@ -799,7 +799,7 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             //PlayerRisetController();
-            //SceneManager.LoadScene("GameOverScene");
+            SceneManager.LoadScene("GameOverScene");
             break;
         }
     }

@@ -19,11 +19,11 @@ public class GameOverS : MonoBehaviour
 
     public void Retry()
     {
-        SceneManager.LoadScene("FirstScene");
+        SceneManager.LoadScene("LoadBill");
     }
 
     public void Titleback()
     {
-        SceneManager.LoadScene("TitleScene");
+        SceneManager.LoadScene("AnyLoadTitle");
     }
 }

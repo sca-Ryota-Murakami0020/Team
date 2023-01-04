@@ -27,6 +27,6 @@ public class RetryButtonC : MonoBehaviour
         olt.MinuteTime = 0;
         olt.HourTime = 0;
         */
-        SceneManager.LoadScene("FirstScene");
+        SceneManager.LoadScene("LoadBill");
     }
 }
