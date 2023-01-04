@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/FirstLoadTitle.unity"
-    guid: 29247205c0cfc5a48a8fb0bb233ad880
+    guid: 0bd6a6c1c579b3b4da8f941a2c7bfed6
   - enabled: 1
     path: Assets/Scenes/TitleScene.unity
     guid: 0c8f8ec99004ebd439db4e0def9f5a31
@@ -16,19 +16,19 @@ EditorBuildSettings:
     guid: f905e088b877eb74da5ac2cec7ad7808
   - enabled: 1
     path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadBill.unity"
-    guid: 1d10bd2119e30ac4396e8e2db80c32b9
+    guid: 127df03576b5a7940a2aa43ef4ad9ee6
   - enabled: 1
     path: Assets/Scenes/bill.unity
     guid: dc02210a7632e5249b541e463dffbda0
   - enabled: 1
     path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadFirstStage.unity"
-    guid: 203d6e1088e16604389ffaf1bbefb3a2
+    guid: 58d89133210cebe4181e52e632c3b560
   - enabled: 1
     path: "Assets/Scenes/1\u968E.unity"
     guid: df3769bcd414f21498a42faf05fc593a
   - enabled: 1
     path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/AnyLoadTitle.unity"
-    guid: 087b21bf5481ac04abf072e1a0b0dc7e
+    guid: 4fcb945eb21710f46bc9a8383ff1e971
   - enabled: 1
     path: Assets/Scenes/GameOverScene.unity
     guid: b7732543fde2127499ad3c712b3f5173

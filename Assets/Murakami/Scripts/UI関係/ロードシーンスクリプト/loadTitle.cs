@@ -9,12 +9,12 @@ public class loadTitle : MonoBehaviour
     float maxload = 1.0f;
     [SerializeField] private Slider loadGazeSlider = null;
     private float nowGaze = 0.0f;
-    private GameObject LoadCanvas;
+    //private GameObject LoadCanvas;
 
     void Start()
     {
 
-        loadGazeSlider = LoadCanvas.transform.Find("LoadBar").GetComponent<Slider>();
+        //oadGazeSlider = LoadCanvas.transform.Find("LoadBar").GetComponent<Slider>();
 
         //スライダーの最大値の設定
         loadGazeSlider.maxValue = maxload;
