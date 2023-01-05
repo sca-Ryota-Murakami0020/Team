@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class TimeTextC : MonoBehaviour
 {
-    private OverLoadTimer olt;
+    private totalGameManager totalGM;
     public Text TimeText;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        olt = FindObjectOfType<OverLoadTimer>();
+        totalGM = FindObjectOfType<totalGameManager>();
         TimeText.text = "";
     }
 
@@ -21,6 +21,8 @@ public class TimeTextC : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
-        TimeText.text = olt.Time;
+        //TimeText.text = (totalGM.TotalTime / 3600).ToString("00") + ":" + (totalGM.TotalTime / 120).ToString("00") + ":" + ((int)totalGM.TotalTime % 60).ToString("00");
+        Debug.Log("リザルト処理完了");
+        TimeText.text = totalGM.DispTime;
     }
 }

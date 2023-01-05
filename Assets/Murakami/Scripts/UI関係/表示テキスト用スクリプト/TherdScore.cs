@@ -5,19 +5,19 @@ using UnityEngine.UI;
 
 public class TherdScore : MonoBehaviour
 {
-    private OverLoadTimer olt;
+    private totalGameManager totalGM;
     [SerializeField] Text therdTimeText;
-    private Animator anim;
+    //private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
-        olt = FindObjectOfType<OverLoadTimer>();
+        totalGM = FindObjectOfType<totalGameManager>();
         for (int i = 0; i <= 2; i++)
         {
             therdTimeText.text = "";
         }
-        anim = this.gameObject.GetComponent<Animator>();
+        //anim = this.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class TherdScore : MonoBehaviour
         //2位スコアの表記
 
 
-        if (olt.TimeText[2] == "2")
+        if (totalGM.TimeText[2] == "2")
         {
             //３位のデフォルト表示"
             therdTimeText.text = "3位:00:00:00";
@@ -35,7 +35,7 @@ public class TherdScore : MonoBehaviour
         else
         {
             //３位のランキング表示"
-            therdTimeText.text = olt.TimeText[2];
+            therdTimeText.text = totalGM.TimeText[2];
             //if(olt.LoadCout > 3)
                 //Debug.Log("text3 " + olt.TimeText[2]);
         }

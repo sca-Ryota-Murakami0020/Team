@@ -53,8 +53,6 @@ public class totalGameManager : MonoBehaviour
 
     //[SerializeField] private Text nowPlayingText;
 
-    private Player pl;
-
     private TextMovement textM;
     #endregion
 
@@ -212,7 +210,6 @@ public class totalGameManager : MonoBehaviour
             timer[i] = i.ToString();
         }
         //nowPlayingText = GetComponentInChildren<Text>();
-        pl = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -302,14 +299,15 @@ public class totalGameManager : MonoBehaviour
         if (timeCounter == true)
         {
             this.totalTime += Time.deltaTime;
+            //Debug.Log(totalTime);
             //nowPlayingText.text = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
         }
 
-        if(timeCounter == false)
+        /*if(timeCounter == false)
         {
             this.totalTime = 0.0f;
             //nowPlayingText.text = "00:00:00";
-        }
+        }*/
 
         //if(!pl.AliveFlag) LoadGameClear();
         #endregion
@@ -370,31 +368,32 @@ public class totalGameManager : MonoBehaviour
         {
             timer[i] = i + 1 + "à :" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
         }
+
         loadCount += 1;
-        totalTime = 0.0f;
     }
     #endregion
 
     #region//åƒÇ—èoÇµÇΩÉVÅ[ÉìÇ…âûÇ∂ÇƒÇÃèàóù
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
     {
-        if (nextScene.name == "bill")
+        if (nextScene.name == "bill" || nextScene.name == "1äK")
         {
             timeCounter = true;
             //nowPlayingText = GetComponentInChildren<Text>();
         }
 
-        if (nextScene.name == "FirstStage")
+        if (nextScene.name == "LoadFirstStage")
         {
-            timeCounter = true;
+            timeCounter = false;
             //nowPlayingText = GetComponentInChildren<Text>();
         }
 
-        if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene")
+        if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene" || nextScene.name == "LoadBill")
         {
             timeCounter = false;
             playerHp = 3;
             playerItemCount = 0;
+            totalTime = 0.0f;
         }
 
         if (nextScene.name == "GoalScene")

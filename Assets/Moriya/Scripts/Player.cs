@@ -223,6 +223,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < hp; i++)
+        {
+            heartArray[i].gameObject.SetActive(true);
+        }
+
         playerTrans.y = transform.position.y;
 
         //Debug.Log(rollingJumpDidFlag);
@@ -693,6 +698,17 @@ public class Player : MonoBehaviour
         {
             gm.PlayerIC++;
             other.gameObject.SetActive(false);
+        }
+
+        if(other.gameObject.name == "LoadFirstStagePoint")
+        {
+            SceneManager.LoadScene("LoadFirstStage");
+        }
+
+        if(other.gameObject.name == "goalPoint")
+        {
+            gm.LoadGameClear();
+            SceneManager.LoadScene("GoalScene");
         }
     }
 

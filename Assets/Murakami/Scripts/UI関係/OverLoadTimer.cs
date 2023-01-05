@@ -90,7 +90,7 @@ public class OverLoadTimer : MonoBehaviour
         //Debug.Log(startFlag);
         if (startFlag == true)
         {
-            totalTime = timeC.TotalTime;
+            //totalTime = timeC.TotalTime;
         }
     }
 

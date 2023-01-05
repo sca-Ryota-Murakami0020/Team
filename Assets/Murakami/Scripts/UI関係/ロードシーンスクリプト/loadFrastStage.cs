@@ -29,7 +29,7 @@ public class loadFrastStage : MonoBehaviour
         loadGazeSlider.value = nowGaze / 5.0f;
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadScene("TitleScene");
+            SceneManager.LoadScene("1階");
             Debug.Log("初めてタイトルを呼び出した");
         }
     }

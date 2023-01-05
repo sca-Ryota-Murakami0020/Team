@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class RetryButtonC : MonoBehaviour
 {
-    private OverLoadTimer olt;
+    //private OverLoadTimer olt;
 
     // Start is called before the first frame update
     void Start()
     {
-        olt = FindObjectOfType<OverLoadTimer>();
+        //olt = FindObjectOfType<OverLoadTimer>();
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class RetryButtonC : MonoBehaviour
 
     public void RetryGame()
     {
-        olt.TotalTime =0.0f;
+        //olt.TotalTime =0.0f;
         /*
         olt.SecondTime = 0.0f;
         olt.MinuteTime = 0;
