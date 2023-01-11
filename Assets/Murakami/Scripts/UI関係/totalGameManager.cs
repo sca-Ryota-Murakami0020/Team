@@ -26,13 +26,17 @@ public class totalGameManager : MonoBehaviour
     //壁ジャンプしたときの効果音フラグ
     private bool wallJumpFlag = false;
     //ローリングしたときの効果音フラグ
-    private bool completeRollFlag = false;
+    //private bool completeRollFlag = false;
     //ジャンプしたときの効果音フラグ
     private bool jumpFlag = false;
     //移動したときの効果音フラグ
     private bool moveFlag = false;
     //Hpが０になったときの効果音
     private bool disappearHpFlag = false;
+    //加速してる時に使う移動用効果音
+    private bool accelWalkFlag = false;
+    //着地した時の効果音
+    private bool randingFlag = false;
     #endregion
 
     #region//タイム関係ステータス
@@ -76,11 +80,11 @@ public class totalGameManager : MonoBehaviour
         set { this.wallJumpFlag = value; }
     }
 
-    public bool CompleteRollFlag//前転
+    /*public bool CompleteRollFlag//前転
     {
         get { return this.completeRollFlag; }
         set { this.completeRollFlag = value; }
-    }
+    }*/
 
     public bool JumpFlag//ジャンプ
     {
@@ -128,6 +132,18 @@ public class totalGameManager : MonoBehaviour
     {
         get { return this.disappearHpFlag;}
         set { this.disappearHpFlag = value;}
+    }
+
+    public bool AccelWalkFlag//加速時移動
+    {
+        get { return this.accelWalkFlag;}
+        set { this.accelWalkFlag = value;}
+    }
+
+    public bool RandingFlag//着地時
+    {
+        get { return this.randingFlag;}
+        set { this.randingFlag = value;}
     }
 
     public float[] BestTime//ハイスコアの数値格納配列
@@ -224,7 +240,7 @@ public class totalGameManager : MonoBehaviour
             playerDamegeFlag = false;
         }
 
-        if (wallJumpFlag == true)
+        /*if (wallJumpFlag == true)
         {
             audios.clip = bgms[1];
             audios.Play();
@@ -236,6 +252,19 @@ public class totalGameManager : MonoBehaviour
             audios.clip = bgms[2];
             audios.Play();
             completeRollFlag = false;
+        }*/
+        if(randingFlag == true)
+        {
+            audios.clip = bgms[1];
+            audios.Play();
+            randingFlag = false;
+        }
+
+        if(accelWalkFlag == true)
+        {
+            audios.clip = bgms[2];
+            audios.Play();
+            accelWalkFlag = false;
         }
 
         if (jumpFlag == true)
@@ -275,21 +304,21 @@ public class totalGameManager : MonoBehaviour
 
         if (decisionFlag == true)
         {
-            audios.clip = bgms[9];
+            audios.clip = bgms[8];
             audios.Play();
             decisionFlag = false;
         }
 
         if (returnFlag == true)
         {
-            audios.clip = bgms[10];
+            audios.clip = bgms[9];
             audios.Play();
             returnFlag = false;
         }
 
         if(disappearHpFlag == true)
         {
-            audios.clip = bgms[11];
+            audios.clip = bgms[10];
             audios.Play();
             disappearHpFlag = false;
         }
