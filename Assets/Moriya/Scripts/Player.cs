@@ -11,8 +11,9 @@ public class Player : MonoBehaviour
     #region//プレイヤーステータス
     private int hp = 3;
     private int oldHp = 0;
-    [SerializeField] private float originSpeed = 5.0f;
-    [SerializeField] private float jumpSpeed =10.0f;
+    //移動速度
+    private float originSpeed = 2.5f;
+    private float jumpSpeed =10.0f;
     private float speed;
     private float fallSpeed = -0.1f; 
     private int playerMaxhp = 3;
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour
     //加速関係
     private bool speedAccelerationFlag = false;
     private float speedCTime = 0;
-    private float speedTime = 10.0f;
+    private float speedTime = 1000.0f;
     private float accelSpeed;
 
     //初期化用
@@ -223,6 +224,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(speed);
+
         for (int i = 0; i < hp; i++)
         {
             heartArray[i].gameObject.SetActive(true);
@@ -372,7 +375,7 @@ public class Player : MonoBehaviour
         {
             //StartCoroutine(StartAcceleration());
             speedCTime++;
-            accelSpeed = originSpeed * 1.2f;
+            accelSpeed = originSpeed * 1.5f;
             speed = accelSpeed;
             Debug.Log("加速処理にはいった");
             if(speedTime < speedCTime)
@@ -556,7 +559,7 @@ public class Player : MonoBehaviour
             {
                 //ローリングジャンプ時
                 //Debug.Log("mi");
-                rollingJumpDidFlag = true;
+                rollingJumpDidFlag = true;;
                 anime.SetTrigger("RollingJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
