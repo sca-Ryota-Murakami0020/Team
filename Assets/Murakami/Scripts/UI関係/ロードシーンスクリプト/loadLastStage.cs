@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class loadTherdStage : MonoBehaviour
+public class loadLastStage : MonoBehaviour
 {
     private float nowGaze = 0.0f;
     private float maxload = 1.0f;
@@ -26,7 +26,7 @@ public class loadTherdStage : MonoBehaviour
         loadGazeSlider.value = nowGaze / 5.0f;
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadScene("3ŠK");
+            SceneManager.LoadScene("‰®ãŠK");
         }
     }
 }

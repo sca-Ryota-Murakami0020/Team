@@ -27,7 +27,6 @@ public class loadSecondStage : MonoBehaviour
         if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadScene("2階");
-            Debug.Log("初めてタイトルを呼び出した");
         }
     }
 }

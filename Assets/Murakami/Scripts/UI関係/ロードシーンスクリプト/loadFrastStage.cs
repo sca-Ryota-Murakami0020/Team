@@ -27,7 +27,6 @@ public class loadFrastStage : MonoBehaviour
         if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadScene("1階");
-            Debug.Log("初めてタイトルを呼び出した");
         }
     }
 }
