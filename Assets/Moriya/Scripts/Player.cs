@@ -12,9 +12,10 @@ public class Player : MonoBehaviour
     private int hp = 3;
     private int oldHp = 0;
     //移動速度
-    private float originSpeed = 2.5f;
+    private float jampingRunSpeed = 2.5f;
     private float jumpSpeed =10.0f;
-    private float speed;
+    private float runSpeed = 5.0f;
+    private float defaultSpeed = 5.0f;
     private float fallSpeed = -0.1f; 
     private int playerMaxhp = 3;
     private int itemPoint = 0;
@@ -145,12 +146,6 @@ public class Player : MonoBehaviour
         set { this.smr = value; }
     }
 
-    public float PlayerSpeed
-    {
-        get { return this.speed; }
-        set { this.speed = value; }
-    }
-
     public int PlayerHp
     {
         get { return this.hp; }
@@ -216,16 +211,11 @@ public class Player : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
-
-        //スピードの初期化
-        speed = originSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(speed);
-
         for (int i = 0; i < hp; i++)
         {
             heartArray[i].gameObject.SetActive(true);
@@ -375,13 +365,13 @@ public class Player : MonoBehaviour
         {
             //StartCoroutine(StartAcceleration());
             speedCTime++;
-            accelSpeed = originSpeed * 1.5f;
-            speed = accelSpeed;
+            accelSpeed = runSpeed * 1.5f;
+            runSpeed = accelSpeed;
             Debug.Log("加速処理にはいった");
             if(speedTime < speedCTime)
             {
                 Debug.Log("加速処理終了");
-                speed = originSpeed;
+                runSpeed = defaultSpeed;
                 speedCTime = 0;
                 speedAccelerationFlag = false;
             }
@@ -415,13 +405,13 @@ public class Player : MonoBehaviour
                     gm.AccelWalkFlag = true;
                 }
 
-                _parent.transform.position -= mainCameraRightDer * speed * Time.deltaTime;
+                _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
 
             }
 
             if(jumpFlag == true)
             {
-               _parent.transform.position -= mainCameraRightDer * (speed) * Time.deltaTime;
+               _parent.transform.position -= mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
@@ -450,13 +440,13 @@ public class Player : MonoBehaviour
                     gm.AccelWalkFlag = true;
                 }
 
-                _parent.transform.position += mainCameraRightDer * speed * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
 
             }
 
             if(jumpFlag == true)
             {
-                _parent.transform.position += mainCameraRightDer * (speed) * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
@@ -485,13 +475,13 @@ public class Player : MonoBehaviour
                     gm.AccelWalkFlag = true;
                 }
 
-                _parent.transform.position += cameraDreNoY * speed * Time.deltaTime;
+                _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
 
             }
 
             if(jumpFlag == true)
             {
-                 _parent.transform.position += cameraDreNoY * (speed) * Time.deltaTime;
+                 _parent.transform.position += cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
             
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
@@ -520,13 +510,13 @@ public class Player : MonoBehaviour
                     gm.AccelWalkFlag = true;
                 }
 
-               _parent.transform.position -= cameraDreNoY * speed * Time.deltaTime;
+               _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
 
             }
 
             if(jumpFlag == true)
             {
-               _parent.transform.position -= cameraDreNoY * (speed) * Time.deltaTime;
+               _parent.transform.position -= cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
