@@ -39,6 +39,10 @@ public class CameraC : MonoBehaviour
     [SerializeField] private float cameraHeightMin;// = -5.0f;
     //カメラの最高高度
     [SerializeField] private float cameraHeightMax;// = 8.5f;
+    //縦移動用速度倍率
+    [SerializeField] private float verticalMag;
+    //横移動用速度倍率
+    [SerializeField] private float holizontalMag;
     #endregion
 
 
@@ -113,10 +117,10 @@ public class CameraC : MonoBehaviour
         Vector3 pos = this.transform.position;
 
         //横移動
-        pos += this.transform.right * x / 5.0f;
+        pos += this.transform.right * x / holizontalMag;
 
         //縦移動
-        nowCameraHeight = Mathf.Clamp(nowCameraHeight + y, cameraHeightMin, cameraHeightMax);
+        nowCameraHeight = Mathf.Clamp(nowCameraHeight + y / verticalMag, cameraHeightMin, cameraHeightMax);
         pos.y = D.y + nowCameraHeight;
 
         //移動後の距離を取得
