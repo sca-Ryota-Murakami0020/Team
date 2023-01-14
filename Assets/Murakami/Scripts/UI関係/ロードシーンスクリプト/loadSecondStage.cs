@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class loadFrastStage : MonoBehaviour
+public class loadSecondStage : MonoBehaviour
 {
     private float nowGaze = 0.0f;
     private float maxload = 1.0f;
@@ -26,7 +26,7 @@ public class loadFrastStage : MonoBehaviour
         loadGazeSlider.value = nowGaze / 5.0f;
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadScene("1階");
+            SceneManager.LoadScene("2階");
             Debug.Log("初めてタイトルを呼び出した");
         }
     }
