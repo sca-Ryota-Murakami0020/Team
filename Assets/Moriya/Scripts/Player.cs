@@ -549,12 +549,11 @@ public class Player : MonoBehaviour
             {
                 //ローリングジャンプ時
                 //Debug.Log("mi");
-                rollingJumpDidFlag = true;;
+                rollingJumpDidFlag = true;
                 anime.SetTrigger("RollingJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
-                jumpFlag = true;
                 jumpCount++;
-                anime.SetBool("doLanding", false);              
+                anime.SetBool("doLanding", false);
             }
 
             if(rollingJumpFlag == false && wallClingJumpFlag == false)
@@ -585,14 +584,12 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("じめん");
 
-            if (rollingJumpDidFlag == true && jumpFlag == true)
+            if (rollingJumpDidFlag == true)
             {
-                //Debug.Log("asuta");
-                jumpFlag = false;
+                rollingJumpFlag = false;
                 rollingJumpDidFlag = false;
-                //anime.SetBool("RollingAriIdle",false);
+                anime.SetBool("RollingAriIdle",false);
                 //ローリングジャンプアニメーションをきる
-                //;
                 anime.SetBool("doLanding", true);
                 anime.SetBool("doIdle", false);
                 //着地モーションから待機モーションへ
@@ -637,6 +634,26 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
+            if (rollingJumpDidFlag == true)
+            {
+                rollingJumpFlag = false;
+                rollingJumpDidFlag = false;
+                anime.SetBool("RollingAriIdle",false);
+                //ローリングジャンプアニメーションをきる
+                anime.SetBool("doLanding", true);
+                anime.SetBool("doIdle", false);
+                //着地モーションから待機モーションへ
+                if (jumpFlag == false)
+                {
+                    //Debug.Log("上");
+                    anime.SetBool("doLanding", false);
+                    anime.SetBool("doIdle", true);
+                    rollingJumpFlag = true;
+                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                }
+            }
             //Debug.Log("反応した");
             if (jumpFlag == true)
             {
@@ -646,8 +663,6 @@ public class Player : MonoBehaviour
                 //anime.SetBool("doFall", false);
                 anime.SetBool("doLanding", true);
                 anime.SetBool("doIdle", false);
-                rollingJumpDidFlag = false;
-                anime.SetBool("RollingAriIdle",false);
                 //Debug.Log("haitta");
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
