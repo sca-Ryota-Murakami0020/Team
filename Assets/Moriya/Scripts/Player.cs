@@ -408,7 +408,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true)
+            if(jumpFlag == true || rollingJumpFlag == true)
             {
                _parent.transform.position -= mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
@@ -443,7 +443,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true)
+            if(jumpFlag == true || rollingJumpFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
@@ -478,7 +478,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true)
+            if(jumpFlag == true || rollingJumpFlag == true)
             {
                  _parent.transform.position += cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
@@ -513,7 +513,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true)
+            if(jumpFlag == true || rollingJumpFlag == true)
             {
                _parent.transform.position -= cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
@@ -560,13 +560,12 @@ public class Player : MonoBehaviour
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpCount++;
                 rollingJumpFlag = false;
+                anime.SetBool("RollingAriIdle", true);
                 Debug.Log("mi");
             }
 
         }
         #endregion
-        Debug.Log("" + anime.GetBool("RollingAriIdle"));
-        Debug.Log("Landing" + anime.GetBool("doLanding"));
     }
 
     private void OnCollisionEnter(Collision other)
@@ -594,8 +593,6 @@ public class Player : MonoBehaviour
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
                 {
-                    //Debug.Log("上");
-                    anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
@@ -614,8 +611,6 @@ public class Player : MonoBehaviour
                     //着地モーションから待機モーションへ
                     if (jumpFlag == false)
                     {
-                        //Debug.Log("下");
-                        anime.SetBool("doLanding", false);
                         anime.SetBool("doIdle", true);
                         /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                         Debug.Log("doIdle" + anime.GetBool("doIdle"));
@@ -646,7 +641,6 @@ public class Player : MonoBehaviour
                 if (jumpFlag == false)
                 {
                     //Debug.Log("上");
-                    anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
                     rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
@@ -668,7 +662,6 @@ public class Player : MonoBehaviour
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
                 {
-                    anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
                     rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
@@ -697,7 +690,6 @@ public class Player : MonoBehaviour
                 jumpFlag = false;
                 if (jumpFlag == false)
                 {
-                    anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
                     rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
@@ -725,7 +717,6 @@ public class Player : MonoBehaviour
                 //着地モーションから待機モーションへ
                 if (jumpFlag == false)
                 {
-                    anime.SetBool("doLanding", false);
                     anime.SetBool("doIdle", true);
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
