@@ -507,8 +507,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: doJump
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: doFall
+  - m_ConditionMode: 1
+    m_ConditionEvent: doLanding
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7252524806075189834}
@@ -819,7 +819,7 @@ AnimatorStateMachine:
     m_Position: {x: 1090, y: -580, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2729607702175441074}
-    m_Position: {x: 1560, y: 100, z: 0}
+    m_Position: {x: 1570, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2255147928821683745}
     m_Position: {x: 660, y: 90, z: 0}
@@ -834,7 +834,7 @@ AnimatorStateMachine:
     m_Position: {x: -260, y: -570, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9137424828550933276}
-    m_Position: {x: -80, y: -450, z: 0}
+    m_Position: {x: -80, y: -460, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -878,7 +878,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
+  - m_ConditionMode: 2
     m_ConditionEvent: doFall
     m_EventTreshold: 0
   - m_ConditionMode: 1
