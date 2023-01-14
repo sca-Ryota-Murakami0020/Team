@@ -8,12 +8,12 @@ public class Itemcounter : MonoBehaviour
     [SerializeField] private Image[] numberImage;
     private int itemCon;
     private Image image;
-    //private totalGameManager gm;
+    private totalGameManager gm;
     SpriteRenderer sr;
 
     private void Awake()
     {
-        //gm = FindObjectOfType<totalGameManager>();
+        gm = FindObjectOfType<totalGameManager>();
         //sr = gameObject.GetComponent<SpriteRenderer>();
     }
 
@@ -26,8 +26,7 @@ public class Itemcounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //itemCon = gm.PlayerIC;
-        if(Input.GetKey(KeyCode.Q)) itemCon++;
+        itemCon = gm.PlayerIC;
         image =  numberImage[itemCon];
     }
 }
