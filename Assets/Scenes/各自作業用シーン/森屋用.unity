@@ -1509,7 +1509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: loopCount
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: mainCamera
@@ -1814,7 +1814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5998762000903077716, guid: ef53e5a2b175f4a43bdde9cd5ddc8ce8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9
+      value: 8.16
       objectReference: {fileID: 0}
     - target: {fileID: 5998762000903077716, guid: ef53e5a2b175f4a43bdde9cd5ddc8ce8, type: 3}
       propertyPath: m_LocalRotation.w
