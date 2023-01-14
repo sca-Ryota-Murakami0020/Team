@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Itemcounter : MonoBehaviour
 {
-    [SerializeField] private Image[] numberImage;
+    [SerializeField] private Sprite[] numberImage;
     private int itemCon;
-    private Image image;
+    [SerializeField] private Image image;
     private totalGameManager gm;
-    SpriteRenderer sr;
+    //SpriteRenderer sr;
 
     private void Awake()
     {
@@ -27,6 +27,6 @@ public class Itemcounter : MonoBehaviour
     void Update()
     {
         itemCon = gm.PlayerIC;
-        image =  numberImage[itemCon];
+        image.sprite =  numberImage[itemCon];
     }
 }
