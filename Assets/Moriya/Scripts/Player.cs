@@ -277,7 +277,7 @@ public class Player : MonoBehaviour
 
         if (fallFlag == true)
         {
-            if(jumpFlag == false && moveFlag == true)
+            if( jumpFlag == false && moveFlag == true)
             {
                 anime.SetBool("doFall", true);
                 anime.SetBool("doWalk", true);
