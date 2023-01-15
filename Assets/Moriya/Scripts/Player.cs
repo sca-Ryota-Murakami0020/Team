@@ -216,12 +216,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(rollingJumpFlag);
-
         for (int i = 0; i < hp; i++)
         {
             heartArray[i].gameObject.SetActive(true);
         }
+        Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
+        Debug.Log("fallDamageHitFlag : " + fallDamageHitFlag);
 
         playerTrans.y = transform.position.y;
 
@@ -277,9 +277,11 @@ public class Player : MonoBehaviour
 
         if (fallFlag == true)
         {
-            if(rollingJumpDidFlag == false && jumpFlag == false && moveFlag == true)
-            {
-                anime.SetBool("doFall", true);
+            anime.SetBool("doFall", true);
+            anime.SetBool("doLandRolling",false);
+
+            if (rollingJumpDidFlag == false && jumpFlag == false && moveFlag == true)
+            {              
                 anime.SetBool("doWalk", true);
                 anime.SetBool("doJump",false);
             }
@@ -287,6 +289,9 @@ public class Player : MonoBehaviour
 
             if(rollingJumpDidFlag == true)
             {
+                anime.SetBool("doWalk",false);
+                anime.SetBool("doJump",false);
+
                 anime.SetBool("RollingAriIdle", true);
             }
 
@@ -334,6 +339,7 @@ public class Player : MonoBehaviour
                                 Debug.Log("地面 " + rollingJumpDidFlag);
                                 //着地モーションから待機モーションへ
                                 anime.SetBool("doIdle", true);
+                                anime.SetBool("RollingAriIdel", false);
                                 rollingJumpDidFlag = false;
                             }
                         }
@@ -354,12 +360,13 @@ public class Player : MonoBehaviour
                             }
                             if(rollingJumpDidFlag == true)
                             {
-                             anime.SetBool("doIdle", true);
-                             rollingJumpFlag = true;
-                             /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                             Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                             Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                             rollingJumpDidFlag = false;
+                                anime.SetBool("doIdle", true);
+                                anime.SetBool("RollingAriIdel", false);
+                                rollingJumpFlag = true;
+                                /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                                Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                                Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                                rollingJumpDidFlag = false;
                             }
                         }
                         gm.RandingFlag = true;
@@ -377,7 +384,7 @@ public class Player : MonoBehaviour
                 else//ダメージなしの着地
                 {
                     anime.SetBool("doFall", false);
-                    anime.SetBool("doLandRolling", false);
+                    //anime.SetBool("doLandRolling", false);
                     anime.SetBool("doLanding", true);
                     gm.RandingFlag = true;
 
@@ -503,7 +510,7 @@ public class Player : MonoBehaviour
 
             if (jumpFlag == false)
             {
-                Debug.Log("MoveFlag:" + gm.MoveFlag);
+                //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
                 if (speedAccelerationFlag == false)
                 {
@@ -538,7 +545,7 @@ public class Player : MonoBehaviour
 
             if (jumpFlag == false)
             {
-                Debug.Log("MoveFlag:" + gm.MoveFlag);
+                //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
                 if (speedAccelerationFlag == false)
                 {
@@ -573,7 +580,7 @@ public class Player : MonoBehaviour
             
             if (jumpFlag == false)
             {
-                Debug.Log("MoveFlag:" + gm.MoveFlag);
+                //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
                 if (speedAccelerationFlag == false)
                 {
@@ -608,7 +615,7 @@ public class Player : MonoBehaviour
             }
             if (jumpFlag == false)
             {
-                Debug.Log("MoveFlag:" + gm.MoveFlag);
+                //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
                 if (speedAccelerationFlag == false)
                 {
@@ -675,6 +682,8 @@ public class Player : MonoBehaviour
 
         }
         #endregion
+        Debug.Log("rollingjump:" + rollingJumpFlag);
+        Debug.Log("RollingJumpDidFlag:" + rollingJumpDidFlag);
     }
 
     private void OnCollisionEnter(Collision other)

@@ -989,6 +989,8 @@ MonoBehaviour:
   leaveCamera: 20
   cameraHeightMin: -5
   cameraHeightMax: 8.5
+  verticalMag: 5
+  holizontalMag: 10
 --- !u!1 &1671673023
 GameObject:
   m_ObjectHideFlags: 0
