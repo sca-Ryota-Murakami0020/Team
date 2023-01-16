@@ -394,6 +394,10 @@ PrefabInstance:
       value: "\u64CD\u4F5CUI"
       objectReference: {fileID: 0}
     - target: {fileID: 4345886200684036200, guid: e231a5ab0f4382c40883bc73ceff630f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345886200684036200, guid: e231a5ab0f4382c40883bc73ceff630f, type: 3}
       propertyPath: m_RaycastPadding.y
       value: 0
       objectReference: {fileID: 0}

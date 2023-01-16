@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class EnemyC : MonoBehaviour
 {
@@ -73,22 +74,29 @@ public class EnemyC : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            //eSC.SponeEnemy();
+            StartCoroutine("ResetEnemy");
+            Debug.Log("à¯Ç´ìnÇµ");
         }
     }
-    
+    /*
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == startPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
+        if (other.gameObject == eSC.StartPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
         {
             returnLookStartPosition();
         }
 
-        else if (other.gameObject == endPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
+        if (other.gameObject == eSC.EndPoint && !doEncount && this.gameObject.CompareTag("Enemy"))
         {
             returnLookEndPosition();
         }
-    }
+        if(other.gameObject.CompareTag("Player"))
+        {
+            this.doEncount = true;
+        }
+    }*/
 
     public void returnLookStartPosition()
     {
@@ -100,5 +108,16 @@ public class EnemyC : MonoBehaviour
     {
         this.transform.LookAt(startPoint.transform.position);
         Debug.Log("EendäJén");
+    }
+
+    private IEnumerable ResetEnemy()
+    {
+        Debug.Log("OK");
+        this.gameObject.SetActive(false);
+        this.transform.position = this.startPoint.transform.position;
+        yield return new WaitForSeconds(3.0f);
+        this.gameObject.SetActive(true);
+        Debug.Log("ê¨å˜");
+        yield break;
     }
 }
