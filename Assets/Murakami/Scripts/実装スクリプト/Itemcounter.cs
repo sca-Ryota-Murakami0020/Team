@@ -30,3 +30,35 @@ public class Itemcounter : MonoBehaviour
         image.sprite =  numberImage[itemCon];
     }
 }
+/*
+ public float[] BestTime//ハイスコアの数値格納配列
+    {
+        get { return this.bestTime; }
+        set { this.bestTime = value; }
+    }
+
+    public float TotalTime//1プレイ時間
+    {
+        get { return this.totalTime; }
+
+        set { this.totalTime = value; }
+    }
+
+    /*public bool CounterFlag//
+    {
+        get { return this.counterFlag; }
+        set { this.counterFlag = value; }
+    
+
+public string[] TimeText//ハイスコアの文字列格納配列
+{
+    get { return this.timer; }
+    set { this.timer = value; }
+}
+
+public string DispTime//プレイ中に表示するタイム表記
+{
+    get { return this.timeScore; }
+    set { this.timeScore = value; }
+}
+*/
