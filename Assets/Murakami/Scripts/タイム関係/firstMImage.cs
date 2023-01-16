@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SecondSImage : MonoBehaviour
+public class firstMImage : MonoBehaviour
 {
     [SerializeField] private Sprite[] numberImage;
-    private int secondSCount;
+    private int firstMCount;
     [SerializeField] private Image image;
     private totalGameManager gm;
 
@@ -19,7 +19,7 @@ public class SecondSImage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        secondSCount = Mathf.FloorToInt(gm.TotalTime % 60);
-        image.sprite = numberImage[secondSCount / 10];
+        firstMCount = Mathf.FloorToInt(gm.TotalTime /60);
+        image.sprite = numberImage[firstMCount];
     }
 }
