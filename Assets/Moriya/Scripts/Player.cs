@@ -231,6 +231,8 @@ public class Player : MonoBehaviour
         Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
         Debug.Log("アニメ"+anime.GetBool("doFall"));
        
+        Debug.Log(rollingJumpFlag);
+
         playerTrans.y = transform.position.y;
 
         //Debug.Log("GMHP:" + gm.PlayerHp);
@@ -371,8 +373,8 @@ public class Player : MonoBehaviour
                             {
                                 anime.SetBool("doIdle", true);
                                 anime.SetBool("RollingAriIdel", false);
-                                rollingJumpDidFlag = false;
                                 rollingJumpFlag = true;
+                                rollingJumpDidFlag = false;
                                 /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                                 Debug.Log("doIdle" + anime.GetBool("doIdle"));
                                 Debug.Log("doFall"+anime.GetBool("doFall"));*/
@@ -464,11 +466,9 @@ public class Player : MonoBehaviour
                             anime.SetBool("RollingAriIdle", false);
                             //ローリングジャンプアニメーションをきる
                             anime.SetBool("doIdle", true);
-                            rollingJumpDidFlag = false;
                             rollingJumpFlag = true;
-                                /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                            rollingJumpDidFlag = false;
+                            Debug.Log("aski");
                         }
 
                         /*if(wallClingJumpDidFlag == true)
@@ -735,8 +735,6 @@ public class Player : MonoBehaviour
 
         }
         #endregion
-        //Debug.Log("rollingjump:" + rollingJumpFlag);
-        //Debug.Log("RollingJumpDidFlag:" + rollingJumpDidFlag);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -761,6 +759,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
             rollingJumpFlag = true;
+            Debug.Log(rollingJumpFlag);
             wallClingJumpFlag = false;
             jumpCount = 0;
         }
@@ -784,7 +783,7 @@ public class Player : MonoBehaviour
                 }
             }
             wallClingJumpFlag = true;
-            rollingJumpFlag = false;
+            //rollingJumpFlag = false;
             jumpCount = 0;
         }
 
