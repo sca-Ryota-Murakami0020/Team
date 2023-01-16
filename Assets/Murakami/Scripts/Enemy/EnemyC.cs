@@ -25,6 +25,8 @@ public class EnemyC : MonoBehaviour
     [SerializeField] private GameObject startPoint;
     //終着点
     [SerializeField] private GameObject endPoint;
+    //表示の管理を行う
+    private ResetEnemyPosition rEP;
 
     public GameObject StartP
     {
@@ -49,6 +51,7 @@ public class EnemyC : MonoBehaviour
     {
         var rb = GetComponent<Rigidbody>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
+        rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
         this.transform.position = startPoint.transform.position;
         doEncount = false;
         startFlag = true;
@@ -60,6 +63,7 @@ public class EnemyC : MonoBehaviour
     {
         if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
         else this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+        Debug.Log("エンカウント" + doEncount);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -101,23 +105,21 @@ public class EnemyC : MonoBehaviour
     public void returnLookStartPosition()
     {
         this.transform.LookAt(endPoint.transform.position);
-        Debug.Log("Estart開始");
+        //Debug.Log("Estart開始");
     }
 
     public void returnLookEndPosition()
     {
         this.transform.LookAt(startPoint.transform.position);
-        Debug.Log("Eend開始");
+        //Debug.Log("Eend開始");
     }
 
-    private IEnumerable ResetEnemy()
-    {
-        Debug.Log("OK");
-        this.gameObject.SetActive(false);
+    private IEnumerator ResetEnemy()
+    { 
         this.transform.position = this.startPoint.transform.position;
-        yield return new WaitForSeconds(3.0f);
-        this.gameObject.SetActive(true);
-        Debug.Log("成功");
+        rEP.StartCountDistance();
+        this.gameObject.SetActive(false);
+        Debug.Log("待機中");
         yield break;
     }
 }
