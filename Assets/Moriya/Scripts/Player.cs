@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     private int hp = 3;
     private int oldHp = 0;
     //ˆÚ“®‘¬“x
-    private float jampingRunSpeed = 2.5f;
+    private float jumpRollingSpeed = 5.0f;
+    private float jumpingRunSpeed = 2.5f;
     private float jumpSpeed =10.0f;
     private float runSpeed = 5.0f;
     private float defaultSpeed = 5.0f;
@@ -529,9 +530,14 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpDidFlag == true)
+            if(jumpFlag == true)
             {
-               _parent.transform.position -= mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
+               _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            if(rollingJumpDidFlag == true)
+            {
+                _parent.transform.position -= mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
          }
@@ -564,10 +570,16 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpDidFlag == true)
+            if(jumpFlag == true)
             {
-                _parent.transform.position += mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
+                _parent.transform.position += mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
+
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position += mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
+            }
+
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
          }
 
@@ -599,12 +611,18 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpDidFlag == true)
+            if(jumpFlag == true)
+            {
+       
+                 _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            if (rollingJumpDidFlag == true)
             {
                 Debug.Log("oue");
-                 _parent.transform.position += cameraDreNoY * jampingRunSpeed * Time.deltaTime;
+                _parent.transform.position += cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
             }
-            
+
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
 
@@ -635,11 +653,16 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpDidFlag == true)
+            if(jumpFlag == true)
             {
-                
-               _parent.transform.position -= cameraDreNoY * jampingRunSpeed * Time.deltaTime;
+               _parent.transform.position -= cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
+
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position -= cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
+            }
+
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
 
