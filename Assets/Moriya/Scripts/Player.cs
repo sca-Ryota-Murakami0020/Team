@@ -134,6 +134,8 @@ public class Player : MonoBehaviour
     Vector3 oldTrans;
     private Vector3 newTrans;
 
+    private bool moveSEFlag = false;
+
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -227,7 +229,7 @@ public class Player : MonoBehaviour
             heartArray[i].gameObject.SetActive(true);
         }
 
-
+        Debug.Log(moveSEFlag);
         Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
         Debug.Log("アニメ"+anime.GetBool("doFall"));
        
@@ -278,6 +280,27 @@ public class Player : MonoBehaviour
             if (gameOverFlag == true)
             {
                 StartCoroutine(GameOver());
+            }
+        }
+
+        if(moveFlag == true)
+        {
+            if (fallFlag == false)
+            {
+                if (speedAccelerationFlag == false)
+                {
+                    if (moveSEFlag == false)
+                    {
+                        gm.MoveFlag = true;
+                        Debug.Log("mi");
+                        moveSEFlag = true;
+                    }
+
+                }
+                if (speedAccelerationFlag == true)
+                {
+                    gm.AccelWalkFlag = true;
+                }
             }
         }
 
@@ -385,7 +408,6 @@ public class Player : MonoBehaviour
                                 rollingJumpFlag = true;
                             }*/
                         }
-                        gm.RandingFlag = true;
                         speedAccelerationFlag = true;
                     }
                     if (fallDamageHitFlag == true)
@@ -402,8 +424,7 @@ public class Player : MonoBehaviour
                     anime.SetBool("doFall", false);
                     //anime.SetBool("doLandRolling", false);
                     anime.SetBool("doLanding", true);
-                    gm.RandingFlag = true;
-
+                   
                     if (hit.transform.gameObject.CompareTag("Ground"))
                     {
                         if (jumpFlag == true)
@@ -483,7 +504,8 @@ public class Player : MonoBehaviour
                     //Debug.Log("着地モーションの出力");
                 }
                 //Debug.Log("fallFlagをfalseに変換する");
-                fallFlag = false;            
+                fallFlag = false;
+                gm.RandingFlag = true;
             }
         }
         else
@@ -538,19 +560,7 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
-
-                if (speedAccelerationFlag == false)
-                {
-                    gm.MoveFlag = true;
-                }
-
-                if (speedAccelerationFlag == true)
-                {
-                    gm.AccelWalkFlag = true;
-                }
-
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
-
             }
 
             if(jumpFlag == true)
@@ -578,16 +588,6 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
-
-                if (speedAccelerationFlag == false)
-                {
-                    gm.MoveFlag = true;
-                }
-
-                if (speedAccelerationFlag == true)
-                {
-                    gm.AccelWalkFlag = true;
-                }
 
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
 
@@ -619,24 +619,12 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
-
-                if (speedAccelerationFlag == false)
-                {
-                    gm.MoveFlag = true;
-                }
-
-                if (speedAccelerationFlag == true)
-                {
-                    gm.AccelWalkFlag = true;
-                }
-
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
 
             }
 
             if(jumpFlag == true)
             {
-       
                  _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
 
@@ -660,20 +648,7 @@ public class Player : MonoBehaviour
             }
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
-                //Debug.Log("MoveFlag:" + gm.MoveFlag);
-
-                if (speedAccelerationFlag == false)
-                {
-                    gm.MoveFlag = true;
-                }
-                
-                if(speedAccelerationFlag == true)
-                {
-                    gm.AccelWalkFlag = true;
-                }
-
-               _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
-
+                _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
             }
 
             if(jumpFlag == true)
@@ -691,11 +666,14 @@ public class Player : MonoBehaviour
 
         if(!Input.anyKey)
         {
-            moveFlag = false;
+           
             //Debug.Log("停止中");
             //Debug.Log("fallFlag:" + fallFlag);
             if(fallFlag == false)
             {
+                moveFlag = false;
+                moveSEFlag = false;
+                gm.MoveFlag = false;
                 //Debug.Log("停止中");
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
