@@ -220,9 +220,11 @@ public class Player : MonoBehaviour
         {
             heartArray[i].gameObject.SetActive(true);
         }
-        Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
-        Debug.Log("fallDamageHitFlag : " + fallDamageHitFlag);
 
+
+        Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
+        Debug.Log("アニメ"+anime.GetBool("doFall"));
+       
         playerTrans.y = transform.position.y;
 
         //Debug.Log("GMHP:" + gm.PlayerHp);
@@ -281,17 +283,15 @@ public class Player : MonoBehaviour
             anime.SetBool("doLandRolling",false);
 
             if (rollingJumpDidFlag == false && jumpFlag == false && moveFlag == true)
-            {              
+            {
                 anime.SetBool("doWalk", true);
                 anime.SetBool("doJump",false);
             }
-
 
             if(rollingJumpDidFlag == true)
             {
                 anime.SetBool("doWalk",false);
                 anime.SetBool("doJump",false);
-
                 anime.SetBool("RollingAriIdle", true);
             }
 
@@ -324,6 +324,7 @@ public class Player : MonoBehaviour
                             if(jumpFlag == true)
                             {
                                 jumpFlag = false;
+                                anime.SetBool("doJump", false);
                                 //着地モーションから待機モーションへ
                                 if (jumpFlag == false)
                                 {
@@ -335,8 +336,7 @@ public class Player : MonoBehaviour
                             }
                             if (rollingJumpDidFlag == true)
                             {
-                                Debug.Log("はいったる");
-                                Debug.Log("地面 " + rollingJumpDidFlag);
+                              
                                 //着地モーションから待機モーションへ
                                 anime.SetBool("doIdle", true);
                                 anime.SetBool("RollingAriIdel", false);
@@ -370,7 +370,7 @@ public class Player : MonoBehaviour
                             }
                         }
                         gm.RandingFlag = true;
-                        speedAccelerationFlag = true;
+                        //speedAccelerationFlag = true;
                     }
                     if (fallDamageHitFlag == true)
                     {
@@ -682,8 +682,8 @@ public class Player : MonoBehaviour
 
         }
         #endregion
-        Debug.Log("rollingjump:" + rollingJumpFlag);
-        Debug.Log("RollingJumpDidFlag:" + rollingJumpDidFlag);
+        //Debug.Log("rollingjump:" + rollingJumpFlag);
+        //Debug.Log("RollingJumpDidFlag:" + rollingJumpDidFlag);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -858,7 +858,6 @@ public class Player : MonoBehaviour
             //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
             if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance && fallDamageFlag == true)
             {
-                fallDamageFlag = false;
                 fallDamageHitFlag = true;
             }
             //スローモーション解除
@@ -870,6 +869,7 @@ public class Player : MonoBehaviour
                 StopCoroutine("Slowmotion");
                 break;
             }
+            fallDamageFlag = false;
             yield return null;
         };
     }
