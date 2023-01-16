@@ -666,12 +666,10 @@ public class Player : MonoBehaviour
 
         if(!Input.anyKey)
         {
+            moveFlag = false;
            
-            //Debug.Log("’âŽ~’†");
-            //Debug.Log("fallFlag:" + fallFlag);
-            if(fallFlag == false)
+            if (fallFlag == false)
             {
-                moveFlag = false;
                 moveSEFlag = false;
                 gm.MoveFlag = false;
                 //Debug.Log("’âŽ~’†");
