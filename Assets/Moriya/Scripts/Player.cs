@@ -508,7 +508,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
             }
 
-            if (jumpFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
@@ -526,7 +526,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpFlag == true)
+            if(jumpFlag == true || rollingJumpDidFlag == true)
             {
                _parent.transform.position -= mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
@@ -543,7 +543,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
             }
 
-            if (jumpFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
@@ -561,7 +561,7 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpFlag == true)
+            if(jumpFlag == true || rollingJumpDidFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * jampingRunSpeed * Time.deltaTime;
             }
@@ -578,7 +578,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
             }
             
-            if (jumpFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
@@ -596,8 +596,9 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpFlag == true)
+            if(jumpFlag == true || rollingJumpDidFlag == true)
             {
+                Debug.Log("oue");
                  _parent.transform.position += cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
             
@@ -613,7 +614,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
-            if (jumpFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 //Debug.Log("MoveFlag:" + gm.MoveFlag);
 
@@ -631,8 +632,9 @@ public class Player : MonoBehaviour
 
             }
 
-            if(jumpFlag == true || rollingJumpFlag == true)
+            if(jumpFlag == true || rollingJumpDidFlag == true)
             {
+                
                _parent.transform.position -= cameraDreNoY * jampingRunSpeed * Time.deltaTime;
             }
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
