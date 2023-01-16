@@ -278,7 +278,12 @@ public class totalGameManager : MonoBehaviour
         {
             audios.clip = bgms[4];
             audios.Play();
-            moveFlag = false;
+        }
+
+        if(moveFlag == false)
+        {
+            audios.clip = bgms[4];
+            audios.Stop();
         }
 
         if (displaySwitchingFlag == true)
