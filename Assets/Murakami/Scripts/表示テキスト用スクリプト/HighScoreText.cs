@@ -28,7 +28,7 @@ public class HighScoreText : MonoBehaviour
 
             if(totalGM.TimeText[0] == "0") {
                 //１位のデフォルト表示"
-                bestTimeText.text ="1位:00:00:00";
+                bestTimeText.text ="1位:00:00";
             }
             else {
                 //１位のランキング表示"

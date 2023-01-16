@@ -30,7 +30,7 @@ public class TherdScore : MonoBehaviour
         if (totalGM.TimeText[2] == "2")
         {
             //３位のデフォルト表示"
-            therdTimeText.text = "3位:00:00:00";
+            therdTimeText.text = "3位:00:00";
         }
         else
         {

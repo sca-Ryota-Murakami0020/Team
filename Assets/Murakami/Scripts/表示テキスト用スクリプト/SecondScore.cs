@@ -28,7 +28,7 @@ public class SecondScore : MonoBehaviour
             if (totalGM.TimeText[1] == "1")
             {
                 //２位のデフォルト表示
-                secondTimeText.text = "2位:00:00:00";
+                secondTimeText.text = "2位:00:00";
             }
             else
             {

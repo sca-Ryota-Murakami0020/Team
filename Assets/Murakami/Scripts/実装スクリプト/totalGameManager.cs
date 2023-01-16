@@ -337,7 +337,7 @@ public class totalGameManager : MonoBehaviour
             //nowPlayingText.text = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
         }
 
-        /*if(timeCounter == false)
+        /*if(timeCounter == false) (totalTime / 3600).ToString("00") + ":" + (bestTime[i] / 3600).ToString("00") + ":" +
         {
             this.totalTime = 0.0f;
             //nowPlayingText.text = "00:00:00";
@@ -396,11 +396,11 @@ public class totalGameManager : MonoBehaviour
         }
 
         //ゲーム中に表示するタイマー表示に与える変数
-        timeScore = (totalTime / 3600).ToString("00") + ":" + (totalTime / 120).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
+        timeScore =(totalTime / 60).ToString("00") + ":" + ((int)totalTime % 60).ToString("00");
 
         for (int i = 0; i <= 2; i++)
         {
-            timer[i] = i + 1 + "位:" + (bestTime[i] / 3600).ToString("00") + ":" + (bestTime[i] / 120).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
+            timer[i] = i + 1 + "位:" +  (bestTime[i] / 60).ToString("00") + ":" + ((int)bestTime[i] % 60).ToString("00");
         }
 
         loadCount += 1;
