@@ -679,12 +679,12 @@ public class Player : MonoBehaviour
             }              
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
+        if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)//&& anime.SetBool(doFall.true)&&anime.SetBool(doLanging.true)
         {
             gm.JumpFlag = true;
 
 
-            if (rollingJumpFlag == false && wallClingJumpFlag == false)
+            if (rollingJumpFlag == false)
             {
                 //ƒWƒƒƒ“ƒvŽž
                 anime.SetBool("doJump", true);
@@ -729,22 +729,18 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("‚¶‚ß‚ñ");
             rollingJumpFlag = false;
-            /*if(jumpFlag == false && fallFlag == true)
-            {
-                anime.SetBool("doLandRolling",false);
-            }*/
-
+            wallClingJumpFlag = false;
             jumpCount = 0;
         }
 
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
-          rollingJumpFlag = true;
-
+            rollingJumpFlag = true;
+            wallClingJumpFlag = false;
             jumpCount = 0;
         }
 
-        if (other.gameObject.CompareTag("ClingJudgement"))
+        if (other.gameObject.CompareTag("ClingPoint"))
         {
             if (jumpFlag == true)
             {
@@ -757,17 +753,13 @@ public class Player : MonoBehaviour
                 if (jumpFlag == false)
                 {
                     anime.SetBool("doIdle", true);
-                    rollingJumpFlag = true;
                     /*Debug.Log("Landing" + anime.GetBool("doLanding"));
                     Debug.Log("doIdle" + anime.GetBool("doIdle"));
                     Debug.Log("doFall"+anime.GetBool("doFall"));*/
                 }
             }
-
-            if (jumpFlag == false)
-            {
-                wallClingJumpFlag = true;
-            }
+            wallClingJumpFlag = true;
+            rollingJumpFlag = false;
             jumpCount = 0;
         }
 
@@ -800,14 +792,6 @@ public class Player : MonoBehaviour
                 }
                 jumpCount = 0;
             }*/
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("ClingJudgement"))
-        {
-            wallClingJumpFlag = false; 
-        }
     }
 
     private void OnTriggerEnter(Collider other)
