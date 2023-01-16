@@ -211,6 +211,9 @@ public class Player : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag= false;
+
+        //加速に使う時の速度
+        accelSpeed = runSpeed * 1.5f;
     }
 
     // Update is called once per frame
@@ -370,7 +373,7 @@ public class Player : MonoBehaviour
                             }
                         }
                         gm.RandingFlag = true;
-                        //speedAccelerationFlag = true;
+                        speedAccelerationFlag = true;
                     }
                     if (fallDamageHitFlag == true)
                     {
@@ -480,9 +483,9 @@ public class Player : MonoBehaviour
         //アニメーションしたら加速
         if (speedAccelerationFlag == true)
         {
+            Debug.Log("ai");
             //StartCoroutine(StartAcceleration());
             speedCTime++;
-            accelSpeed = runSpeed * 1.5f;
             runSpeed = accelSpeed;
             Debug.Log("加速処理にはいった");
             if(speedTime < speedCTime)
