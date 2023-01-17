@@ -134,8 +134,12 @@ public class Player : MonoBehaviour
     Vector3 oldTrans;
     private Vector3 newTrans;
 
-    private bool moveSEFlag = false;
-
+    [SerializeField]
+    private AudioClip jumpSE;
+    [SerializeField]
+    private AudioClip randingSE;
+    [SerializeField]
+    private AudioClip damegeSE;
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -229,23 +233,17 @@ public class Player : MonoBehaviour
             heartArray[i].gameObject.SetActive(true);
         }
 
-        Debug.Log(moveSEFlag);
-        Debug.Log("アニメーター" + anime.GetBool("doLandRolling"));
-        Debug.Log("アニメ"+anime.GetBool("doFall"));
-       
         Debug.Log(rollingJumpFlag);
 
         playerTrans.y = transform.position.y;
 
-        //Debug.Log("GMHP:" + gm.PlayerHp);
-        //De//bug.Log("Idle" + anime.GetBool("doIdle"));
-        //Debug.Log("walk" + anime.GetBool("doWalk"));
-        
+      
         gm.PlayerHp = hp;
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
-        //Debug.Log(hp);
+        Debug.Log("GMHP:" + gm.PlayerHp);
+        Debug.Log(hp);
         //Debug.Log(Time.timeScale);
 
         // ステートがダメージならリターン
@@ -266,6 +264,8 @@ public class Player : MonoBehaviour
         //hpが減った時の処理
         if (hp < oldHp && hp >= 1)
         {
+            gm.PlaySE(damegeSE);
+            Debug.Log("a");
             HpDisplay();
             oldHp = hp;
             state = STATE.DAMAGED;
@@ -283,7 +283,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(moveFlag == true)
+        /*if(moveFlag == true)
         {
             if (fallFlag == false)
             {
@@ -302,7 +302,7 @@ public class Player : MonoBehaviour
                     gm.AccelWalkFlag = true;
                 }
             }
-        }
+        }*/
 
         #region//落下状態
         //　落ちている状態
@@ -504,8 +504,8 @@ public class Player : MonoBehaviour
                     //Debug.Log("着地モーションの出力");
                 }
                 //Debug.Log("fallFlagをfalseに変換する");
-                fallFlag = false;
-                gm.RandingFlag = true;
+               fallFlag = false;
+               gm.PlaySE(randingSE);
             }
         }
         else
@@ -664,14 +664,14 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
          }
 
-        if(!Input.anyKey)
+        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
-           
+            //moveSEFlag = false;
+            //gm.MoveFlag = false;
+
             if (fallFlag == false)
             {
-                moveSEFlag = false;
-                gm.MoveFlag = false;
                 //Debug.Log("停止中");
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
@@ -680,9 +680,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)
         {
-            gm.JumpFlag = true;
-
-
+            gm.PlaySE(jumpSE);
             if (rollingJumpFlag == false)
             {
                 //ジャンプ時
@@ -718,10 +716,6 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             hp--;
-            gm.PDFlag = true;
-            HpDisplay();
-            oldHp = hp;
-            StartCoroutine(DamageTime());
         }
 
         if (other.gameObject.CompareTag("Ground"))

@@ -9,7 +9,7 @@ public class totalGameManager : MonoBehaviour
     #region//効果音関係ステータス
     ////効果音の配列設定とAudioSource呼び出し
     [SerializeField] private AudioClip[] bgms;
-    private AudioSource audios;
+    private AudioSource audios =null;
 
     //画面切り変わる時
     private bool displaySwitchingFlag = false;
@@ -233,12 +233,12 @@ public class totalGameManager : MonoBehaviour
     {
         #region //効果音（森屋担当）
         //特定のフラグがたったら特定の効果音を鳴らす
-        if (playerDamegeFlag == true)
+        /*if (playerDamegeFlag == true)
         {
             audios.clip = bgms[0];
             audios.Play();
             playerDamegeFlag = false;
-        }
+        }:*/
 
         /*if (wallJumpFlag == true)
         {
@@ -253,7 +253,7 @@ public class totalGameManager : MonoBehaviour
             audios.Play();
             completeRollFlag = false;
         }*/
-        if(randingFlag == true)
+        /*if(randingFlag == true)
         {
             audios.clip = bgms[1];
             audios.Play();
@@ -326,7 +326,7 @@ public class totalGameManager : MonoBehaviour
             audios.clip = bgms[10];
             audios.Play();
             disappearHpFlag = false;
-        }
+        }*/
         #endregion
 
         #region //時間計測（村上担当）
@@ -347,6 +347,21 @@ public class totalGameManager : MonoBehaviour
         #endregion
 
     }
+
+
+    public void PlaySE(AudioClip clip)
+    {
+        if (audios != null)
+        {
+            audios.PlayOneShot(clip);
+
+        }
+        else
+        {
+            Debug.Log("オーディオソースが設定されていません");
+        }
+    }
+
 
     #region //リザルト反映の処理
     public void LoadGameClear()
