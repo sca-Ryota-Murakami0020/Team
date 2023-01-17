@@ -229,9 +229,7 @@ public class Player : MonoBehaviour
         {
             //アニメーション＆効果音流し
             Debug.Log("a");
-            anime.SetTrigger("domazeed");
             gm.PlaySE(damegeSE);
-
             //Hp表示と点滅表示
             HpDisplay();
             oldHp = gm.PlayerHp;
@@ -390,11 +388,9 @@ public class Player : MonoBehaviour
                     if (fallDamageHitFlag == true)
                     {
                         gm.PlayerHp--;
-                        //gm.PDFlag = true;
                         anime.SetBool("doFall", false);
                         fallDamageHitFlag = false;
                     }
-                    Debug.Log("sameki");
                 }
                 else//ダメージなしの着地
                 {
@@ -686,7 +682,6 @@ public class Player : MonoBehaviour
                 jumpCount++;
                 rollingJumpFlag = false;
             }
-
         }
         #endregion
     }
@@ -697,6 +692,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             gm.PlayerHp--;
+            anime.SetTrigger("domazeed");
         }
 
         //地面に当たったら
