@@ -128,6 +128,7 @@ public class Player : MonoBehaviour
     private GameObject[] heartArray = new GameObject[3];
 
     //効果音関係
+    private AudioSource audios = null;
     [SerializeField]
     private AudioClip jumpSE;
     [SerializeField]
@@ -166,6 +167,11 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+
+    private void Awake()
+    {
+        audios = GetComponent<AudioSource>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -233,7 +239,7 @@ public class Player : MonoBehaviour
         {
             //アニメーション＆効果音流し
             Debug.Log("a");
-            gm.PlaySE(damegeSE);
+            PlaySE(damegeSE);
             //Hp表示と点滅表示
             HpDisplay();
             oldHp = gm.PlayerHp;
@@ -480,7 +486,7 @@ public class Player : MonoBehaviour
                 }
                 //ここでフラグおり＆着地の効果音を入れている
                fallFlag = false;
-               gm.PlaySE(randingSE);
+               PlaySE(randingSE);
                Debug.Log("niya");
             }
         }
@@ -540,11 +546,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
                 if(speedAccelerationFlag == true)
                 {
-                    gm.PlaySE(accelSE);
+                    PlaySE(accelSE);
                 }
                 if(speedAccelerationFlag == false)
                 {
-                    gm.PlaySE(runSE);
+                    ActiveWalkSE();
                 }
             }
 
@@ -577,11 +583,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    gm.PlaySE(accelSE);
+                    PlaySE(accelSE);
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    gm.PlaySE(runSE);
+                    ActiveWalkSE();
                 }
 
             }
@@ -614,11 +620,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    gm.PlaySE(accelSE);
+                    PlaySE(accelSE);
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    gm.PlaySE(runSE);
+                    ActiveWalkSE();
                 }
 
             }
@@ -651,11 +657,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    gm.PlaySE(accelSE);
+                    PlaySE(accelSE);
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    gm.PlaySE(runSE);
+                    ActiveWalkSE();
                 }
             }
 
@@ -688,7 +694,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)
         {
             //ジャンプの効果音を流す
-            gm.PlaySE(jumpSE);
+            PlaySE(jumpSE);
 
             //ローロングジャンプができない状態なら
             if (rollingJumpFlag == false)
@@ -830,6 +836,25 @@ public class Player : MonoBehaviour
     private void HpDisplay()
     {
         heartArray[gm.PlayerHp].gameObject.SetActive(false);
+    }
+
+    public void PlaySE(AudioClip clip)
+    {
+        if (audios != null)
+        {
+            audios.PlayOneShot(clip);//
+
+        }
+        else
+        {
+            Debug.Log("オーディオソースが設定されていません");
+        }
+    }
+
+    public void ActiveWalkSE()
+    {
+        PlaySE(runSE);
+        Debug.Log("とことこ");
     }
 
     #region//コルーチン

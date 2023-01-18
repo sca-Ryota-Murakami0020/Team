@@ -6,39 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class totalGameManager : MonoBehaviour
 {
-    #region//効果音関係ステータス
-    ////効果音の配列設定とAudioSource呼び出し
-    [SerializeField] private AudioClip[] bgms;
-    private AudioSource audios =null;
-
-    //画面切り変わる時
-    private bool displaySwitchingFlag = false;
-    //タイムアップor死亡時
-    private bool playerDeathFlag = false;
-    //リザルト時のランキング決定時
-    private bool rankingFlag = false;
-    //ボタン押したときの効果音(決定時)
-    private bool decisionFlag = false;
-    //ボタン押したときの効果音(取り消し時)
-    private bool returnFlag = false;
-    //敵に当たった時になる効果音フラグ
-    private bool playerDamegeFlag = false;
-    //壁ジャンプしたときの効果音フラグ
-    private bool wallJumpFlag = false;
-    //ローリングしたときの効果音フラグ
-    //private bool completeRollFlag = false;
-    //ジャンプしたときの効果音フラグ
-    private bool jumpFlag = false;
-    //移動したときの効果音フラグ
-    private bool moveFlag = false;
-    //Hpが０になったときの効果音
-    private bool disappearHpFlag = false;
-    //加速してる時に使う移動用効果音
-    private bool accelWalkFlag = false;
-    //着地した時の効果音
-    private bool randingFlag = false;
-    #endregion
-
     #region//タイム関係ステータス
     //ハイスコア用変数
     private float[] bestTime;
@@ -68,83 +35,6 @@ public class totalGameManager : MonoBehaviour
     #endregion
 
     #region//プロパティ
-    public bool PDFlag//プレイヤーダメージ
-    {
-        get { return this.playerDamegeFlag; }
-        set { this.playerDamegeFlag = value; }
-    }
-
-    public bool WallJumpFlag//壁ジャンプ
-    {
-        get { return this.wallJumpFlag; }
-        set { this.wallJumpFlag = value; }
-    }
-
-    /*public bool CompleteRollFlag//前転
-    {
-        get { return this.completeRollFlag; }
-        set { this.completeRollFlag = value; }
-    }*/
-
-    public bool JumpFlag//ジャンプ
-    {
-        get { return this.jumpFlag; }
-        set { this.jumpFlag = value; }
-    }
-
-    public bool MoveFlag//移動
-    {
-        get { return this.moveFlag; }
-        set { this.moveFlag = value; }
-    }
-
-    public bool DisplaySwitchingFlag//画面切り替え
-    {
-        get { return this.displaySwitchingFlag; }
-        set { this.displaySwitchingFlag = value; }
-    }
-
-    public bool PlayerDeathFlag//プレイヤー死亡時
-    {
-        get { return this.playerDeathFlag; }
-        set { this.playerDeathFlag = value; }
-    }
-
-    public bool RankingFlag//ランキング決定時
-    {
-        get { return this.rankingFlag; }
-        set { this.rankingFlag = value; }
-    }
-
-    public bool DecisionFlag//ボタン決定時
-    {
-        get { return this.decisionFlag; }
-        set { this.decisionFlag = value; }
-    }
-
-    public bool ReturnFlag//取り消し時
-    {
-        get { return this.returnFlag; }
-        set { this.returnFlag = value; }
-    }
-
-    public bool DisappeareHp//HP0になった時
-    {
-        get { return this.disappearHpFlag;}
-        set { this.disappearHpFlag = value;}
-    }
-
-    public bool AccelWalkFlag//加速時移動
-    {
-        get { return this.accelWalkFlag;}
-        set { this.accelWalkFlag = value;}
-    }
-
-    public bool RandingFlag//着地時
-    {
-        get { return this.randingFlag;}
-        set { this.randingFlag = value;}
-    }
 
     public float[] BestTime//ハイスコアの数値格納配列
     {
@@ -206,7 +96,7 @@ public class totalGameManager : MonoBehaviour
     private void Awake()
     {
         //AudioSource呼び出し
-        audios = GetComponent<AudioSource>();
+        //audios = GetComponent<AudioSource>();
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -231,104 +121,6 @@ public class totalGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region //効果音（森屋担当）
-        //特定のフラグがたったら特定の効果音を鳴らす
-        /*if (playerDamegeFlag == true)
-        {
-            audios.clip = bgms[0];
-            audios.Play();
-            playerDamegeFlag = false;
-        }:*/
-
-        /*if (wallJumpFlag == true)
-        {
-            audios.clip = bgms[1];
-            audios.Play();
-            wallJumpFlag = false;
-        }
-
-        if (completeRollFlag == true)
-        {
-            audios.clip = bgms[2];
-            audios.Play();
-            completeRollFlag = false;
-        }*/
-        /*if(randingFlag == true)
-        {
-            audios.clip = bgms[1];
-            audios.Play();
-            randingFlag = false;
-        }
-
-        if(accelWalkFlag == true)
-        {
-            audios.clip = bgms[2];
-            audios.Play();
-            accelWalkFlag = false;
-        }
-
-        if (jumpFlag == true)
-        {
-            audios.clip = bgms[3];
-            audios.Play();
-            jumpFlag = false;
-        }
-
-        if (moveFlag == true)
-        {
-            audios.clip = bgms[4];
-            audios.Play();
-        }
-
-        if(moveFlag == false)
-        {
-            audios.clip = bgms[4];
-            audios.Stop();
-        }
-
-        if (displaySwitchingFlag == true)
-        {
-            audios.clip = bgms[5];
-            audios.Play();
-            displaySwitchingFlag = false;
-        }
-
-        if (playerDeathFlag == true)
-        {
-            audios.clip = bgms[6];
-            audios.Play();
-            playerDeathFlag = false;
-        }
-
-        if (rankingFlag == true)
-        {
-            audios.clip = bgms[7];
-            audios.Play();
-            rankingFlag = false;
-        }
-
-        if (decisionFlag == true)
-        {
-            audios.clip = bgms[8];
-            audios.Play();
-            decisionFlag = false;
-        }
-
-        if (returnFlag == true)
-        {
-            audios.clip = bgms[9];
-            audios.Play();
-            returnFlag = false;
-        }
-
-        if(disappearHpFlag == true)
-        {
-            audios.clip = bgms[10];
-            audios.Play();
-            disappearHpFlag = false;
-        }*/
-        #endregion
-
         #region //時間計測（村上担当）
         if (timeCounter == true)
         {
@@ -345,27 +137,7 @@ public class totalGameManager : MonoBehaviour
 
         //if(!pl.AliveFlag) LoadGameClear();
         #endregion
-
     }
-
-    public void LoadSE(AudioClip cl)
-    {
-        audios.Play();
-    }
-
-    public void PlaySE(AudioClip clip)
-    {
-        if (audios != null)
-        {
-            audios.PlayOneShot(clip);//
-
-        }
-        else
-        {
-            Debug.Log("オーディオソースが設定されていません");
-        }
-    }
-
 
     #region //リザルト反映の処理
     public void LoadGameClear()
@@ -456,3 +228,211 @@ public class totalGameManager : MonoBehaviour
     }
     #endregion
 }
+/*
+     #region//効果音関係ステータス
+    ////効果音の配列設定とAudioSource呼び出し
+    [SerializeField] private AudioClip[] bgms;
+    private AudioSource audios =null;
+
+    //画面切り変わる時
+    private bool displaySwitchingFlag = false;
+    //タイムアップor死亡時
+    private bool playerDeathFlag = false;
+    //リザルト時のランキング決定時
+    private bool rankingFlag = false;
+    //ボタン押したときの効果音(決定時)
+    private bool decisionFlag = false;
+    //ボタン押したときの効果音(取り消し時)
+    private bool returnFlag = false;
+    //敵に当たった時になる効果音フラグ
+    private bool playerDamegeFlag = false;
+    //壁ジャンプしたときの効果音フラグ
+    private bool wallJumpFlag = false;
+    //ローリングしたときの効果音フラグ
+    //private bool completeRollFlag = false;
+    //ジャンプしたときの効果音フラグ
+    private bool jumpFlag = false;
+    //移動したときの効果音フラグ
+    private bool moveFlag = false;
+    //Hpが０になったときの効果音
+    private bool disappearHpFlag = false;
+    //加速してる時に使う移動用効果音
+    private bool accelWalkFlag = false;
+    //着地した時の効果音
+    private bool randingFlag = false;
+    #endregion
+    public bool PDFlag//プレイヤーダメージ
+    {
+        get { return this.playerDamegeFlag; }
+        set { this.playerDamegeFlag = value; }
+    }
+
+    public bool WallJumpFlag//壁ジャンプ
+    {
+        get { return this.wallJumpFlag; }
+        set { this.wallJumpFlag = value; }
+    }
+
+    /*public bool CompleteRollFlag//前転
+    {
+        get { return this.completeRollFlag; }
+        set { this.completeRollFlag = value; }
+    }
+
+    public bool JumpFlag//ジャンプ
+{
+    get { return this.jumpFlag; }
+    set { this.jumpFlag = value; }
+}
+
+public bool MoveFlag//移動
+{
+    get { return this.moveFlag; }
+    set { this.moveFlag = value; }
+}
+
+public bool DisplaySwitchingFlag//画面切り替え
+{
+    get { return this.displaySwitchingFlag; }
+    set { this.displaySwitchingFlag = value; }
+}
+
+public bool PlayerDeathFlag//プレイヤー死亡時
+{
+    get { return this.playerDeathFlag; }
+    set { this.playerDeathFlag = value; }
+}
+
+public bool RankingFlag//ランキング決定時
+{
+    get { return this.rankingFlag; }
+    set { this.rankingFlag = value; }
+}
+
+public bool DecisionFlag//ボタン決定時
+{
+    get { return this.decisionFlag; }
+    set { this.decisionFlag = value; }
+}
+
+public bool ReturnFlag//取り消し時
+{
+    get { return this.returnFlag; }
+    set { this.returnFlag = value; }
+}
+
+public bool DisappeareHp//HP0になった時
+{
+    get { return this.disappearHpFlag; }
+    set { this.disappearHpFlag = value; }
+}
+
+public bool AccelWalkFlag//加速時移動
+{
+    get { return this.accelWalkFlag; }
+    set { this.accelWalkFlag = value; }
+}
+
+public bool RandingFlag//着地時
+{
+    get { return this.randingFlag; }
+    set { this.randingFlag = value; }
+        #region //効果音（森屋担当）
+        //特定のフラグがたったら特定の効果音を鳴らす
+        /*if (playerDamegeFlag == true)
+        {
+            audios.clip = bgms[0];
+            audios.Play();
+            playerDamegeFlag = false;
+        }:*/
+
+/*if (wallJumpFlag == true)
+{
+    audios.clip = bgms[1];
+    audios.Play();
+    wallJumpFlag = false;
+}
+
+if (completeRollFlag == true)
+{
+    audios.clip = bgms[2];
+    audios.Play();
+    completeRollFlag = false;
+}*/
+/*if(randingFlag == true)
+{
+    audios.clip = bgms[1];
+    audios.Play();
+    randingFlag = false;
+}
+
+if(accelWalkFlag == true)
+{
+    audios.clip = bgms[2];
+    audios.Play();
+    accelWalkFlag = false;
+}
+
+if (jumpFlag == true)
+{
+    audios.clip = bgms[3];
+    audios.Play();
+    jumpFlag = false;
+}
+
+if (moveFlag == true)
+{
+    audios.clip = bgms[4];
+    audios.Play();
+}
+
+if(moveFlag == false)
+{
+    audios.clip = bgms[4];
+    audios.Stop();
+}
+
+if (displaySwitchingFlag == true)
+{
+    audios.clip = bgms[5];
+    audios.Play();
+    displaySwitchingFlag = false;
+}
+
+if (playerDeathFlag == true)
+{
+    audios.clip = bgms[6];
+    audios.Play();
+    playerDeathFlag = false;
+}
+
+if (rankingFlag == true)
+{
+    audios.clip = bgms[7];
+    audios.Play();
+    rankingFlag = false;
+}
+
+if (decisionFlag == true)
+{
+    audios.clip = bgms[8];
+    audios.Play();
+    decisionFlag = false;
+}
+
+if (returnFlag == true)
+{
+    audios.clip = bgms[9];
+    audios.Play();
+    returnFlag = false;
+}
+
+if(disappearHpFlag == true)
+{
+    audios.clip = bgms[10];
+    audios.Play();
+    disappearHpFlag = false;
+}
+#endregion
+*/
+ 
