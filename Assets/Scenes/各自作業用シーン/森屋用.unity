@@ -1270,10 +1270,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -8809505985140744951, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
-      propertyPath: m_Volume
-      value: 0.694
-      objectReference: {fileID: 0}
     - target: {fileID: 3676349265314255139, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
       propertyPath: m_Name
       value: TotalGameManager
@@ -1322,8 +1318,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -8809505985140744951, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
 --- !u!1 &2035194148 stripped
 GameObject:

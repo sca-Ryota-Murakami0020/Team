@@ -27,7 +27,7 @@ public class ResetEnemyPosition : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         enemy.SetActive(true);
-        Debug.Log("¬Œ÷");
+        //Debug.Log("¬Œ÷");
         yield break;
     }
 }

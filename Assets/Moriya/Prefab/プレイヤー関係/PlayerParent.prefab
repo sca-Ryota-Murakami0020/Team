@@ -211,9 +211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9543a206157dc8498127caba9f8349e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpSpeed: 10
-  parentTran: {fileID: 3500261077386611486}
   anime: {fileID: 2670541578645781811}
   rayPosition: {fileID: 9048854286861818554}
   rayRange: 0.5
@@ -227,3 +224,8 @@ MonoBehaviour:
   - {fileID: 2799174092439215535, guid: b8f86f0beb0ac364b8d928331feafa1a, type: 3}
   - {fileID: 3968110149181625485, guid: 5de7aff205f2f6f4f9b241d6768fd10a, type: 3}
   - {fileID: 2628503446174141760, guid: d7e18c061c913e245853acd51169c3d7, type: 3}
+  jumpSE: {fileID: 8300000, guid: dd986e6367069a747aa6b789439f5548, type: 3}
+  randingSE: {fileID: 8300000, guid: 9d7c78f43e5773942be591bafbff4f1a, type: 3}
+  damegeSE: {fileID: 8300000, guid: c479bfe288414c046a24f12cf773fae7, type: 3}
+  runSE: {fileID: 8300000, guid: 54252d528660fd34f8922246d16d2e34, type: 3}
+  accelSE: {fileID: 8300000, guid: d85be985dfd4efb47a0dc762a8110837, type: 3}

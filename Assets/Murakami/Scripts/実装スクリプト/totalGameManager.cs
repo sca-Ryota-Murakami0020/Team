@@ -348,12 +348,16 @@ public class totalGameManager : MonoBehaviour
 
     }
 
+    public void LoadSE(AudioClip cl)
+    {
+        audios.Play();
+    }
 
     public void PlaySE(AudioClip clip)
     {
         if (audios != null)
         {
-            audios.PlayOneShot(clip);
+            audios.PlayOneShot(clip);//
 
         }
         else

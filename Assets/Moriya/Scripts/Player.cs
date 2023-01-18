@@ -134,6 +134,10 @@ public class Player : MonoBehaviour
     private AudioClip randingSE;
     [SerializeField]
     private AudioClip damegeSE;
+    [SerializeField]
+    private AudioClip runSE;//移動用
+    [SerializeField]
+    private AudioClip accelSE;//加速用
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -534,6 +538,14 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
+                if(speedAccelerationFlag == true)
+                {
+                    gm.PlaySE(accelSE);
+                }
+                if(speedAccelerationFlag == false)
+                {
+                    gm.PlaySE(runSE);
+                }
             }
 
             //通常ジャンプのスピード
@@ -563,6 +575,14 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
+                if (speedAccelerationFlag == true)
+                {
+                    gm.PlaySE(accelSE);
+                }
+                if (speedAccelerationFlag == false)
+                {
+                    gm.PlaySE(runSE);
+                }
 
             }
 
@@ -592,6 +612,14 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
+                if (speedAccelerationFlag == true)
+                {
+                    gm.PlaySE(accelSE);
+                }
+                if (speedAccelerationFlag == false)
+                {
+                    gm.PlaySE(runSE);
+                }
 
             }
 
@@ -621,6 +649,14 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
+                if (speedAccelerationFlag == true)
+                {
+                    gm.PlaySE(accelSE);
+                }
+                if (speedAccelerationFlag == false)
+                {
+                    gm.PlaySE(runSE);
+                }
             }
 
             if(jumpFlag == true)
