@@ -140,6 +140,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip accelSE;//加速用
 
+
+
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
     {
@@ -243,7 +245,6 @@ public class Player : MonoBehaviour
         if (gm.PlayerHp < oldHp && gm.PlayerHp >= 1)
         {
             //アニメーション＆効果音流し
-            Debug.Log("a");
             PlaySE(damegeSE);
             //Hp表示と点滅表示
             HpDisplay();
@@ -330,7 +331,11 @@ public class Player : MonoBehaviour
                     anime.SetBool("doFall", false);
                     //スローモーション移行
                     StartCoroutine("StartSlowmotion");
-                    //ダメージが入るフラグが経ったら
+
+                    Debug.Log("落下ダメージ受けるかどうか終わったよ");
+
+                    //ダメージが入るフラグが立っていない時
+                    //Eキーが押されたらこの中に入る
                     if (fallDamageHitFlag == false)
                     {
                         //ローロング着地のフラグを立てる
@@ -404,7 +409,8 @@ public class Player : MonoBehaviour
                         //加速するフラグをたてる
                         speedAccelerationFlag = true;
                     }
-                    //ダメージが入るフラグが経ったら
+                    //ダメージが入るフラグがたった時
+                    //Eキーが押されなかった時に入る
                     if (fallDamageHitFlag == true)
                     {
                         gm.PlayerHp--;
@@ -480,8 +486,11 @@ public class Player : MonoBehaviour
                             }*/
                         }
                     }
+                    fallFlag = false;
+                    PlaySE(randingSE);
+                    Debug.Log("落下ダメージうける高さから着地した");
                 }
-                else//ダメージなしの着地
+                if (fallenDistance <= takeDamageDistance)//ダメージなしの着地
                 {
                     //通常着地モーションをする
                     anime.SetBool("doFall", false);
@@ -509,7 +518,6 @@ public class Player : MonoBehaviour
 
                         if (rollingJumpDidFlag == true)
                         {
-                            Debug.Log("地面 " + rollingJumpDidFlag);
                             anime.SetBool("RollingAriIdle", false);
                             anime.SetBool("doIdle", true);
                                 /*Debug.Log("Landing" + anime.GetBool("doLanding"));
@@ -562,11 +570,12 @@ public class Player : MonoBehaviour
                       }*/
 
                     }
+
+                    fallFlag = false;
+                    PlaySE(randingSE);
+                    Debug.Log("落下ダメージうけない高さから落ちたよ");
                 }
                 //ここでフラグおり＆着地の効果音を入れている
-               fallFlag = false;
-               PlaySE(randingSE);
-               Debug.Log("niya");
             }
         }
         else//地面にいる時
@@ -689,8 +698,7 @@ public class Player : MonoBehaviour
             }
 
             if (rollingJumpDidFlag == true)
-            {
-                Debug.Log("oue");
+            { 
                 _parent.transform.position += cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
             }
 
@@ -888,8 +896,7 @@ public class Player : MonoBehaviour
     {
         if (audios != null)
         {
-            audios.PlayOneShot(clip);//
-
+            audios.PlayOneShot(clip);
         }
         else
         {
@@ -925,14 +932,11 @@ public class Player : MonoBehaviour
         StopCoroutine("StartSlowmotion");
         StopCoroutine("Slowmotion");
     }
-
     //スローモーションするコルーチン
     private IEnumerator Slowmotion()
     {
         //遅くする
         Time.timeScale = timeScale;
-
-        //Debug.Log("slowmotion");
 
         //時間計測＋キー判定
         while (elapsedTime < slowTime)
@@ -942,13 +946,13 @@ public class Player : MonoBehaviour
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
             //Debug.Log("elapsed"+elapsedTime);
-            //　落下によるダメージが発生する距離を超える場合かつEキーが押されていなかったらダメージを与える
-            if (!Input.GetKey(KeyCode.E) && fallenDistance >= takeDamageDistance)
+            //　落下によるダメージが発生する距離を超える場合にEキーが押されていなかったらダメージを与える
+            if (!Input.GetKey(KeyCode.E))
             {
                 fallDamageHitFlag = true;
             }
             //スローモーション解除
-            if (elapsedTime > slowTime)
+            if (fallDamageHitFlag ==true ||elapsedTime > slowTime)
             {
                 //Debug.Log("とけた");
                 Time.timeScale = 1f;
