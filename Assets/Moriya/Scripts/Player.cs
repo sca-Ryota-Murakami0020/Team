@@ -140,6 +140,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip accelSE;//加速用
 
+    //カウント用
+    private float seCTime = 0;
+    //時間判定
+    private float seTime = 0.1f;
+
+
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
     {
@@ -546,11 +552,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
                 if(speedAccelerationFlag == true)
                 {
-                    PlaySE(accelSE);
+                    ActiveSpeedUpWalkSE();
                 }
                 if(speedAccelerationFlag == false)
                 {
-                    ActiveWalkSE();
+                    //ActiveWalkSE();
                 }
             }
 
@@ -583,11 +589,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    PlaySE(accelSE);
+                    ActiveSpeedUpWalkSE();
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    ActiveWalkSE();
+                    //ActiveWalkSE();
                 }
 
             }
@@ -620,11 +626,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    PlaySE(accelSE);
+                    ActiveSpeedUpWalkSE();
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    ActiveWalkSE();
+                   //ActiveWalkSE();
                 }
 
             }
@@ -657,11 +663,11 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
                 if (speedAccelerationFlag == true)
                 {
-                    PlaySE(accelSE);
+                    ActiveSpeedUpWalkSE();
                 }
                 if (speedAccelerationFlag == false)
                 {
-                    ActiveWalkSE();
+                    //ActiveWalkSE();
                 }
             }
 
@@ -851,10 +857,22 @@ public class Player : MonoBehaviour
         }
     }
 
+ 
     public void ActiveWalkSE()
     {
         PlaySE(runSE);
+        /*seCTime += Time.deltaTime;
+        if(seCTime > seTime)
+        {
+            seCTime =0;
+        }*/
+
         Debug.Log("とことこ");
+    }
+
+    public void ActiveSpeedUpWalkSE()
+    {
+        PlaySE(accelSE);
     }
 
     #region//コルーチン

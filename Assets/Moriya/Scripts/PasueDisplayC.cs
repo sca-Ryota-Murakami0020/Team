@@ -97,8 +97,13 @@ public class PasueDisplayC : MonoBehaviour
             //操作説明開くコルーチン
             StartCoroutine("PlayerXplanation");
         }
-        
 
+        /*if(Input.GetKey(KeyCode.T)){
+           ResetCommand();
+           SceneManager.LoadScene("TitleScene");
+           Time.timeScale = 1f;
+           menuFlag = false;
+        }*/
     }
     #endregion
 
