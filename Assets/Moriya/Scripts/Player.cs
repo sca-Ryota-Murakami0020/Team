@@ -486,6 +486,8 @@ public class Player : MonoBehaviour
                             }*/
                         }
                     }
+
+                    //ここでフラグおり＆着地の効果音を入れている
                     fallFlag = false;
                     PlaySE(randingSE);
                     Debug.Log("落下ダメージうける高さから着地した");
@@ -571,11 +573,12 @@ public class Player : MonoBehaviour
 
                     }
 
+                    //ここでフラグおり＆着地の効果音を入れている
                     fallFlag = false;
                     PlaySE(randingSE);
                     Debug.Log("落下ダメージうけない高さから落ちたよ");
                 }
-                //ここでフラグおり＆着地の効果音を入れている
+               Debug.Log("落下処理終わったよ");
             }
         }
         else//地面にいる時
