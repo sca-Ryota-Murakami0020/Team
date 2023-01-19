@@ -140,12 +140,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip accelSE;//加速用
 
-    //カウント用
-    private float seCTime = 0;
-    //時間判定
-    private float seTime = 0.1f;
-
-
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
     {
@@ -214,13 +208,18 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log("RollingArIdle"+anime.GetBool("RollingAriIdle"));
+        Debug.Log("doLandRolling"+ anime.GetBool("doLandRolling"));
+
+
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
             heartArray[i].gameObject.SetActive(true);
         }
 
-        Debug.Log(rollingJumpFlag);
+        Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
@@ -249,8 +248,6 @@ public class Player : MonoBehaviour
             //Hp表示と点滅表示
             HpDisplay();
             oldHp = gm.PlayerHp;
-            state = STATE.DAMAGED;
-            StartCoroutine(_hit());
         }
 
         //ゲームオーバーシーンに飛ぶ式
@@ -303,6 +300,12 @@ public class Player : MonoBehaviour
                 anime.SetBool("doJump",false);
             }
 
+            if(jumpFlag == true)
+            {
+                anime.SetBool("doWalk",true);
+                anime.SetBool("RollingAriIdle", false);
+            }
+
             //ローリングジャンプした時にここに入る
             if(rollingJumpDidFlag == true)
             {
@@ -324,13 +327,13 @@ public class Player : MonoBehaviour
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
                 {
+                    anime.SetBool("doFall", false);
                     //スローモーション移行
                     StartCoroutine("StartSlowmotion");
                     //ダメージが入るフラグが経ったら
                     if (fallDamageHitFlag == false)
                     {
                         //ローロング着地のフラグを立てる
-                        anime.SetBool("doFall", false);
                         anime.SetBool("doLandRolling", true);
                         //地面に着地したら
                         if (hit.transform.gameObject.CompareTag("Ground"))
@@ -353,8 +356,8 @@ public class Player : MonoBehaviour
                             if (rollingJumpDidFlag == true)
                             {
                                 //ローロング空中待機モーションから待機モーションへ
+                                anime.SetBool("RollingAriIdle", false);
                                 anime.SetBool("doIdle", true);
-                                anime.SetBool("RollingAriIdel", false);
                                 rollingJumpDidFlag = false;
                             }
                             /*if(wallClingJumpDidFlag == true)
@@ -369,6 +372,7 @@ public class Player : MonoBehaviour
                             if (jumpFlag == true)
                             {
                                 jumpFlag = false;
+                                anime.SetBool("doJump", false);
                                 //着地モーションから待機モーションへ
                                 if (jumpFlag == false)
                                 {
@@ -383,8 +387,8 @@ public class Player : MonoBehaviour
                             if (rollingJumpDidFlag == true)
                             {
                                 // //ローロング空中待機モーションから待機モーションへ
+                                anime.SetBool("RollingAriIdle", false);
                                 anime.SetBool("doIdle", true);
-                                anime.SetBool("RollingAriIdel", false);
                                 rollingJumpFlag = true;
                                 rollingJumpDidFlag = false;
                                 /*Debug.Log("Landing" + anime.GetBool("doLanding"));
@@ -404,8 +408,77 @@ public class Player : MonoBehaviour
                     if (fallDamageHitFlag == true)
                     {
                         gm.PlayerHp--;
-                        anime.SetBool("doFall", false);
                         fallDamageHitFlag = false;
+                        state = STATE.DAMAGED;
+                        StartCoroutine(_hit());
+                        anime.SetBool("doLanding", true);
+
+                        //地面に着地したら
+                        if (hit.transform.gameObject.CompareTag("Ground"))
+                        {
+                            //普通のジャンプをしていたら
+                            if (jumpFlag == true)
+                            {
+                                jumpFlag = false;
+                                anime.SetBool("doJump", false);
+                                //着地モーションから待機モーションへ
+                                if (jumpFlag == false)
+                                {
+                                    anime.SetBool("doIdle", true);
+                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                                }
+                            }
+                            //ローリングジャンプをしていたら
+                            if (rollingJumpDidFlag == true)
+                            {
+                                //ローロング空中待機モーションから待機モーションへ
+                                anime.SetBool("RollingAriIdle", false);
+                                anime.SetBool("doIdle", true);
+                                rollingJumpDidFlag = false;
+                            }
+                            /*if(wallClingJumpDidFlag == true)
+                            {
+                                wallClingJumpDidFlag == false;
+                            }*/
+                        }
+                        //ローロングジャンプポイントに着地したら
+                        if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
+                        {
+                            //普通のジャンプをしていたら
+                            if (jumpFlag == true)
+                            {
+                                jumpFlag = false;
+                                anime.SetBool("doJump", false);
+                                //着地モーションから待機モーションへ
+                                if (jumpFlag == false)
+                                {
+                                    anime.SetBool("doIdle", true);
+                                    rollingJumpFlag = true;
+                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                                }
+                            }
+                            //ローリングジャンプをしていたら
+                            if (rollingJumpDidFlag == true)
+                            {
+                                // //ローロング空中待機モーションから待機モーションへ
+                                anime.SetBool("RollingAriIdle", false);
+                                anime.SetBool("doIdle", true);
+                                rollingJumpFlag = true;
+                                rollingJumpDidFlag = false;
+                                /*Debug.Log("Landing" + anime.GetBool("doLanding"));
+                                Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                                Debug.Log("doFall"+anime.GetBool("doFall"));*/
+                            }
+                            /*if(wallClingJumpDidFlag == true)
+                            {
+                                wallClingJumpDidFlag = false;
+                                rollingJumpFlag = true;
+                            }*/
+                        }
                     }
                 }
                 else//ダメージなしの着地
@@ -550,14 +623,6 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
-                if(speedAccelerationFlag == true)
-                {
-                    ActiveSpeedUpWalkSE();
-                }
-                if(speedAccelerationFlag == false)
-                {
-                    //ActiveWalkSE();
-                }
             }
 
             //通常ジャンプのスピード
@@ -587,15 +652,6 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
-                if (speedAccelerationFlag == true)
-                {
-                    ActiveSpeedUpWalkSE();
-                }
-                if (speedAccelerationFlag == false)
-                {
-                    //ActiveWalkSE();
-                }
-
             }
 
             if(jumpFlag == true)
@@ -624,15 +680,7 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
-                if (speedAccelerationFlag == true)
-                {
-                    ActiveSpeedUpWalkSE();
-                }
-                if (speedAccelerationFlag == false)
-                {
-                   //ActiveWalkSE();
-                }
-
+              
             }
 
             if(jumpFlag == true)
@@ -661,14 +709,6 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false)
             {
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
-                if (speedAccelerationFlag == true)
-                {
-                    ActiveSpeedUpWalkSE();
-                }
-                if (speedAccelerationFlag == false)
-                {
-                    //ActiveWalkSE();
-                }
             }
 
             if(jumpFlag == true)
@@ -860,19 +900,15 @@ public class Player : MonoBehaviour
  
     public void ActiveWalkSE()
     {
-        PlaySE(runSE);
-        /*seCTime += Time.deltaTime;
-        if(seCTime > seTime)
+        if (speedAccelerationFlag == true)
         {
-            seCTime =0;
-        }*/
-
-        Debug.Log("とことこ");
-    }
-
-    public void ActiveSpeedUpWalkSE()
-    {
-        PlaySE(accelSE);
+            PlaySE(accelSE);
+        }
+        if (speedAccelerationFlag == false)
+        {
+            PlaySE(runSE);
+        }
+       
     }
 
     #region//コルーチン
