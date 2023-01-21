@@ -5033,6 +5033,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 48449027710352365, guid: 9c85bd3bac3f1a7499ad15f25494bf53, type: 3}
   m_PrefabInstance: {fileID: 1716687969}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1729578814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9012844737921365322, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+  m_PrefabInstance: {fileID: 1828465642}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1731270681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5369,6 +5380,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: image
+      value: 
+      objectReference: {fileID: 1729578814}
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: numberImage.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: numberImage.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: c828046430f47ab4fbc59f47eb140b3c, type: 3}
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: numberImage.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 66e6e8db8ad198748822dae7670153cc, type: 3}
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: numberImage.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1e244a70861d9614085c61f14bddcf05, type: 3}
+    - target: {fileID: 4032296603245417415, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
+      propertyPath: numberImage.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 756a42c70262bd94d832fb3ba6e268ae, type: 3}
     - target: {fileID: 7985088304655404142, guid: e97a388aefeedea4989bf086b85b1499, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -6964,18 +6999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ef0b7f7d0ee0e4da3dcefc09a02640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgms:
-  - {fileID: 8300000, guid: 9579157642ecd4c468e72695e35e9210, type: 3}
-  - {fileID: 8300000, guid: 9d7c78f43e5773942be591bafbff4f1a, type: 3}
-  - {fileID: 8300000, guid: d85be985dfd4efb47a0dc762a8110837, type: 3}
-  - {fileID: 8300000, guid: dd986e6367069a747aa6b789439f5548, type: 3}
-  - {fileID: 8300000, guid: 54252d528660fd34f8922246d16d2e34, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 8300000, guid: 289cb155455a84a41a5861a801eb7d28, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &2160358764164154459
 Transform:
   m_ObjectHideFlags: 0
