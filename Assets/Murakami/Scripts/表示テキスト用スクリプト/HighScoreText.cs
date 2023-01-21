@@ -6,7 +6,13 @@ using UnityEngine.UI;
 public class HighScoreText : MonoBehaviour
 {
     private totalGameManager totalGM;
-    [SerializeField] Text bestTimeText;
+    [SerializeField] private Sprite[] numberImage;
+    [SerializeField] private Image oneSecImage;
+    [SerializeField] private Image tenSecImage;
+    [SerializeField] private Image oneMinImage;
+    [SerializeField] private Image tenMinImage;
+    [SerializeField] private RectTransform timer;
+    private int counter;
     //private Animator anim;
 
     // Start is called before the first frame update
@@ -15,7 +21,10 @@ public class HighScoreText : MonoBehaviour
         totalGM = FindObjectOfType<totalGameManager>();
         for (int i = 0; i <= 2; i++)
         {
-            bestTimeText.text = "";
+            oneSecImage.sprite = numberImage[0];
+            tenSecImage.sprite = numberImage[0];
+            oneMinImage.sprite = numberImage[0];
+            tenMinImage.sprite = numberImage[0];
         }
         //anim = this.gameObject.GetComponent<Animator>();
     }
@@ -26,18 +35,27 @@ public class HighScoreText : MonoBehaviour
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
 
-            if(totalGM.TimeText[0] == "0") {
+            if(totalGM.TimeText[0] == "0")
+            {
                 //１位のデフォルト表示"
-                bestTimeText.text ="1位:00:00";
+                oneSecImage.sprite = numberImage[0];
+                tenSecImage.sprite = numberImage[0];
+                oneMinImage.sprite = numberImage[0];
+                tenMinImage.sprite = numberImage[0];
             }
             else {
                 //１位のランキング表示"
-                bestTimeText.text  = totalGM.TimeText[0];
-                /*if(olt.LoadCout > 3)
-                {
-                    Debug.Log("text1 " + olt.TimeText[0]);
-                }*/              
+                oneSecImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] % 10)];
+                tenSecImage.sprite = numberImage[Mathf.FloorToInt((totalGM.BestTime[0] % 60) / 10)];
+                oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 60)];
+                tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
             }
+
+        if (counter >= 100)
+        {
+            timer.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
+            counter++;
+        }
         //anim.SetBool("setHighScore", true);
     }
 
