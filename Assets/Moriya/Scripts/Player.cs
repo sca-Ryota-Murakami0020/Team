@@ -328,6 +328,7 @@ public class Player : MonoBehaviour
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
             {
+                Debug.Log("asikitara");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
                 if (fallenDistance >= takeDamageDistance)
@@ -503,7 +504,8 @@ public class Player : MonoBehaviour
                     //通常着地モーションをする
                     anime.SetBool("doFall", false);
                     anime.SetBool("doLanding", true);
-                   
+                    Debug.Log("落下ダメージうけない高さから落ちたよ");
+
                     //上と同じくしている
                     if (hit.transform.gameObject.CompareTag("Ground"))
                     {
@@ -545,6 +547,7 @@ public class Player : MonoBehaviour
                     {
                         if (jumpFlag == true)
                         {
+                            Debug.Log("mikasura");
                             //落下モーションか着地モーションへ
                             anime.SetBool("doJump", false);
                             anime.SetBool("doIdle", false);
@@ -582,9 +585,9 @@ public class Player : MonoBehaviour
                     //ここでフラグおり＆着地の効果音を入れている
                     fallFlag = false;
                     PlaySE(randingSE);
-                    Debug.Log("落下ダメージうけない高さから落ちたよ");
+                   
                 }
-               Debug.Log("落下処理終わったよ");
+                Debug.Log("落下処理終わったよ");
             }
         }
         else//地面にいる時
@@ -962,9 +965,9 @@ public class Player : MonoBehaviour
                 fallDamageHitFlag = true;
             }
             //スローモーション解除
-            if (fallDamageHitFlag ==true ||elapsedTime > slowTime)
+            if (elapsedTime > slowTime)
             {
-                //Debug.Log("とけた");
+                Debug.Log("とけた");
                 Time.timeScale = 1f;
                 elapsedTime = 0.0f;
                 StopCoroutine("Slowmotion");
