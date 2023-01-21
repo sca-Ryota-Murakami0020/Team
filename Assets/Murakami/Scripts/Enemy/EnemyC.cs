@@ -73,14 +73,14 @@ public class EnemyC : MonoBehaviour
         //Ç±Ç±Ç≈êiçsêÊÇÃPlayerÇä¥ímÇ∑ÇÈ
         Vector3 rayPosition = shotRayPosition.transform.position;
         RaycastHit hit;
-        Ray ray = new Ray(rayPosition, Vector3.forward);
+        Ray ray = new Ray(rayPosition, this.gameObject.transform.forward);
         Debug.DrawRay(shotRayPosition.transform.position, shotRayPosition.transform.forward * this.rayDistance, Color.red ,1.0f);
-        if (Physics.Raycast(ray, out hit, rayDistance))
+        if (Physics.Raycast(ray, out hit, 100.0f))
         {
             //Debug.Log("rayHit");
-            if(hit.collider.CompareTag("Player"))
+            if(hit.collider.gameObject.CompareTag("Player"))
             {
-                Debug.Log("rayHit");
+                Debug.Log("ray");
                 this.doEncount = true;
             }        
         }
@@ -113,7 +113,7 @@ public class EnemyC : MonoBehaviour
             collision.transform.Translate(ver * speed);
         }*/
 
-        if (collision.gameObject.CompareTag("WallJumpPoint"))
+        if (collision.gameObject.CompareTag("WallJumpPoint") && doEncount == true)
         {
             //Destroy(this.gameObject);
             //eSC.SponeEnemy();

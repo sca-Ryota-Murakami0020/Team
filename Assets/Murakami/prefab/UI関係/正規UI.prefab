@@ -986,11 +986,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 27
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1004,13 +1004,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7907948335692884821, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bffcf3da7d32fbf4ca60d11ab3ed378b, type: 3}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_Name
       value: HeartImage
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
@@ -1092,11 +1096,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 66
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1110,13 +1114,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7907948335692884821, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bffcf3da7d32fbf4ca60d11ab3ed378b, type: 3}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_Name
       value: HeartImage (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
@@ -1198,11 +1206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 102.79999
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884820, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1216,13 +1224,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7907948335692884821, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bffcf3da7d32fbf4ca60d11ab3ed378b, type: 3}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_Name
       value: HeartImage (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7907948335692884823, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1956bc37eb519e1459246b1372bb375f, type: 3}
