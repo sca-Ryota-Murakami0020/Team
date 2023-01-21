@@ -14,6 +14,7 @@ public class SecondScore : MonoBehaviour
     [SerializeField] private Sprite[] numberImage;
     [SerializeField] private RectTransform timer;
     private int counter;
+    private HighScoreText hst;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,8 @@ public class SecondScore : MonoBehaviour
             oneMinImage.sprite = numberImage[0];
             tenMinImage.sprite = numberImage[0];
         }
+        counter = 0;
+        hst = FindObjectOfType<HighScoreText>();
         //anim = this.gameObject.GetComponent<Animator>();
     }
 
@@ -53,11 +56,17 @@ public class SecondScore : MonoBehaviour
             //Debug.Log("text2 " + olt.TimeText[1]);
         }
 
-        if (counter >= 100)
+        //anim.SetBool("setSecondScore", true);
+    }
+    private IEnumerator StartSecondScore()
+    {
+        if (counter <= 500)
         {
-            timer.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
+            timer.position -= new Vector3(2.0f, 0, 0);
             counter++;
         }
-        //anim.SetBool("setSecondScore", true);
+        yield return new WaitForSeconds(1);
+        hst.StartCoroutine("StartHighScore");
+        yield break;
     }
 }
