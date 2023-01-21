@@ -13,7 +13,7 @@ public class TimeTextC : MonoBehaviour
     [SerializeField] private Image tenMinImage;
     [SerializeField] private RectTransform timer;
     private int counter;
-
+    private TherdScore th;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +24,7 @@ public class TimeTextC : MonoBehaviour
         oneMinImage.sprite = numberImage[0];
         tenMinImage.sprite = numberImage[0];
         counter = 0;
+        th = FindObjectOfType<TherdScore>();
     }
 
     // Update is called once per frame
@@ -38,10 +39,14 @@ public class TimeTextC : MonoBehaviour
         oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime / 60)];
         tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime / 600)];
 
-        if(counter >= 100)
+        if(counter < 500)
         {
-            timer.position += new Vector3(1.0f * Time.deltaTime,0,0);
+            timer.position -= new Vector3(2.0f,0,0);
             counter++;
+        }
+        if(counter >= 500)
+        {
+            th.StartCoroutine("StartTherdScore");
         }
     }
 }

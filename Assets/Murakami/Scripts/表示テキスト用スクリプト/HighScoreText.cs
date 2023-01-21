@@ -26,6 +26,7 @@ public class HighScoreText : MonoBehaviour
             oneMinImage.sprite = numberImage[0];
             tenMinImage.sprite = numberImage[0];
         }
+        counter = 0;
         //anim = this.gameObject.GetComponent<Animator>();
     }
 
@@ -51,13 +52,17 @@ public class HighScoreText : MonoBehaviour
                 tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
             }
 
-        if (counter >= 100)
-        {
-            timer.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
-            counter++;
-        }
         //anim.SetBool("setHighScore", true);
     }
 
-
+    private IEnumerator StartHighScore()
+    {
+        if (counter <= 500)
+        {
+            timer.position -= new Vector3(2.0f, 0, 0);
+            counter++;
+        }
+        yield return new WaitForSeconds(1);
+        yield break;
+    }
 }

@@ -13,6 +13,7 @@ public class TherdScore : MonoBehaviour
     [SerializeField] private Image tenMinImage;
     [SerializeField] private RectTransform timer;
     private int counter;
+    private SecondScore ss;
     //private Animator anim;
 
     // Start is called before the first frame update
@@ -26,6 +27,8 @@ public class TherdScore : MonoBehaviour
             oneMinImage.sprite = numberImage[0];
             tenMinImage.sprite = numberImage[0];
         }
+        counter = 0;
+        ss = FindObjectOfType<SecondScore>();
         //anim = this.gameObject.GetComponent<Animator>();
     }
 
@@ -52,10 +55,17 @@ public class TherdScore : MonoBehaviour
             //if(olt.LoadCout > 3)
             //Debug.Log("text3 " + olt.TimeText[2]);
         }
-        if (counter >= 100)
+    }
+
+    private IEnumerator StartTherdScore()
+    {
+        if (counter <= 500)
         {
-            timer.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
+            timer.position -= new Vector3(2.0f, 0, 0);
             counter++;
         }
+        yield return new WaitForSeconds(1);
+        ss.StartCoroutine("StartSecondScore");
+        yield break;
     }
 }
