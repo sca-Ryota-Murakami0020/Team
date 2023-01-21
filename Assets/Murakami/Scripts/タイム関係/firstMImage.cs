@@ -19,7 +19,7 @@ public class firstMImage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        firstMCount = Mathf.FloorToInt(gm.TotalTime /60);
+        firstMCount = Mathf.FloorToInt(gm.TotalTime / 60);
         image.sprite = numberImage[firstMCount];
     }
 }
