@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     #region//状況に応じて使用するフラグ
     //落下したときのダメージが入るかどうかのフラグ
     private bool fallDamageHitFlag = false;
+    //落下ダメージが入ったフラグ
+    private bool fallDamageFlag = true;
     //移動
     private bool moveFlag = false;
     //ジャンプ
@@ -139,6 +141,8 @@ public class Player : MonoBehaviour
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip accelSE;//加速用
+
+    
 
 
 
@@ -485,6 +489,8 @@ public class Player : MonoBehaviour
                                 rollingJumpFlag = true;
                             }*/
                         }
+
+                       
                     }
 
                     //ここでフラグおり＆着地の効果音を入れている
@@ -594,6 +600,7 @@ public class Player : MonoBehaviour
                 fallenDistance = 0;
                 //フラグを立てる
                 fallFlag = true;
+                Debug.Log("入ってるよ");
             }
         }
         #endregion

@@ -1620,7 +1620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.22
+      value: 3.16
       objectReference: {fileID: 0}
     - target: {fileID: 3500261077386611486, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1722,6 +1722,10 @@ PrefabInstance:
       propertyPath: damegeSE
       value: 
       objectReference: {fileID: 8300000, guid: c479bfe288414c046a24f12cf773fae7, type: 3}
+    - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+      propertyPath: rayRange
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: loopCount
       value: 2
