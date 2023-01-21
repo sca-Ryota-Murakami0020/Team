@@ -50,8 +50,13 @@ public class Player : MonoBehaviour
     private bool wallClingJumpFlag = false;
     //壁はりつきジャンプをしたフラグ
     private bool wallClingJumpDidFlag = false;
+    //壁ジャンプができる地点にふれたフラグ
+    private bool wallJumpFlag = false;
+    //壁ジャンプをしたフラグ
+    private bool wallJumpDidFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
+
     //使わないけどコルーチン用
     //private bool sameTransFlag = false;
     #endregion
@@ -142,10 +147,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip accelSE;//加速用
 
-    
-
-
-
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
     {
@@ -228,6 +229,11 @@ public class Player : MonoBehaviour
         Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position  + Vector3.right * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position,rayPosition.position  + Vector3.back * rayRange,Color.red,1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position  + Vector3.forward * rayRange, Color.red, 1.0f);
+
 
         // ステートがダメージならリターン
         if (state == STATE.DAMAGED)
@@ -267,27 +273,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        /*if(moveFlag == true)
-        {
-            if (fallFlag == false)
-            {
-                if (speedAccelerationFlag == false)
-                {
-                    if (moveSEFlag == false)
-                    {
-                        gm.MoveFlag = true;
-                        Debug.Log("mi");
-                        moveSEFlag = true;
-                    }
-
-                }
-                if (speedAccelerationFlag == true)
-                {
-                    gm.AccelWalkFlag = true;
-                }
-            }
-        }*/
-
         #region//落下状態
         //　落ちている状態
         //スタートでは落下状態ではないのでfallFlagはfalseとなっている
@@ -325,9 +310,58 @@ public class Player : MonoBehaviour
             //Debug.Log("fallenPosition" + fallenPosition);
 
             RaycastHit hit;
+
+            //壁ジャンプできる壁にレイが届いていたら
+            /*
+             if(Physics.Linecast(rayPosition.position,rayPosition.position + vector3.left * rayRange,out hit)&&
+             Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * rayRange, out hit)&&
+             Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * rayRange, out hit)&&
+             Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.foward * rayRange, out hit))
+            {
+                if(hit.transform.gameObject.CompareTag(WallJmnpPoint))
+                {
+                    if(GetKey(KeyCode.E))
+                    {
+                        animeSetBool();
+                        rd.constraints = RigidbodyConstraints.FreezePosition;
+                      //普通のジャンプをしていたら
+                      if(jumpFlag == true)
+                      {
+                        jumpFlag = false;
+                        anime.SetBool("doJump", false);
+                        //着地モーションから待機モーションへ
+                         if (jumpFlag == false)
+                         {
+                           anime.SetBool("doIdle", true);
+                           Debug.Log("Landing" + anime.GetBool("doLanding"));
+                           Debug.Log("doIdle" + anime.GetBool("doIdle"));
+                           Debug.Log("doFall"+anime.GetBool("doFall"));
+                         }                               
+                      }
+                      //ローリングジャンプをしていたら
+                      if (rollingJumpDidFlag == true)
+                      {
+                        //ローロング空中待機モーションから待機モーションへ
+                        anime.SetBool("RollingAriIdle", false);
+                        anime.SetBool("doIdle", true);
+                        rollingJumpDidFlag = false;
+                      }
+                      if(wallJampDidFlag == true)
+                      {
+                         anime.SetBool("RollingAriIdle", false);
+                         anime.SetBool("doIdle", true);
+                         wallJumpDidFlag = false;
+                      }
+                    }
+                    PlaySE(randingSE);
+                    fallFlag = false;
+                }
+            }
+             */
+
             //　地面にレイが届いていたら
             if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
-            {
+                {
                 Debug.Log("asikitara");
                 //　落下距離を計算
                 fallenDistance = fallenPosition - transform.position.y;
@@ -370,16 +404,18 @@ public class Player : MonoBehaviour
                                 anime.SetBool("doIdle", true);
                                 rollingJumpDidFlag = false;
                             }
-                            /*if(wallClingJumpDidFlag == true)
+                            /*if(wallJampDidFlag == true)
                             {
-                                wallClingJumpDidFlag == false;
+                                anime.SetBool();
+                                anime.SetBool();
+                                wallJampDidFlag == false;
                             }*/
                         }
                         //ローロングジャンプポイントに着地したら
                         if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
                         {
                             //普通のジャンプをしていたら
-                            if (jumpFlag == true)
+                            if (jumpFlag == true)//||wallJampFlag == true 
                             {
                                 jumpFlag = false;
                                 anime.SetBool("doJump", false);
@@ -405,11 +441,12 @@ public class Player : MonoBehaviour
                                 Debug.Log("doIdle" + anime.GetBool("doIdle"));
                                 Debug.Log("doFall"+anime.GetBool("doFall"));*/
                             }
-                            /*if(wallClingJumpDidFlag == true)
-                            {
-                                wallClingJumpDidFlag = false;
-                                rollingJumpFlag = true;
-                            }*/
+                            /*if(wallJampDidFlag == true)
+                           {
+                               anime.SetBool();
+                               anime.SetBool();
+                               wallJampDidFlag == false;
+                           }*/
                         }
                         //加速するフラグをたてる
                         speedAccelerationFlag = true;
@@ -491,7 +528,13 @@ public class Player : MonoBehaviour
                             }*/
                         }
 
-                       
+                        /*if(wallJampDidFlag == true)
+                          {
+                              anime.SetBool();
+                              anime.SetBool();
+                              wallJampDidFlag == false;
+                          }*/
+
                     }
 
                     //ここでフラグおり＆着地の効果音を入れている
@@ -509,7 +552,7 @@ public class Player : MonoBehaviour
                     //上と同じくしている
                     if (hit.transform.gameObject.CompareTag("Ground"))
                     {
-                        if (jumpFlag == true)
+                        if (jumpFlag == true)//||wallJampFlag == true 
                         {
                             //落下モーションか着地モーションへ
                             anime.SetBool("doJump", false);
@@ -545,7 +588,7 @@ public class Player : MonoBehaviour
                     //上と同じ
                     if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
                     {
-                        if (jumpFlag == true)
+                        if (jumpFlag == true)//||wallJampFlag == true 
                         {
                             Debug.Log("mikasura");
                             //落下モーションか着地モーションへ
@@ -773,14 +816,6 @@ public class Player : MonoBehaviour
                 jumpCount++;
             }
 
-            /*if (wallClingJumpFlag == true)
-            {
-                wallClingJumpDidFlag = true;
-                jumpCount++;
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
-            }*/
-
-
             //ローロングジャンプができる状態なら
             if (rollingJumpFlag == true)
             {
@@ -791,6 +826,16 @@ public class Player : MonoBehaviour
                 jumpCount++;
                 rollingJumpFlag = false;
             }
+
+            //壁ジャンプができるなら
+            /*
+             if(wallJampFlag == true){
+                this.rb.AddForce(new vector3(0,jumpSpeed*30,0));
+                anime.SetTrigger
+                jumpCount++
+                wallJampDidFlag = true;
+            }
+             */
         }
         #endregion
     }
