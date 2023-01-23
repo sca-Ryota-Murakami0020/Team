@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 public class RetryButtonC : MonoBehaviour
 {
     //private OverLoadTimer olt;
+    private totalGameManager tGM;
+
+    private void Awake()
+    {
+        tGM = FindObjectOfType<totalGameManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -28,5 +34,6 @@ public class RetryButtonC : MonoBehaviour
         olt.HourTime = 0;
         */
         SceneManager.LoadScene("LoadBill");
+        tGM.TotalTime = 0.0f;
     }
 }

@@ -33,7 +33,7 @@ public class TimeTextC : MonoBehaviour
         //Debug.Log(olt.OldSecondTime);
         //ハイスコアの表記
         //TimeText.text = (totalGM.TotalTime / 3600).ToString("00") + ":" + (totalGM.TotalTime / 120).ToString("00") + ":" + ((int)totalGM.TotalTime % 60).ToString("00");
-        Debug.Log("リザルト処理完了");
+        Debug.Log("リザルト処理完了" + totalGM.TotalTime);
         oneSecImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime % 10)];
         tenSecImage.sprite = numberImage[Mathf.FloorToInt((totalGM.TotalTime % 60) / 10)];
         oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime / 60)];
