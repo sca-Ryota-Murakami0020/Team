@@ -7,36 +7,18 @@ public class PlayerWallCon : MonoBehaviour
     //一個上の親のオブジェクト
     private GameObject parent;
 
-    Texture2D tex;
-    MeshRenderer meshRenderer;
-
-    private bool wallJumpFlag = false;
-    private bool clingFlag = false;
-    private bool doubleHitFlag = false;
-
-    public bool WallJumpFlag
+    private bool wallJumpHitFlag = false;
+    
+    public bool WallJumpHitFlag
     {
-        get { return this.wallJumpFlag; }
-        set { this.wallJumpFlag = value; }
-    }
-
-    public bool ClingFlag
-    {
-        get { return this.clingFlag; }
-        set { this.clingFlag = value; }
-    }
-
-    public bool DoubleHitFlag
-    {
-        get { return this.doubleHitFlag; }
-        set { this.doubleHitFlag = value; }
+        get { return this.wallJumpHitFlag; }
+        set { this.wallJumpHitFlag = value; }
     }
 
     // Start is called before the first frame update
     void Start()
     {
         parent = transform.parent.gameObject;
-        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -52,20 +34,8 @@ public class PlayerWallCon : MonoBehaviour
         if (other.gameObject.CompareTag("WallJumpPoint"))
         {
             //Debug.Log("a");
-            wallJumpFlag = true;
+            wallJumpHitFlag = true;
         }
-
-        if (other.gameObject.CompareTag("ClingPoint"))
-        {
-            //Debug.Log("i");
-            clingFlag = true;
-        }
-
-        if (other.gameObject.CompareTag("ClingPoint")&& other.gameObject.CompareTag("WallJumpPoint"))
-        {
-            doubleHitFlag = true;
-        }
-
     }
 
 }
