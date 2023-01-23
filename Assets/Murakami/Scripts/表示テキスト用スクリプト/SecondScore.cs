@@ -60,9 +60,14 @@ public class SecondScore : MonoBehaviour
     }
     private IEnumerator StartSecondScore()
     {
-        if (counter <= 500)
+        if (counter <= 300 && counter >= 0)
         {
             timer.position -= new Vector3(2.0f, 0, 0);
+            counter++;
+        }
+        if (counter <= 500 && counter >= 300)
+        {
+            timer.position -= new Vector3(1.0f, 0, 0);
             counter++;
         }
         yield return new WaitForSeconds(1);

@@ -23,6 +23,7 @@ TagManager:
   - RollingJumpPoint
   - GoalPoint
   - enemySponer
+  - LimitWall
   layers:
   - Default
   - TransparentFX

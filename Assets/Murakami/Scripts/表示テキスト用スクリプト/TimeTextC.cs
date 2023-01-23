@@ -39,14 +39,19 @@ public class TimeTextC : MonoBehaviour
         oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime / 60)];
         tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.TotalTime / 600)];
 
-        if(counter < 500)
+        StartCoroutine("StartText");
+
+    }
+
+    private IEnumerator StartText()
+    {
+        if (counter <= 500)
         {
-            timer.position -= new Vector3(2.0f,0,0);
+            timer.position -= new Vector3(2.0f, 0, 0);
             counter++;
         }
-        if(counter >= 500)
-        {
-            th.StartCoroutine("StartTherdScore");
-        }
+        yield return new WaitForSeconds(1); 
+        th.StartCoroutine("StartTherdScore");
+        yield break;
     }
 }

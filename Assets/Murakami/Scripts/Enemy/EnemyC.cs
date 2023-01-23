@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO.MemoryMappedFiles;
 
 public class EnemyC : MonoBehaviour
 {
@@ -33,6 +34,26 @@ public class EnemyC : MonoBehaviour
     private bool doTurn;
     //rayを飛ばすオブジェクト
     [SerializeField] private GameObject shotRayPosition;
+    //回転の軸を設定するために必要
+    private Quaternion defaultRotation;
+    //回転時間
+    private float rotateTime = 0.0f;
+    //最初に振り向く処理を向こうにする
+    private bool noCountFlag;
+    //回転回数
+    private int rotateCounter;
+
+    //敵の回転する方向
+    enum RotationPar
+    {
+        NULL,
+        RIGHT,
+        LEFT,
+        RESET,
+        TURN,
+    };
+    
+    RotationPar rotationState;
 
     #region//プロパティ
     public GameObject StartP
@@ -64,7 +85,13 @@ public class EnemyC : MonoBehaviour
         doEncount = false;
         startFlag = true;
         doTurn = false;
+        noCountFlag = true;
+        rotateCounter = 0;
+        rotateTime = 1.0f;
+        rotationState = RotationPar.NULL;
+
         this.transform.LookAt(endPoint.transform.position);
+
     }
 
     // Update is called once per frameshotRayPosition.transform.position, 
@@ -80,7 +107,7 @@ public class EnemyC : MonoBehaviour
             //Debug.Log("rayHit");
             if(hit.collider.gameObject.CompareTag("Player"))
             {
-                Debug.Log("ray");
+                //Debug.Log("ray");
                 this.doEncount = true;
             }        
         }
@@ -99,21 +126,13 @@ public class EnemyC : MonoBehaviour
                 this.transform.position += new Vector3(0,0,0);
             }
         }
-        //Debug.Log("エンカウント" + doEncount);
+        //Debug.Log("エンカウント:" + rotationState);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        /*
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Vector3 ver = (pl.transform.position - this.transform.position).normalized;
-            ver.y = 0;
-            ver = ver.normalized;
-            collision.transform.Translate(ver * speed);
-        }*/
 
-        if (collision.gameObject.CompareTag("WallJumpPoint") && doEncount == true)
+        if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("WallJumpPoint") || collision.gameObject.CompareTag("LimitWall")) && doEncount == true)
         {
             //Destroy(this.gameObject);
             //eSC.SponeEnemy();
@@ -124,34 +143,35 @@ public class EnemyC : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {      
-        if (other.gameObject == this.startPoint && doEncount == false && this.gameObject.CompareTag("Enemy"))
-        {
-            returnLookStartPosition();
-        }
-
-        if (other.gameObject == this.endPoint && doEncount == false && this.gameObject.CompareTag("Enemy"))
+        if (other.gameObject == this.startPoint && noCountFlag == false)
         {
             returnLookEndPosition();
         }
-        
-        /*if(other.gameObject.CompareTag("Player"))
+
+        if (other.gameObject == this.endPoint)
         {
-            this.doEncount = true;
-        }*/
+            returnLookStartPosition();
+        }
     }
 
     public void returnLookStartPosition()
     {
-        //StartCoroutine("TurnLookForStartPoint");
-        this.transform.LookAt(endPoint.transform.position);
-        //Debug.Log("Estart開始");
+        //endPointの方向に向けるようにするために値を変更する
+        defaultRotation = this.transform.rotation;
+        doTurn = true;
+        rotationState = RotationPar.RIGHT;
+        StartCoroutine("TurnLookForStartPoint");
+        //Debug.Log("始点から動き出す");
     }
 
     public void returnLookEndPosition()
     {
-        //StartCoroutine("TurnLookForEndPoint");
-        this.transform.LookAt(startPoint.transform.position);
-        //Debug.Log("Eend開始");
+        //startPointの方向に向けるようにするために値を変更する
+        defaultRotation = this.transform.rotation;
+        doTurn = true;
+        rotationState = RotationPar.RIGHT;
+        StartCoroutine("TurnLookForEndPoint");
+        //Debug.Log("終点から動き出す");     
     }
 
     private IEnumerator ResetEnemy()
@@ -164,15 +184,136 @@ public class EnemyC : MonoBehaviour
         yield break;
     }
 
-    /*private IEnumerator TurnLookForStartPoint()
+    private IEnumerator TurnLookForStartPoint()
     {
-        yield return new WaitForSeconds(3);
-        transform.Rotate(new Vector3(0, 2, 0));
-        if()
+        yield return new WaitForSeconds(1);       
+        while(rotationState == RotationPar.RIGHT)
+        {
+            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            Debug.Log("右回転中");
+            if(this.transform.rotation.y <= -75.0f)
+            {
+                rotationState = RotationPar.LEFT;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);          
+        }
+
+        //左方向に回転
+        while(rotationState == RotationPar.LEFT)
+        {
+            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            Debug.Log("左回転中");
+            if (this.transform.rotation.y >= 75.0f)
+            {
+                rotationState = RotationPar.RESET;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+
+        //正位置に戻る
+        while(rotationState == RotationPar.RESET)
+        {
+            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            Debug.Log("RESET");
+            if (this.transform.rotation.y >= 0.0f)
+            {
+                rotationState = RotationPar.TURN;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        while(rotationState == RotationPar.TURN)
+        {
+            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            Debug.Log("TURN");
+            if (this.transform.rotation.y >= 180.0f)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        yield return new WaitForSeconds(1);
+        //Debug.Log("始点に向けて回転");
+        //this.transform.LookAt(startPoint.transform.position);
+        //yield return new WaitForSeconds(1);
+        //Debug.Log("始点に向けて動き出す");
+        doTurn = false;
+        rotationState = RotationPar.NULL;
+        if(noCountFlag == true)
+        {
+            noCountFlag = false;
+        }
+        yield break;
     }
 
     private IEnumerator TurnLookForEndPoint()
-    { 
+    {
+        yield return new WaitForSeconds(1);
+        while (rotationState == RotationPar.RIGHT)
+        {
+            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            if (this.transform.rotation.y >= 75.0f)
+            {
+                rotationState = RotationPar.LEFT;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
 
-    }*/
+        //左方向に回転
+        while (rotationState == RotationPar.LEFT)
+        {
+            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            if (this.transform.rotation.y <= -75.0f)
+            {
+                rotationState = RotationPar.RESET;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+
+        //正位置に戻る
+        while (rotationState == RotationPar.RESET)
+        {
+            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            if (this.transform.rotation.y >= 0.0f)
+            {
+                rotationState = RotationPar.TURN;
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        while (rotationState == RotationPar.TURN)
+        {
+            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            rotateCounter++;
+            if (this.transform.rotation.y >= 180.0f)
+            {
+                break;
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(1);
+        Debug.Log("終点に向けて回転");
+        //this.transform.LookAt(endPoint.transform.position);
+        yield return new WaitForSeconds(1);
+        Debug.Log("終点に向けて動き出す");
+        doTurn = false;
+        rotationState = RotationPar.NULL;
+        yield break;
+    }
 }
