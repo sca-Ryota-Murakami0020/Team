@@ -204,6 +204,7 @@ public class totalGameManager : MonoBehaviour
         if (nextScene.name == "bill" || nextScene.name == "1ŠK")
         {
             timeCounter = true;
+            //totalTime = 0.0f;
             //nowPlayingText = GetComponentInChildren<Text>();
         }
 
@@ -218,7 +219,6 @@ public class totalGameManager : MonoBehaviour
             timeCounter = false;
             playerHp = 3;
             playerItemCount = 0;
-            totalTime = 0.0f;
         }
 
         if (nextScene.name == "GoalScene")

@@ -5,6 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class TitleButtonC : MonoBehaviour
 {
+    private totalGameManager tGM;
+
+    private void Awake()
+    {
+        tGM = FindObjectOfType<totalGameManager>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,5 +27,6 @@ public class TitleButtonC : MonoBehaviour
     public void GotoTitle()
     {
         SceneManager.LoadScene("AnyLoadTitle");
+        tGM.TotalTime = 0.0f;
     }
 }
