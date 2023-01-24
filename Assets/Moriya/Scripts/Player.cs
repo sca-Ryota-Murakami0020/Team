@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
     private bool gameOverFlag = false;
     //カメラに移動・向き反転を促すフラグ
     private bool reversalCamera = false;
+    //壁にいる判定
+    private bool doStayWall = false;
 
     //使わないけどコルーチン用
     //private bool sameTransFlag = false;
@@ -345,12 +347,11 @@ public class Player : MonoBehaviour
                         rollingJumpDidFlag = false;
                     }
 
-                    //
+                    //壁ジャンをしていたら
                     if(wallJumpDidFlag == true)
                     {
                         anime.SetTrigger("WallJumpHit");
                         wallJumpDidFlag = false;
-
                     }
 
                     anime.SetTrigger("WallJumpHit");
@@ -360,6 +361,8 @@ public class Player : MonoBehaviour
 
                     //カメラに座標＆向く方角反転を促すフラグ
                     reversalCamera = true;
+                    //壁に張り付いてる判定
+                    doStayWall = true;
 
                     //もう一度Zボタンが押されたら
                     if(Input.GetKey(KeyCode.Z))
@@ -367,18 +370,8 @@ public class Player : MonoBehaviour
                         anime.SetTrigger("LiftWall");
                         pWallC.WallJumpHitFlag = false;
                         wallJumpFlag = false;
+                        doStayWall = false;
                     }
-
-                        /*
-
-                          if(wallJampDidFlag == true)
-                          {
-                             anime.SetBool("RollingAriIdle", false);
-                             //もう一つのアニメフラグをたてる
-                             wallJumpDidFlag = false;
-                             pWall
-                          }
-                    */
 
                     PlaySE(randingSE);
                     fallFlag = false;             
@@ -579,6 +572,7 @@ public class Player : MonoBehaviour
                     }
 
                 }
+
                 if (fallenDistance <= takeDamageDistance)//ダメージなしの着地
                 {
                     //通常着地モーションをする
@@ -673,10 +667,9 @@ public class Player : MonoBehaviour
         }
         else//地面にいる時
         {
-
             //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
             //地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange))
+            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
             {
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
@@ -875,6 +868,7 @@ public class Player : MonoBehaviour
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 JumpCount++;
                 wallJumpFlag = false;
+                doStayWall = false;
                 pWallC.WallJumpHitFlag = false;
             }
 
@@ -917,7 +911,7 @@ public class Player : MonoBehaviour
         }
 
         //落下中に壁ジャン地点に当たったら
-        if(other.gameObject.CompareTag("") && pWallC.WallJumpHitFlag == true)
+        if(other.gameObject.CompareTag("WallJumpPoint") && pWallC.WallJumpHitFlag == true)
         {
             jumpCount = 0;
             rollingJumpFlag = false; 

@@ -20,8 +20,8 @@ public class CameraC : MonoBehaviour
     private float mousex;
     //縦方向のマウスの移動量
     private float mousey;
-    //壁ジャンで用いるスクリプト
-    private PlayerWallCon pWC;
+    //壁ジャンで用いるスクリプト&& pWC.WallJumpHitFlag == false
+    //private PlayerWallCon pWC;
     #endregion
 
     #region//stageによって変わる数値
@@ -36,7 +36,7 @@ public class CameraC : MonoBehaviour
     //視点からカメラの距離の遊び
     [SerializeField] private float cPDistance;// = 0.3f;//cameraPlayDiatance = 0.3f; 
     //離れる時の速度
-    [SerializeField] private float leaveCamera;// = 20.0f;//leaveSmooth
+    [SerializeField] private float leaveCamera;// = 20.0f;//leaveSmooth 
     //カメラの最低高度
     [SerializeField] private float cameraHeightMin;// = -5.0f;
     //カメラの最高高度
@@ -48,10 +48,11 @@ public class CameraC : MonoBehaviour
     #endregion
 
 
-    private void Aweke()
+    /*private void Aweke()
     {
-        pWC = GetComponent<PlayerWallCon>();
-    }
+        pWC = GetComponentInChildren<PlayerWallCon>();
+    }*/
+
     //視点とカメラ座標を随時更新
     void Update()
     {
@@ -61,16 +62,16 @@ public class CameraC : MonoBehaviour
         mousey = Input.GetAxis("Mouse Y");
 
         //通常のカメラ操作
-        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
+        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f))
         {
             Roll(mousex, mousey);
         }
 
         //壁ジャン中のカメラの操作
-        if(pWC.WallJumpHitFlag == true && Mathf.Abs(mousex) > 0.019f)
+        /*if(pWC.WallJumpHitFlag == true && Mathf.Abs(mousex) > 0.019f)
         {
             PlayerDoWallJump(mousex);
-        }
+        }*/
 
         UpdateLookPosition();
         UpdateCameraPosition();
@@ -173,6 +174,7 @@ public class CameraC : MonoBehaviour
     }
 
     //壁ジャン中のカメラの回転
+    /*
     public void PlayerDoWallJump(float x)
     {
         //移動前の距離を保持
@@ -196,7 +198,7 @@ public class CameraC : MonoBehaviour
         this.transform.position += transform.forward * (after_distance - prev_distans);
         //D.z = 0.0f;
         //Player.transform.rotation = Quaternion.LookRotation(D);
-    }
+    }*/
 }
 
 

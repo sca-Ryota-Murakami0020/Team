@@ -42,6 +42,8 @@ public class EnemyC : MonoBehaviour
     private bool noCountFlag;
     //‰ñ“]‰ñ”
     private int rotateCounter;
+    //‰ñ“]‚µ‚½‹——£
+    private float rotationDistance;
 
     //“G‚Ì‰ñ“]‚·‚é•ûŒü
     enum RotationPar
@@ -87,8 +89,8 @@ public class EnemyC : MonoBehaviour
         doTurn = false;
         noCountFlag = true;
         rotateCounter = 0;
-        rotateTime = 1.0f;
         rotationState = RotationPar.NULL;
+        rotationDistance = 0.0f;
 
         this.transform.LookAt(endPoint.transform.position);
 
@@ -189,63 +191,95 @@ public class EnemyC : MonoBehaviour
         yield return new WaitForSeconds(1);       
         while(rotationState == RotationPar.RIGHT)
         {
-            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;rotationDistance = defaultRotation.y - 75.0f;
+            this.transform.Rotate(0,1.0f,0);
             rotateCounter++;
-            Debug.Log("‰E‰ñ“]’†");
-            if(this.transform.rotation.y <= -75.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
+
+            //Debug.Log("‰E‰ñ“]’†");
+            if (rotateCounter >=45)
             {
                 rotationState = RotationPar.LEFT;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("¶‰ñ“]‚ÉˆÚs‚·‚é");
                 break;
-            }
-            yield return new WaitForSeconds(0.2f);          
+            }         
         }
 
         //¶•ûŒü‚É‰ñ“]
         while(rotationState == RotationPar.LEFT)
         {
-            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;]rotationDistance = defaultRotation.y + 75.0f;
+            this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
-            Debug.Log("¶‰ñ“]’†");
-            if (this.transform.rotation.y >= 75.0f)
+
+            if(rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter >= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 85) yield return new WaitForSeconds(0.075f);
+
+            //Debug.Log("¶‰ñ“]’†");
+            if (rotateCounter >= 90)
             {
                 rotationState = RotationPar.RESET;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("ƒŠƒZƒbƒg‚ÉˆÚs‚·‚é");
                 break;
             }
-            yield return new WaitForSeconds(0.2f);
         }
-
 
         //³ˆÊ’u‚É–ß‚é
         while(rotationState == RotationPar.RESET)
         {
-            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
-            Debug.Log("RESET");
-            if (this.transform.rotation.y >= 0.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
+
+            if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.TURN;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("OK,Go");
                 break;
-            }
-            yield return new WaitForSeconds(0.2f);
+            }         
         }
 
         while(rotationState == RotationPar.TURN)
         {
-            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
-            Debug.Log("TURN");
-            if (this.transform.rotation.y >= 180.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >=3 && rotateCounter <= 175) yield return new WaitForSeconds(0.00075f);
+
+            if (rotateCounter >= 175) yield return new WaitForSeconds(0.075f);
+
+            if (rotateCounter >= 180)
             {
+                Debug.Log("TURN");
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
                 break;
-            }
-            yield return new WaitForSeconds(0.2f);
+            }           
         }
         
-        yield return new WaitForSeconds(1);
-        //Debug.Log("n“_‚ÉŒü‚¯‚Ä‰ñ“]");
-        //this.transform.LookAt(startPoint.transform.position);
-        //yield return new WaitForSeconds(1);
-        //Debug.Log("n“_‚ÉŒü‚¯‚Ä“®‚«o‚·");
         doTurn = false;
         rotationState = RotationPar.NULL;
         if(noCountFlag == true)
@@ -260,57 +294,95 @@ public class EnemyC : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (rotationState == RotationPar.RIGHT)
         {
-            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;rotationDistance = defaultRotation.y - 75.0f;
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
-            if (this.transform.rotation.y >= 75.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
+
+            //Debug.Log("‰E‰ñ“]’†");
+            if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.LEFT;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("¶‰ñ“]‚ÉˆÚs‚·‚é");
                 break;
             }
-            yield return new WaitForSeconds(0.2f);
         }
 
         //¶•ûŒü‚É‰ñ“]
         while (rotationState == RotationPar.LEFT)
         {
-            transform.rotation = Quaternion.AngleAxis(-rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;]rotationDistance = defaultRotation.y + 75.0f;
+            this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
-            if (this.transform.rotation.y <= -75.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter>= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
+
+            if(rotateCounter >= 80) yield return new WaitForSeconds(0.075f);
+
+            //Debug.Log("¶‰ñ“]’†");
+            if (rotateCounter >= 90)
             {
                 rotationState = RotationPar.RESET;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("ƒŠƒZƒbƒg‚ÉˆÚs‚·‚é");
                 break;
             }
-            yield return new WaitForSeconds(0.2f);
         }
-
 
         //³ˆÊ’u‚É–ß‚é
         while (rotationState == RotationPar.RESET)
         {
-            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
-            if (this.transform.rotation.y >= 0.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
+
+            if (rotateCounter >= 3 && rotateCounter < 35) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 35) yield return new WaitForSeconds(0.075f);
+
+            if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.TURN;
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                Debug.Log("OK,Go");
                 break;
             }
-            yield return new WaitForSeconds(0.2f);
         }
 
         while (rotationState == RotationPar.TURN)
         {
-            transform.rotation = Quaternion.AngleAxis(rotateTime, this.transform.up) * defaultRotation;
+            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
-            if (this.transform.rotation.y >= 180.0f)
+
+            if (rotateCounter < 3) yield return new WaitForSeconds(0.01f);
+
+            if (rotateCounter >= 3 && rotateCounter <= 175) yield return new WaitForSeconds(0.00075f);
+
+            if (rotateCounter >= 175) yield return new WaitForSeconds(0.075f);
+
+            if (rotateCounter >= 180)
             {
+                Debug.Log("TURN");
+                rotateCounter = 0;
+                yield return new WaitForSeconds(1);
                 break;
             }
-            yield return new WaitForSeconds(0.2f);
         }
-        yield return new WaitForSeconds(1);
-        Debug.Log("I“_‚ÉŒü‚¯‚Ä‰ñ“]");
-        //this.transform.LookAt(endPoint.transform.position);
-        yield return new WaitForSeconds(1);
+
         Debug.Log("I“_‚ÉŒü‚¯‚Ä“®‚«o‚·");
         doTurn = false;
         rotationState = RotationPar.NULL;
