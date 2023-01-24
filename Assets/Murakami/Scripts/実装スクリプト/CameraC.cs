@@ -20,6 +20,8 @@ public class CameraC : MonoBehaviour
     private float mousex;
     //縦方向のマウスの移動量
     private float mousey;
+    //壁ジャンで用いるスクリプト
+    private PlayerWallCon pWC;
     #endregion
 
     #region//stageによって変わる数値
@@ -46,6 +48,10 @@ public class CameraC : MonoBehaviour
     #endregion
 
 
+    private void Aweke()
+    {
+        pWC = GetComponent<PlayerWallCon>();
+    }
     //視点とカメラ座標を随時更新
     void Update()
     {
@@ -54,9 +60,16 @@ public class CameraC : MonoBehaviour
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
 
-        if (Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f)
+        //通常のカメラ操作
+        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
         {
             Roll(mousex, mousey);
+        }
+
+        //壁ジャン中のカメラの操作
+        if(pWC.WallJumpHitFlag == true && Mathf.Abs(mousex) > 0.019f)
+        {
+            PlayerDoWallJump(mousex);
         }
 
         UpdateLookPosition();
@@ -157,6 +170,32 @@ public class CameraC : MonoBehaviour
         //視点を更新する
         this.transform.LookAt(D);
 
+    }
+
+    //壁ジャン中のカメラの回転
+    public void PlayerDoWallJump(float x)
+    {
+        //移動前の距離を保持
+        float prev_distans = Vector3.Distance(Player.transform.position, this.transform.position);
+        Vector3 pos = this.transform.position;
+
+        //横移動
+        pos += this.transform.right * x / holizontalMag;
+
+        //移動後の距離を取得
+        float after_distance = Vector3.Distance(Player.transform.position, pos);
+
+        //視点を対象に近づける（余裕をなくす）
+        D = Vector3.Lerp(D, Player.transform.position, 0.1f);
+
+        //カメラの更新
+        this.transform.position = pos;
+        this.transform.LookAt(D);
+
+        //平行移動により若干距離が変わるので補正する
+        this.transform.position += transform.forward * (after_distance - prev_distans);
+        //D.z = 0.0f;
+        //Player.transform.rotation = Quaternion.LookRotation(D);
     }
 }
 
