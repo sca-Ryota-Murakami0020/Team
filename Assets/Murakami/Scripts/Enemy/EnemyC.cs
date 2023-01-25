@@ -191,17 +191,18 @@ public class EnemyC : MonoBehaviour
         yield return new WaitForSeconds(1);       
         while(rotationState == RotationPar.RIGHT)
         {
-            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;rotationDistance = defaultRotation.y - 75.0f;
+            //ˆê“x‚¸‚Â‰ñ“]
             this.transform.Rotate(0,1.0f,0);
             rotateCounter++;
 
+            //n‚ß‚Í­‚µŠÉ‚â‚©‚É‰ñ“]
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
+            //f’É‚Ì‰ñ“]‘¬“x‚Å‰ñ“]
             if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
-
+            //ÅŒã‚Í­‚µŠÉ‚â‚©‚É‰ñ“]‚·‚é
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
 
-            //Debug.Log("‰E‰ñ“]’†");
+            //‰ñ“]‚µ‚½“x”‚ª45‹‚ğ’´‚¦‚½‚ç
             if (rotateCounter >=45)
             {
                 rotationState = RotationPar.LEFT;

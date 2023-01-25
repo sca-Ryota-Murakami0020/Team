@@ -33,7 +33,7 @@ public class PlayerWallCon : MonoBehaviour
         
         if (other.gameObject.CompareTag("WallJumpPoint"))
         {
-            //Debug.Log("a");
+            //Debug.Log("’£‚è•t‚«");
             wallJumpHitFlag = true;
         }
     }

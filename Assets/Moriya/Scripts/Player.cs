@@ -52,8 +52,8 @@ public class Player : MonoBehaviour
     private bool wallJumpDidFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
-    //カメラに移動・向き反転を促すフラグ
-    private bool reversalCamera = false;
+    //カメラに移動・向き反転かつ親オブジェクトに壁張り付き
+    private bool doInputButtonFlag = false;
     //壁にいる判定
     private bool doStayWall = false;
 
@@ -94,7 +94,6 @@ public class Player : MonoBehaviour
     //GMとポーズ画面関係のスプリクトの定義
     private totalGameManager gm;
     private PasueDisplayC pasueDisplayC;
-    private PlayerWallCon playerWallConC;
     private PlayerWallCon pWallC;
 
     //　Time.timeScaleに設定する値
@@ -177,11 +176,11 @@ public class Player : MonoBehaviour
         set { this.heartArray = value; }
     }
 
-    public bool ReversalCamera
+    public bool DoInputButtonFlag
     {
-        get { return this.reversalCamera;}
-        set { this.reversalCamera = value;}
-    }
+        get { return this.doInputButtonFlag;}
+        set { this.doInputButtonFlag = value;}
+    }   
 
     #endregion
 
@@ -198,7 +197,7 @@ public class Player : MonoBehaviour
         bc = GetComponent<BoxCollider>();
         gm = FindObjectOfType<totalGameManager>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
-        playerWallConC = FindObjectOfType<PlayerWallCon>();
+        pWallC = FindObjectOfType<PlayerWallCon>();
         this.anime = GetComponent<Animator>();
 
         //hp初期化
@@ -225,7 +224,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(rollingJumpFlag);
+        //Debug.Log(rollingJumpFlag);
 
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
@@ -233,7 +232,7 @@ public class Player : MonoBehaviour
             heartArray[i].gameObject.SetActive(true);
         }
 
-        Debug.Log(fallFlag);
+        //Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
@@ -324,6 +323,7 @@ public class Player : MonoBehaviour
             //壁ジャンプできる壁にレイが届いていたら
                 if(Input.GetKey(KeyCode.Z))
                 {
+                    Debug.Log("Zがおされている");
                     //普通のジャンプをしていたら
                     if (jumpFlag == true)
                     {
@@ -356,27 +356,30 @@ public class Player : MonoBehaviour
 
                     anime.SetTrigger("WallJumpHit");
                     wallJumpFlag = true;
+
                     //プレイヤーの座標固定＆向き反転
-                    rb.constraints = RigidbodyConstraints.FreezePosition;
+                    doInputButtonFlag = true;
+                    this.transform.Rotate(0, 180.0f, 0);
+                    Debug.Log("固定化");
 
-                    //カメラに座標＆向く方角反転を促すフラグ
-                    reversalCamera = true;
                     //壁に張り付いてる判定
-                    doStayWall = true;
-
-                    //もう一度Zボタンが押されたら
-                    if(Input.GetKey(KeyCode.Z))
-                    {
-                        anime.SetTrigger("LiftWall");
-                        pWallC.WallJumpHitFlag = false;
-                        wallJumpFlag = false;
-                        doStayWall = false;
-                    }
-
-                    PlaySE(randingSE);
-                    fallFlag = false;             
+                    doStayWall = true;          
                 }
-             
+
+                //もう一度Zボタンが押されたら
+                if(Input.GetKey(KeyCode.Z))
+                {
+                    anime.SetTrigger("LiftWall");
+                    Debug.Log("離された判定");
+                    pWallC.WallJumpHitFlag = false;
+                    wallJumpFlag = false;
+                    doStayWall = false;
+                    doInputButtonFlag = false;
+                }
+
+                PlaySE(randingSE);
+                fallFlag = false;  
+
             }
 
             //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
@@ -706,7 +709,7 @@ public class Player : MonoBehaviour
         //十字キー操作
         //中の処理はWASDどれも同じ
         //左方向に向いて移動したら
-         if (Input.GetKey(KeyCode.A))
+         if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
          {
             moveFlag = true;
 
@@ -738,7 +741,7 @@ public class Player : MonoBehaviour
          }
 
          //右方向に向いて移動したら
-         if (Input.GetKey(KeyCode.D))
+         if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false)
          {
             moveFlag = true;
             if (fallFlag == false)
@@ -766,7 +769,7 @@ public class Player : MonoBehaviour
          }
 
          //上方向に向いて移動したら
-         if (Input.GetKey(KeyCode.W))
+         if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false)
          {
             moveFlag = true;
             if (fallFlag == false)
@@ -795,7 +798,7 @@ public class Player : MonoBehaviour
          }
 
          //下方向に向いて移動したら
-         if (Input.GetKey(KeyCode.S))
+         if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false)
          {
             moveFlag = true;
             if (fallFlag == false)
@@ -868,6 +871,7 @@ public class Player : MonoBehaviour
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 JumpCount++;
                 wallJumpFlag = false;
+                doInputButtonFlag = false;
                 doStayWall = false;
                 pWallC.WallJumpHitFlag = false;
             }
