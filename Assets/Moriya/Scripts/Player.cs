@@ -225,6 +225,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Debug.Log(rollingJumpFlag);
+        //Debug.Log(rb.useGravity);
+
+        Debug.Log("doLanding : " + anime.GetBool("doLanding"));
+
 
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
@@ -232,7 +236,7 @@ public class Player : MonoBehaviour
             heartArray[i].gameObject.SetActive(true);
         }
 
-        //Debug.Log(fallFlag);
+        Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
@@ -278,6 +282,7 @@ public class Player : MonoBehaviour
             }
         }
 
+
         #region//落下状態
         //　落ちている状態
         //スタートでは落下状態ではないのでfallFlagはfalseとなっている
@@ -321,20 +326,13 @@ public class Player : MonoBehaviour
             if(pWallC.WallJumpHitFlag == true)
             { 
             //壁ジャンプできる壁にレイが届いていたら
-                if(Input.GetKey(KeyCode.Z))
+                if(Input.GetKey(KeyCode.R))
                 {
-                    Debug.Log("Zがおされている");
                     //普通のジャンプをしていたら
                     if (jumpFlag == true)
                     {
                         jumpFlag = false;
                         anime.SetBool("doJump", false);
-                        //着地モーションから待機モーションへ
-                        if (jumpFlag == false)
-                        {
-                            //anime.SetBool("doIdle", true);
-                            anime.SetTrigger("WallJumpHit");
-                        }
                     }
 
                     //ローリングジャンプをしていたら
@@ -342,44 +340,34 @@ public class Player : MonoBehaviour
                     {
                         //ローロング空中待機モーションから待機モーションへ
                         anime.SetBool("RollingAriIdle", false);
-                        anime.SetTrigger("WallJumpHit");
-                        //anime.SetBool("doIdle", true);
                         rollingJumpDidFlag = false;
                     }
 
                     //壁ジャンをしていたら
                     if(wallJumpDidFlag == true)
                     {
-                        anime.SetTrigger("WallJumpHit");
                         wallJumpDidFlag = false;
                     }
 
+                    //アニメーション関係
                     anime.SetTrigger("WallJumpHit");
-                    wallJumpFlag = true;
+                    this.transform.Rotate(0, 180.0f, 0);
 
+                    //フラグ関係
+                    PlaySE(randingSE);
+                    fallFlag = false;
+
+                    wallJumpFlag = true;
                     //プレイヤーの座標固定＆向き反転
                     doInputButtonFlag = true;
-                    this.transform.Rotate(0, 180.0f, 0);
+                    rb.useGravity = false;
                     Debug.Log("固定化");
-
                     //壁に張り付いてる判定
-                    doStayWall = true;          
+                    doStayWall = true;
+
+                    //壁に触れている時のコルーチン発動
+                    //StartCoroutine("StartWallStay");
                 }
-
-                //もう一度Zボタンが押されたら
-                if(Input.GetKey(KeyCode.Z))
-                {
-                    anime.SetTrigger("LiftWall");
-                    Debug.Log("離された判定");
-                    pWallC.WallJumpHitFlag = false;
-                    wallJumpFlag = false;
-                    doStayWall = false;
-                    doInputButtonFlag = false;
-                }
-
-                PlaySE(randingSE);
-                fallFlag = false;  
-
             }
 
             //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
@@ -681,11 +669,28 @@ public class Player : MonoBehaviour
                 fallenDistance = 0;
                 //フラグを立てる
                 fallFlag = true;
-                Debug.Log("入ってるよ");
             }
         }
 
         #endregion
+
+
+        //Eボタンが押されたら
+        if (doStayWall == true && Input.GetKey(KeyCode.E))
+        {
+            anime.SetTrigger("LiftWall");
+            Debug.Log("離された判定");
+            //重力を作用させる
+            rb.useGravity = true;
+            //壁ジャンプできるフラグをおる
+            wallJumpFlag = false;
+            //カメラに渡すフラグをおる
+            doInputButtonFlag = false;
+            //壁はりつき中のフラグをおる
+            doStayWall = false;
+            //壁から離れたのでフラグをおる
+            pWallC.WallJumpHitFlag = false;
+        }
 
         //アニメーションしたら加速
         if (speedAccelerationFlag == true)
@@ -866,24 +871,24 @@ public class Player : MonoBehaviour
             //壁ジャンプができるなら
             if(wallJumpFlag == true)
             {
+                //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 JumpCount++;
+              
+                //重力を作用させる
+                rb.useGravity = true;
+                //壁ジャンプできるフラグをおる
                 wallJumpFlag = false;
+                //カメラに渡すフラグをおる
                 doInputButtonFlag = false;
+                //壁はりつき中のフラグをおる
                 doStayWall = false;
+                //壁から離れたのでフラグをおる
                 pWallC.WallJumpHitFlag = false;
             }
 
-            /*
-             if(pWallC.WallJumpFlag == true){
-                this.rb.AddForce(new vector3(0,jumpSpeed*30,0));
-                anime.SetTrigger
-                jumpCount++
-                wallJampDidFlag = true;
-            }
-             */
         }
         #endregion
     }
@@ -978,12 +983,16 @@ public class Player : MonoBehaviour
     }
 
     #region//コルーチン
-    //rayを飛ばすコルーチン
-    /*private IEnumerator StartLinecast()
+    //壁張り付き中のコルーチン
+    private IEnumerator StartWallStay()
     {
-        
-    }*/
-
+        while (true)
+        {
+            
+            break;
+            yield return null;
+        }
+    }
 
     //スローモーションの元コルーチン
     private IEnumerator StartSlowmotion()
