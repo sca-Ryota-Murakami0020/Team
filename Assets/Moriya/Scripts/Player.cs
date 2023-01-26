@@ -937,15 +937,27 @@ public class Player : MonoBehaviour
         }
 
         //シーン移動
+        if(other.gameObject.name == "goalPoint")
+        {
+            gm.LoadGameClear();
+            SceneManager.LoadScene("GoalScene");
+        }
+
         if(other.gameObject.name == "LoadFirstStagePoint")
         {
             SceneManager.LoadScene("LoadFirstStage");
         }
 
-        if(other.gameObject.name == "goalPoint")
+        if (other.gameObject.name == "LoadSecondPoint")
         {
-            gm.LoadGameClear();
-            SceneManager.LoadScene("GoalScene");
+            //二個目のロードシーンにもちこむをかく
+            SceneManager.LoadScene("LoadSecondStage");//ロードシーンの名前を書く;
+        }
+
+        if (other.gameObject.name == "LoadTherdPoint")
+        {
+            //三個目のロードシーンにもちこむやつをかく
+            SceneManager.LoadScene("LoadTherdStage");//ロードシーンの名前を書く;
         }
     }
 

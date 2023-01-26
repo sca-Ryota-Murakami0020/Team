@@ -27,6 +27,18 @@ EditorBuildSettings:
     path: "Assets/Scenes/1\u968E.unity"
     guid: df3769bcd414f21498a42faf05fc593a
   - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadSecondStage.unity"
+    guid: eeca1d0760cac2848972e82872ef5452
+  - enabled: 1
+    path: "Assets/Scenes/2\u968E.unity"
+    guid: e94a34f658d2aee418ea54b3b2e1ca82
+  - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadTherdStage.unity"
+    guid: 4c47b6e41ac7e134d80111b16103034d
+  - enabled: 1
+    path: "Assets/Scenes/\uFF13\u968E.unity"
+    guid: 570602591b601ee499a6d132f537ca94
+  - enabled: 1
     path: Assets/Scenes/GoalScene.unity
     guid: dcbcf1237cfe61d44b8ae8e2948b218d
   - enabled: 1
