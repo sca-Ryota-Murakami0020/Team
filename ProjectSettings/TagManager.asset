@@ -24,6 +24,9 @@ TagManager:
   - GoalPoint
   - enemySponer
   - LimitWall
+  - LoadFirstPoint
+  - LoadSecondPoint
+  - LoadTherdPoint
   layers:
   - Default
   - TransparentFX
