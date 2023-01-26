@@ -21,7 +21,7 @@ public class CameraC : MonoBehaviour
     //縦方向のマウスの移動量
     private float mousey;
     //壁ジャンで用いるスクリプト&& pWC.WallJumpHitFlag == false
-    //private PlayerWallCon pWC;
+    private PlayerWallCon pWC;
     #endregion
 
     #region//stageによって変わる数値
@@ -48,10 +48,11 @@ public class CameraC : MonoBehaviour
     #endregion
 
 
-    /*private void Aweke()
+    private void Aweke()
     {
-        pWC = GetComponentInChildren<PlayerWallCon>();
-    }*/
+        //pWC = GetComponentInChildren<PlayerWallCon>();
+        //pWC = FindObjectOfType<PlayerWallCon>();
+    }
 
     //視点とカメラ座標を随時更新
     void Update()
@@ -67,10 +68,21 @@ public class CameraC : MonoBehaviour
             Roll(mousex, mousey);
         }
 
-        //壁ジャン中のカメラの操作
-        /*if(pWC.WallJumpHitFlag == true && Mathf.Abs(mousex) > 0.019f)
+        //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
+        if(Mathf.Abs(mousex) > 0.019f && Input.GetKey(KeyCode.G))
         {
             PlayerDoWallJump(mousex);
+        }
+
+        //視点のリセット
+        if (Input.GetKey(KeyCode.RightShift))
+        {
+            Reset();
+        }
+
+        /*if(Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerLanding();
         }*/
 
         UpdateLookPosition();
@@ -91,10 +103,6 @@ public class CameraC : MonoBehaviour
             D += vec.normalized * move_distance;
             //Debug.Log("UpdateLook");
             //Debug.Log("D" + D);
-        }
-        if (Input.GetKey(KeyCode.RightShift))
-        {
-            Reset();
         }
     }
 
@@ -174,7 +182,6 @@ public class CameraC : MonoBehaviour
     }
 
     //壁ジャン中のカメラの回転
-    /*
     public void PlayerDoWallJump(float x)
     {
         //移動前の距離を保持
@@ -188,21 +195,59 @@ public class CameraC : MonoBehaviour
         float after_distance = Vector3.Distance(Player.transform.position, pos);
 
         //視点を対象に近づける（余裕をなくす）
-        D = Vector3.Lerp(D, Player.transform.position, 0.1f);
+        //D = Vector3.Lerp(D, Player.transform.position, 0.1f);
 
         //カメラの更新
         this.transform.position = pos;
+        //this.transform.LookAt(D);
+
+        //平行移動により若干距離が変わるので補正する
+        this.transform.position += transform.forward * (after_distance - prev_distans);
+        //D.z = 0.0f;
+        //Player.transform.rotation = Quaternion.LookRotation(D);
+    }
+
+    /*
+    public void PlayerLanding()
+    {
+        //縦移動
+        float prev_distans = Vector3.Distance(Player.transform.position, this.transform.position);
+        //まず移動前の座標を定義する。
+        //これにより元の位置に戻す処理の際に処理を書きやすくするため
+        Vector3 oldPos = this.transform.position;
+
+        //次に座標を更新したいので更新用の座標を定義する。
+        Vector3 nowPos = this.transform.position;
+
+        //Playerが着地したときにカメラを少し下に沈むように演出する
+        nowCameraHeight = Mathf.Clamp(nowCameraHeight - 10.0f / verticalMag, cameraHeightMin, cameraHeightMax);
+        nowPos.y = D.y + nowCameraHeight;
+
+        //移動後の距離を取得
+        float after_distance = Vector3.Distance(Player.transform.position, oldPos);
+
+        //視点を対象に近づける（余裕をなくす）
+        D = Vector3.Lerp(D, Player.transform.position, 0.1f);
+
+        //カメラの更新
+        nowPos.y = oldPos.y;
         this.transform.LookAt(D);
+        
 
         //平行移動により若干距離が変わるので補正する
         this.transform.position += transform.forward * (after_distance - prev_distans);
         //D.z = 0.0f;
         //Player.transform.rotation = Quaternion.LookRotation(D);
     }*/
+
 }
 
 
 /*
+    private IEnumerator PlayerLandingCamera()
+    {
+
+    }
 //ｘ方向に一定量移動していれば横回転
 if (Mathf.Abs(mousex) > 0.001f)
 {
