@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1140800084783159104}
   - component: {fileID: 1140800084783159105}
   - component: {fileID: 1140800084783159106}
-  - component: {fileID: -166093260694672874}
   m_Layer: 6
   m_Name: Wall
   m_TagString: Ground
@@ -98,18 +97,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-166093260694672874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140800084783159107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fef5cb90afb3144ca6afff81962f157, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3037705775056523848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -117,6 +104,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1140800084783159111}
     m_Modifications:
+    - target: {fileID: 5339501753961236865, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 60df67b17392b6846b246f5df6631dc3, type: 2}
     - target: {fileID: 5534711030372410118, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -165,6 +156,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClingPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 6400302141430781488, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
 --- !u!4 &7414938284610892110 stripped
@@ -183,6 +178,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallJumpPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 1344628040256317692, guid: 0b5c886c3181d1f4f8c877708f02cfcb, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669649874740281232, guid: 0b5c886c3181d1f4f8c877708f02cfcb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 60df67b17392b6846b246f5df6631dc3, type: 2}
     - target: {fileID: 5236658319110205759, guid: 0b5c886c3181d1f4f8c877708f02cfcb, type: 3}
       propertyPath: m_RootOrder
       value: 1

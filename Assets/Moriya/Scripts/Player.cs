@@ -146,6 +146,9 @@ public class Player : MonoBehaviour
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip accelSE;//加速用
+    //効果音がなったら
+    private bool soundFlag = true;
+
     //コルーチン戻り値用
     private Coroutine startLinecast;
 
@@ -227,16 +230,16 @@ public class Player : MonoBehaviour
         //Debug.Log(rollingJumpFlag);
         //Debug.Log(rb.useGravity);
 
-        Debug.Log("doLanding : " + anime.GetBool("doLanding"));
-
+        //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
+        //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
+        Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
+        Debug.Log(rollingJumpDidFlag);
 
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
             heartArray[i].gameObject.SetActive(true);
         }
-
-        Debug.Log(fallFlag);
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
@@ -484,6 +487,7 @@ public class Player : MonoBehaviour
                         StartCoroutine(_hit());
                         anime.SetBool("doLanding", true);
 
+                        Debug.Log("ai");
                         //地面に着地したら
                         if (hit.transform.gameObject.CompareTag("Ground"))
                         {
@@ -505,11 +509,10 @@ public class Player : MonoBehaviour
                             //ローリングジャンプをしていたら
                             if (rollingJumpDidFlag == true)
                             {
-                                //ローロング空中待機モーションから待機モーションへ
-                                anime.SetBool("RollingAriIdle", false);
-                                anime.SetBool("doIdle", true);
-
-                                rollingJumpDidFlag = false;
+                                    //ローロング空中待機モーションから待機モーションへ
+                                    anime.SetBool("RollingAriIdle", false);
+                                    anime.SetBool("doIdle", true);
+                                    rollingJumpDidFlag = false;
                             }
 
                             //壁ジャンしていたら
@@ -595,9 +598,6 @@ public class Player : MonoBehaviour
                         {
                             anime.SetBool("RollingAriIdle", false);
                             anime.SetBool("doIdle", true);
-                            /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                            Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                            Debug.Log("doFall"+anime.GetBool("doFall"));*/
                             rollingJumpDidFlag = false;
                         }
 
