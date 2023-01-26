@@ -43,6 +43,11 @@ public class TimeTextC : MonoBehaviour
 
     }
 
+    public void SetStartCowrotine()
+    {
+        StartCoroutine("StartText");
+    }
+
     private IEnumerator StartText()
     {
         if (counter <= 500)
