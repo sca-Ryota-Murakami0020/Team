@@ -385,8 +385,8 @@ public class Player : MonoBehaviour
             RaycastHit hit;
 
            
-            if(lineCast == null)
-            {
+            //if(lineCast != null)
+            //{
                 //　地面にレイが届いていたら
                 if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
                 {
@@ -665,7 +665,7 @@ public class Player : MonoBehaviour
                     fallFlag = false;
                     PlaySE(randingSE);
                 }
-            }
+            //}
         }
         else//地面にいる時
         {
@@ -1009,22 +1009,21 @@ public class Player : MonoBehaviour
 
     #region//コルーチン
   
-    private IEnumerator StartLineCast()
+    /*private IEnumerator StartLineCast()
     {
         while (true)
         {
           if(fallFlag == true)
           {
-                yield return null;
                 break;
           }
           if(fallFlag == false)
           {
+                yield return null;
                 lineCast = null;
-                
           }
         }
-    }
+    }*/
 
     //スローモーションの元コルーチン
     private IEnumerator StartSlowmotion()
