@@ -37,5 +37,4 @@ public class PlayerWallCon : MonoBehaviour
             wallJumpHitFlag = true;
         }
     }
-
 }
