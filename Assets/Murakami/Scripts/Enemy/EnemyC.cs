@@ -208,7 +208,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("左回転に移行する");
+                //Debug.Log("左回転に移行する");
                 break;
             }         
         }
@@ -232,7 +232,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.RESET;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("リセットに移行する");
+                //Debug.Log("リセットに移行する");
                 break;
             }
         }
@@ -255,7 +255,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.TURN;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("OK,Go");
+                //Debug.Log("OK,Go");
                 break;
             }         
         }
@@ -274,7 +274,7 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter >= 180)
             {
-                Debug.Log("TURN");
+                //Debug.Log("TURN");
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
                 break;
@@ -311,7 +311,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("左回転に移行する");
+                //Debug.Log("左回転に移行する");
                 break;
             }
         }
@@ -335,7 +335,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.RESET;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("リセットに移行する");
+                //Debug.Log("リセットに移行する");
                 break;
             }
         }
@@ -358,7 +358,7 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.TURN;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                Debug.Log("OK,Go");
+                //Debug.Log("OK,Go");
                 break;
             }
         }
@@ -384,7 +384,7 @@ public class EnemyC : MonoBehaviour
             }
         }
 
-        Debug.Log("終点に向けて動き出す");
+        //Debug.Log("終点に向けて動き出す");
         doTurn = false;
         rotationState = RotationPar.NULL;
         yield break;

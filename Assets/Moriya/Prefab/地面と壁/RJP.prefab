@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallJumpPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 1344628040256317692, guid: 0b5c886c3181d1f4f8c877708f02cfcb, type: 3}
+      propertyPath: m_TagString
+      value: RollingJumpPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 5236658319110205759, guid: 0b5c886c3181d1f4f8c877708f02cfcb, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -213,6 +217,10 @@ PrefabInstance:
     - target: {fileID: 6400302141430781488, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
       propertyPath: m_Name
       value: ClingPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400302141430781488, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
+      propertyPath: m_TagString
+      value: RollingJumpPoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c3b45fb89f188444983be942fcf6f2e, type: 3}
