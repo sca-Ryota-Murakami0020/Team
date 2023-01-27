@@ -47,10 +47,9 @@ public class CameraC : MonoBehaviour
     [SerializeField] private float holizontalMag;
     #endregion
 
-
-    private void Aweke()
+    void Start()
     {
-        //pWC = GetComponentInChildren<PlayerWallCon>();
+        pWC = FindObjectOfType<PlayerWallCon>();
         //pWC = FindObjectOfType<PlayerWallCon>();
     }
 
@@ -63,14 +62,16 @@ public class CameraC : MonoBehaviour
         mousey = Input.GetAxis("Mouse Y");
 
         //通常のカメラ操作
-        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f))
+        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
         {
+            Debug.Log("通常カメラ起動中");
             Roll(mousex, mousey);
         }
 
         //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
-        if(Mathf.Abs(mousex) > 0.019f && Input.GetKey(KeyCode.G))
+        if(Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
         {
+            Debug.Log("壁ジャン用カメラ起動中");
             PlayerDoWallJump(mousex);
         }
 
@@ -80,10 +81,11 @@ public class CameraC : MonoBehaviour
             Reset();
         }
 
-        /*if(Input.GetKeyDown(KeyCode.K))
+        if(Input.GetKey(KeyCode.F))
         {
+            Debug.Log("副産物");
             PlayerLanding();
-        }*/
+        }
 
         UpdateLookPosition();
         UpdateCameraPosition();
@@ -207,7 +209,6 @@ public class CameraC : MonoBehaviour
         //Player.transform.rotation = Quaternion.LookRotation(D);
     }
 
-    /*
     public void PlayerLanding()
     {
         //縦移動
@@ -238,8 +239,7 @@ public class CameraC : MonoBehaviour
         this.transform.position += transform.forward * (after_distance - prev_distans);
         //D.z = 0.0f;
         //Player.transform.rotation = Quaternion.LookRotation(D);
-    }*/
-
+    }
 }
 
 
