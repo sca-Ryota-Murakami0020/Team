@@ -65,14 +65,14 @@ public class CameraC : MonoBehaviour
         if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
         {
             Debug.Log("通常カメラ起動中");
-            Roll(mousex, mousey);
+            Roll(-mousex, -mousey);
         }
 
         //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
         if(Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
         {
             Debug.Log("壁ジャン用カメラ起動中");
-            PlayerDoWallJump(mousex);
+            PlayerDoWallJump(-mousex);
         }
 
         //視点のリセット
