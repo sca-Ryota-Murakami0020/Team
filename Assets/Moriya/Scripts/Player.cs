@@ -235,7 +235,7 @@ public class Player : MonoBehaviour
         //Debug.Log("ÉWÉÉÉìÉvâÒêî" + jumpCount);
         //Debug.Log("doStayWall"+ doStayWall);
 
-        Debug.Log(pWallC.WallJumpHitFlag);
+        Debug.Log("PWC:pWallC" + pWallC.WallJumpHitFlag);
 
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
         //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
