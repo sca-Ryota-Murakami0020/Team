@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
     {
         //Debug.Log(rollingJumpFlag);
         Debug.Log("fallFlag" +fallFlag);
-        Debug.Log("Update中"+ rb.useGravity);
+        Debug.Log("ジャンプ回数" + jumpCount);
         Debug.Log("doStayWall"+ doStayWall);
 
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
@@ -883,7 +883,7 @@ public class Player : MonoBehaviour
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 JumpCount++;
 
-                //重力を作用させる
+                //重力を作用させるwe
                 rb.useGravity = true;
                 rb.velocity = transform.position;
                 //壁ジャンプできるフラグをおる
@@ -927,7 +927,8 @@ public class Player : MonoBehaviour
         }
 
         //落下中に壁ジャン地点に当たったら
-        if(other.gameObject.CompareTag("WallJumpPoint") && pWallC.WallJumpHitFlag == true)
+        if((other.gameObject.CompareTag("WallJumpPoint") && fallFlag == false) || pWallC.WallJumpHitFlag == true)
+                
         {
             jumpCount = 0;
             rollingJumpFlag = false; 
