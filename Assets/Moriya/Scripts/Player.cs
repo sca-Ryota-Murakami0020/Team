@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
     private bool rollingJumpFlag = false;
     //ローリングジャンプをしたフラグ
     private bool rollingJumpDidFlag = false;
+    //落下中に壁ジャンプ地点に触れたら
+    private bool wallJumpHitFlag = false;
     //壁ジャン用フラグ
     private bool wallJumpFlag = false;
     //壁ジャンプをしたフラグ
@@ -228,12 +230,14 @@ public class Player : MonoBehaviour
     void Update()
     {
         //Debug.Log(rollingJumpFlag);
-        //Debug.Log(rb.useGravity);
+        Debug.Log("fallFlag" +fallFlag);
+        Debug.Log("Update中"+ rb.useGravity);
+        Debug.Log("doStayWall"+ doStayWall);
 
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
         //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
-        Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
-        Debug.Log(rollingJumpDidFlag);
+        //Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
+        //Debug.Log(rollingJumpDidFlag);
 
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
@@ -364,6 +368,8 @@ public class Player : MonoBehaviour
                     //プレイヤーの座標固定＆向き反転
                     doInputButtonFlag = true;
                     rb.useGravity = false;
+                    rb.velocity = new Vector3(0, 0f, 0);
+                    Debug.Log("壁はりつき中:"+rb.useGravity);
                     Debug.Log("固定化");
                     //壁に張り付いてる判定
                     doStayWall = true;
@@ -876,9 +882,10 @@ public class Player : MonoBehaviour
                 anime.SetTrigger("DoWallJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 JumpCount++;
-              
+
                 //重力を作用させる
                 rb.useGravity = true;
+                rb.velocity = transform.position;
                 //壁ジャンプできるフラグをおる
                 wallJumpFlag = false;
                 //カメラに渡すフラグをおる
