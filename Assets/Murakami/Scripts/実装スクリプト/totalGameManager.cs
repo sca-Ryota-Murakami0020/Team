@@ -201,14 +201,15 @@ public class totalGameManager : MonoBehaviour
     #region//ŒÄ‚Ño‚µ‚½ƒV[ƒ“‚É‰‚¶‚Ä‚Ìˆ—
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
     {
-        if (nextScene.name == "bill" || nextScene.name == "1ŠK")
+        //
+        if (nextScene.name == "bill" || nextScene.name == "1ŠK" || nextScene.name == "2ŠK" || nextScene.name == "3ŠK")
         {
             timeCounter = true;
             //totalTime = 0.0f;
             //nowPlayingText = GetComponentInChildren<Text>();
         }
 
-        if (nextScene.name == "LoadFirstStage")
+        if (nextScene.name == "LoadFirstStage" || nextScene.name == "LoadSecondStage" || nextScene.name == "LoadTherdStage")
         {
             timeCounter = false;
             //nowPlayingText = GetComponentInChildren<Text>();
