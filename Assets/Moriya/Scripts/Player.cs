@@ -235,6 +235,8 @@ public class Player : MonoBehaviour
         //Debug.Log("ÉWÉÉÉìÉvâÒêî" + jumpCount);
         //Debug.Log("doStayWall"+ doStayWall);
 
+        Debug.Log(pWallC.WallJumpHitFlag);
+
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
         //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
         //Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
@@ -919,7 +921,7 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("Ç∂ÇﬂÇÒ");
             rollingJumpFlag = false;
-            //pWallC.WallJumpHitFlag =false;
+            pWallC.WallJumpHitFlag =false;
             jumpCount = 0;
         }
 
@@ -927,7 +929,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
             rollingJumpFlag = true;
-            //pWallC.WallJumpHitFlag = false;
+            pWallC.WallJumpHitFlag = false;
             jumpCount = 0;
         }
 
