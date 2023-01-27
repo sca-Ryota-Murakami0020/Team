@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
         accelSpeed = runSpeed * 1.5f;
 
         //ray“ŠŽËŠJŽn
-        lineCast = StartCoroutine("StartLineCast");
+        //lineCast = StartCoroutine("StartLineCast");
     }
 
     // Update is called once per frame
