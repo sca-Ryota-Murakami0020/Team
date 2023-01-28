@@ -2775,7 +2775,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f7f8ba0774f75554ca5c5cdd547191d8, type: 2}
     - target: {fileID: 1140800084783159107, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_Name
-      value: LoadTherdPoint
+      value: LoadLastPoint
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_RootOrder
