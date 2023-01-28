@@ -67,8 +67,6 @@ public class Player : MonoBehaviour
     //　レイを飛ばす距離
     [SerializeField]
     private float rayRange;
-    //ジャンプ地点
-    private float　jumpPosition; 
     //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
@@ -226,19 +224,14 @@ public class Player : MonoBehaviour
         accelSpeed = runSpeed * 1.5f;
 
         //ray投射開始
-        //lineCast = StartCoroutine("StartLineCast");
+        lineCast = StartCoroutine("StartLineCast");
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(rollingJumpFlag);
+        
         Debug.Log("fallFlag" +fallFlag);
-        //Debug.Log("ジャンプ回数" + jumpCount);
-        //Debug.Log("doStayWall"+ doStayWall);
-
-        Debug.Log("PWC:pWallC" + pWallC.WallJumpHitFlag);
-
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
         //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
         //Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
@@ -334,7 +327,6 @@ public class Player : MonoBehaviour
                 anime.SetBool("RollingAriIdle", true);
             }
 
-            //Debug.Log("fallenPosition" + fallenPosition);
             if(pWallC.WallJumpHitFlag == true)
             { 
             //壁ジャンプできる壁にレイが届いていたら
@@ -368,8 +360,8 @@ public class Player : MonoBehaviour
                     //フラグ関係
                     PlaySE(randingSE);
                     fallFlag = false;
-
                     wallJumpFlag = true;
+
                     //プレイヤーの座標固定＆向き反転
                     doInputButtonFlag = true;
                     rb.useGravity = false;
@@ -388,9 +380,9 @@ public class Player : MonoBehaviour
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             RaycastHit hit;
 
-           
-            //if(lineCast != null)
-            //{
+            //レイが非null = レイを飛ばす状況なら
+            if(lineCast != null)
+            {
                 //　地面にレイが届いていたら
                 if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
                 {
@@ -669,7 +661,7 @@ public class Player : MonoBehaviour
                     fallFlag = false;
                     PlaySE(randingSE);
                 }
-            //}
+            }
         }
         else//地面にいる時
         {
@@ -684,17 +676,16 @@ public class Player : MonoBehaviour
                 fallenDistance = 0;
                 //フラグを立てる
                 fallFlag = true;
+                Debug.Log("地面から離れたよ");
             }
         }
 
         #endregion
 
-
         //Eボタンが押されたら
         if (doStayWall == true && Input.GetKey(KeyCode.E))
         {
             anime.SetTrigger("LiftWall");
-            Debug.Log("離された判定");
             //重力を作用させる
             rb.useGravity = true;
             //壁ジャンプできるフラグをおる
@@ -713,10 +704,8 @@ public class Player : MonoBehaviour
             //制限時間計算と速度変換
             speedCTime++;
             runSpeed = accelSpeed;
-            Debug.Log("加速処理にはいった");
             if(speedTime < speedCTime)
             {
-                Debug.Log("加速処理終了");
                 //制限時間＆速度リセット
                 runSpeed = defaultSpeed;
                 speedCTime = 0;
@@ -851,7 +840,6 @@ public class Player : MonoBehaviour
             //落下中でなければ待機モーションに入る
             if (fallFlag == false)
             {
-                //Debug.Log("停止中");
                 anime.SetBool("doIdle", true);
                 anime.SetBool("doWalk",false);
             }              
@@ -921,7 +909,6 @@ public class Player : MonoBehaviour
         //地面に当たったら
         if (other.gameObject.CompareTag("Ground"))
         {
-            //Debug.Log("じめん");
             rollingJumpFlag = false;
             pWallC.WallJumpHitFlag =false;
             jumpCount = 0;
@@ -1022,8 +1009,8 @@ public class Player : MonoBehaviour
     }
 
     #region//コルーチン
-  
-    /*private IEnumerator StartLineCast()
+   //レイを投射するコルーチン
+    private IEnumerator StartLineCast()
     {
         while (true)
         {
@@ -1034,16 +1021,18 @@ public class Player : MonoBehaviour
           if(fallFlag == false)
           {
                 yield return null;
-                lineCast = null;
           }
         }
-    }*/
+    }
 
     //スローモーションの元コルーチン
     private IEnumerator StartSlowmotion()
     {
         //slowmotion本体を起動
         StartCoroutine("Slowmotion");
+
+        //レイは飛ばさない
+        lineCast = null;
 
         //1.0秒待つ
         yield return  new WaitForSecondsRealtime(1.0f);
@@ -1066,7 +1055,6 @@ public class Player : MonoBehaviour
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
-            //Debug.Log("elapsed"+elapsedTime);
             //　落下によるダメージが発生する距離を超える場合にEキーが押されていなかったらダメージを与える
             if (!Input.GetKey(KeyCode.E))
             {
@@ -1079,6 +1067,7 @@ public class Player : MonoBehaviour
                 Time.timeScale = 1f;
                 elapsedTime = 0.0f;
                 StopCoroutine("Slowmotion");
+                lineCast = StartCoroutine(StartLineCast());//レイ復活
                 break;
             }
             yield return null;
