@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class PauseUIC : MonoBehaviour
 {
+    //表示する画像の配列
     [SerializeField] private Image[] image;
+    //PauseDisplayC
     private PasueDisplayC pDC;
+    //ここで変数の定義・代入をしない理由
+    //実装するPasue画面の使用上、このスクリプトは削除されるのでPauseDisplayCの方でで意義してあげる方がいいから
 
     // Start is called before the first frame update
     void Start()
@@ -43,9 +47,8 @@ public class PauseUIC : MonoBehaviour
             //ここで操作説明の画面を呼び出せるようにフラグを立てる
             pDC.OpenManual = true;
             //「ゲームに戻る」を選択した後に「操作説明」のアクションを行う際に
-            //バグが起きないようにするために、ここでreturnGameの値をfalseにしておく
+            //バグが起きないようにするために、ここでPasueDisplayCのreturnGameの値をfalseにしておく
             pDC.ReturnGame = false;
-            Debug.Log("操作UI関係の作業中");
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -57,7 +60,7 @@ public class PauseUIC : MonoBehaviour
             //ゲームに戻るアクションが行えるようにするためのフラグを立てる
             pDC.ReturnGame = true;
             //「操作説明」を選択した後に「ゲームに戻る」のアクションを行う際に
-            //バグが起きないようにするために、ここでopenManualの値をfalseにする
+            //バグが起きないようにするために、ここでPasueDisplayCのopenManualの値をfalseにする
             pDC.OpenManual = false;
             Debug.Log("ゲームに戻る");
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ResetPlayerposition : MonoBehaviour
 {
+    //プレイヤーが戻る位置の基準点になるオブジェクト
     [SerializeField] private GameObject resetPosition;
     private Player pl;
 
@@ -23,7 +24,8 @@ public class ResetPlayerposition : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-
+            //プレイヤーがビルステージのコンクリートオブジェクトに触れたら
+            //指定の位置に設置しているオブジェクトの位置に移動させる
             pl.transform.position = resetPosition.transform.position;
         }
     }

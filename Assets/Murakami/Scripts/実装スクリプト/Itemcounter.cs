@@ -5,16 +5,19 @@ using UnityEngine.UI;
 
 public class Itemcounter : MonoBehaviour
 {
+    //表示する画像の配列
     [SerializeField] private Sprite[] numberImage;
+    //プレイヤーが取得したアイテムの個数。これを用いて呼び出す画像を識別する
     private int itemCon;
+    //画像を表示するImage
     [SerializeField] private Image image;
+    //TotalGameManager
     private totalGameManager gm;
     //SpriteRenderer sr;
 
     private void Awake()
     {
         gm = FindObjectOfType<totalGameManager>();
-        //sr = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Start is called before the first frame update
@@ -26,39 +29,9 @@ public class Itemcounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //TotalGameManagerのアイテムカウントを取得する
         itemCon = gm.PlayerIC;
+        //TotalGameManagerが持つアイテムカウントの数値に応じた数字の画像を呼び出す
         image.sprite =  numberImage[itemCon];
     }
 }
-/*
- public float[] BestTime//ハイスコアの数値格納配列
-    {
-        get { return this.bestTime; }
-        set { this.bestTime = value; }
-    }
-
-    public float TotalTime//1プレイ時間
-    {
-        get { return this.totalTime; }
-
-        set { this.totalTime = value; }
-    }
-
-    /*public bool CounterFlag//
-    {
-        get { return this.counterFlag; }
-        set { this.counterFlag = value; }
-    
-
-public string[] TimeText//ハイスコアの文字列格納配列
-{
-    get { return this.timer; }
-    set { this.timer = value; }
-}
-
-public string DispTime//プレイ中に表示するタイム表記
-{
-    get { return this.timeScore; }
-    set { this.timeScore = value; }
-}
-*/

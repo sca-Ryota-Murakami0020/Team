@@ -20,14 +20,16 @@ public class ResetEnemyPosition : MonoBehaviour
 
     public void StartCountDistance()
     {
+        //EnemyC‚©‚çó‚¯æ‚éw¦
         StartCoroutine("ActiveEnemy");
     }
 
     private IEnumerator ActiveEnemy()
     {
+        //10•bŠÔ‘Ò‹@‚·‚é
         yield return new WaitForSeconds(10);
+        //10•bŒã‚ÉEnemyC‚Ì•û‚ÅSetSctive‚ğfalse‚É‚µ‚½GameObject‚ÌSetActive‚ğtrue‚É‚µ‚ÄÄ‚ÑŠˆ“®‚Å‚«‚é‚æ‚¤‚É‚µ‚Ä‚ ‚°‚é
         enemy.SetActive(true);
-        //Debug.Log("¬Œ÷");
         yield break;
     }
 }

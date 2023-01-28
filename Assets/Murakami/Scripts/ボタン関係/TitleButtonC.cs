@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TitleButtonC : MonoBehaviour
 {
+    //TotalGameManager
     private totalGameManager tGM;
 
     private void Awake()
@@ -24,6 +25,7 @@ public class TitleButtonC : MonoBehaviour
         
     }
 
+    //ƒ^ƒCƒgƒ‹‚É–ß‚é
     public void GotoTitle()
     {
         SceneManager.LoadScene("AnyLoadTitle");

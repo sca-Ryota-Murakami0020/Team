@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class firstMImage : MonoBehaviour
 {
-    [SerializeField] private Sprite[] numberImage;
-    private int firstMCount;
-    [SerializeField] private Image image;
+    //TotalGameManager
     private totalGameManager gm;
+    //表示する画像の配列
+    [SerializeField] private Sprite[] numberImage;
+    //画像を表示するImage
+    [SerializeField] private Image image;
+    //TotalGameManagerから取得したゲーム時間をint型にして取得する変数
+    private int firstMCount;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +23,9 @@ public class firstMImage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //TotalGameManagerから取得したゲーム時間をint型に変換
         firstMCount = Mathf.FloorToInt(gm.TotalTime / 60);
+        //ゲーム時間の1分単位の表示を行う(0～9)
         image.sprite = numberImage[firstMCount];
     }
 }

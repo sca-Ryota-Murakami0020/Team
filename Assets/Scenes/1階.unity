@@ -1355,6 +1355,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1640370847}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
+      propertyPath: flashInterval
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: heartArray.Array.data[0]
       value: 
       objectReference: {fileID: 1395383631}
