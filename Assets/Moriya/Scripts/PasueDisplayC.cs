@@ -29,6 +29,8 @@ public class PasueDisplayC : MonoBehaviour
     [SerializeField]
     //操作説明UIのプレハブ
     private GameObject playOperatePrafab;
+    //メニュー画面のカーソルに合わせて動作するために定義する
+    private PauseUIC pUC;
 
     //ゲッターセッター
     public bool MenuFlag
@@ -48,9 +50,10 @@ public class PasueDisplayC : MonoBehaviour
     {
       
         #region//メニュー画面が開く処理
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("q") && menuFlag == false)
         {
-            if(pauseUIInstance == null)
+            pUC = FindObjectOfType<PauseUIC>();
+            if (pauseUIInstance == null)
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
@@ -63,6 +66,7 @@ public class PasueDisplayC : MonoBehaviour
                 Destroy(pauseUIInstance);
                 Time.timeScale = 1f;
             }
+            //Debug.Log("確認:" + pUC.OpenManual);
         }
         //メニューが開かれたら
         if(menuFlag == true)
@@ -76,21 +80,23 @@ public class PasueDisplayC : MonoBehaviour
     private void PauseMenu()
     {
         //escキーおしたとき
+        /*
         if (Input.GetKey(KeyCode.Escape)) 
         { 
-             /*#if UNITY_EDITOR
+             #if UNITY_EDITOR
              UnityEditor.EditorApplication.isPlaying = false;
             //エディタ上の動作
             #else
             Application.Quit();
             //エディタ以外の操作
-            #endif*/
+            #endif
             ResetCommand();
             SceneManager.LoadScene("LoadBill");
             Time.timeScale = 1f;
             menuFlag = false;
-        }
-        //tabキー押したとき
+        }*/
+
+        //tabキー押したとき && pUC.OpenManual == true
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             onlyFlag = true;
