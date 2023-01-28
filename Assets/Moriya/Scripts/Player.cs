@@ -725,11 +725,13 @@ public class Player : MonoBehaviour
         //アニメーションしたら加速
         if (speedAccelerationFlag == true)
         {
+            Debug.Log("加速したよ");
             //制限時間計算と速度変換
             speedCTime++;
             runSpeed = accelSpeed;
             if(speedTime < speedCTime)
             {
+                Debug.Log("加速終わったよ");
                 //制限時間＆速度リセット
                 runSpeed = defaultSpeed;
                 speedCTime = 0;
@@ -906,16 +908,18 @@ public class Player : MonoBehaviour
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 100, 0));
                 JumpCount++;
 
-                //重力を作用させるwe
+                //重力を作用させる
                 rb.useGravity = true;
                 rb.velocity = transform.position;
                 //壁ジャンプできるフラグをおる
                 wallJumpFlag = false;
                 //カメラに渡すフラグをおる
                 doInputButtonFlag = false;
+                //加速フラグをたてる
+                speedAccelerationFlag = true;
                 //壁はりつき中のフラグをおる
                 doStayWall = false;
-                //壁から離れたのでフラグをおる
+                //壁から離れたのでフラグをおる......
                 pWallC.WallJumpHitFlag = false;
             }
 
