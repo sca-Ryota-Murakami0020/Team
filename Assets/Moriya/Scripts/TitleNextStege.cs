@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class TitleNextStege : MonoBehaviour
 {
     //タイトル画面のスプリクト
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +21,7 @@ public class TitleNextStege : MonoBehaviour
 
     public void NextStege()
     {
-        
-            SceneManager.LoadScene("操作説明");
-      
+      //操作説明のシーンにいく
+      SceneManager.LoadScene("操作説明"); 
     }
 }
