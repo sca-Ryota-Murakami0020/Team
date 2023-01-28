@@ -67,16 +67,16 @@ public class PasueDisplayC : MonoBehaviour
     {
       
         #region//ƒƒjƒ…[‰æ–Ê‚ªŠJ‚­ˆ—
-        if (Input.GetKeyDown("q") && menuFlag == false)
+        if (Input.GetKeyDown("q"))
         {
             pUC = FindObjectOfType<PauseUIC>();
-            if (pauseUIInstance == null)
+            if (pauseUIInstance == null && menuFlag == false)
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
                 menuFlag = true;
             }
-            else
+            else if(pauseUIInstance != null && returnGame == true)
             {
                 menuFlag = false;
                 Destroy(playOperateUIInstance);

@@ -62,7 +62,6 @@ public class PauseUIC : MonoBehaviour
             //「操作説明」を選択した後に「ゲームに戻る」のアクションを行う際に
             //バグが起きないようにするために、ここでPasueDisplayCのopenManualの値をfalseにする
             pDC.OpenManual = false;
-            Debug.Log("ゲームに戻る");
         }
     }
 }
