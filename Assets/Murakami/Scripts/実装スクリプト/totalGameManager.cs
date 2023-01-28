@@ -215,7 +215,7 @@ public class totalGameManager : MonoBehaviour
             //nowPlayingText = GetComponentInChildren<Text>();
         }
 
-        if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene" || nextScene.name == "LoadBill")
+        if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene")
         {
             timeCounter = false;
             playerHp = 3;
@@ -225,6 +225,14 @@ public class totalGameManager : MonoBehaviour
         if (nextScene.name == "GoalScene")
         {
             textM = FindObjectOfType<TextMovement>();
+        }
+
+        if ( nextScene.name == "LoadBill")
+        {
+            timeCounter = false;
+            playerHp = 3;
+            playerItemCount = 0;
+            totalTime = 0.0f;
         }
     }
     #endregion
