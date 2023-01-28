@@ -757,13 +757,13 @@ public class Player : MonoBehaviour
             }
 
             //普通の歩くスピード
-            if (jumpFlag == false && rollingJumpDidFlag == false)
+            if (jumpFlag == false )
             {
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
             }
 
-            //通常ジャンプのスピード
-            if(jumpFlag == true)
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
             {
                _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
@@ -791,7 +791,8 @@ public class Player : MonoBehaviour
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
             }
 
-            if(jumpFlag == true)
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
@@ -820,9 +821,10 @@ public class Player : MonoBehaviour
               
             }
 
-            if(jumpFlag == true)
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
             {
-                 _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
+                _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
 
             if (rollingJumpDidFlag == true)
@@ -849,9 +851,10 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
             }
 
-            if(jumpFlag == true)
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
             {
-               _parent.transform.position -= cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
+                _parent.transform.position -= cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
 
             if (rollingJumpDidFlag == true)
@@ -906,7 +909,7 @@ public class Player : MonoBehaviour
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 10, 0));
                 JumpCount++;
 
                 //重力を作用させる
