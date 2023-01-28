@@ -32,11 +32,28 @@ public class PasueDisplayC : MonoBehaviour
     //メニュー画面のカーソルに合わせて動作するために定義する
     private PauseUIC pUC;
 
+    //操作説明フラグを立てるフラグ
+    private bool openManual = false;
+    //ゲームに戻る動作を行うフラグ
+    private bool returnGame = false;
+
     //ゲッターセッター
     public bool MenuFlag
     {
         get {return this.menuFlag; }
         set {this.menuFlag = value; }
+    }
+
+    public bool OpenManual
+    {
+        get { return this.openManual; }
+        set { this.openManual = value; }
+    }
+
+    public bool ReturnGame
+    {
+        get { return this.returnGame; }
+        set { this.returnGame = value; }
     }
 
     // Start is called before the first frame update
@@ -97,7 +114,7 @@ public class PasueDisplayC : MonoBehaviour
         }*/
 
         //tabキー押したとき && pUC.OpenManual == true
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && openManual == true)
         {
             onlyFlag = true;
             //操作説明開くコルーチン
@@ -130,6 +147,7 @@ public class PasueDisplayC : MonoBehaviour
             if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
             {
                 operationExpFlag = false;
+                openManual = false;
                 Destroy(playOperateUIInstance);
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Debug.Log(pauseUIInstance);
