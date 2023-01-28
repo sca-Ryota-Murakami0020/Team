@@ -29,12 +29,31 @@ public class PasueDisplayC : MonoBehaviour
     [SerializeField]
     //操作説明UIのプレハブ
     private GameObject playOperatePrafab;
+    //メニュー画面のカーソルに合わせて動作するために定義する
+    private PauseUIC pUC;
+
+    //操作説明フラグを立てるフラグ
+    private bool openManual = false;
+    //ゲームに戻る動作を行うフラグ
+    private bool returnGame = false;
 
     //ゲッターセッター
     public bool MenuFlag
     {
         get {return this.menuFlag; }
         set {this.menuFlag = value; }
+    }
+
+    public bool OpenManual
+    {
+        get { return this.openManual; }
+        set { this.openManual = value; }
+    }
+
+    public bool ReturnGame
+    {
+        get { return this.returnGame; }
+        set { this.returnGame = value; }
     }
 
     // Start is called before the first frame update
@@ -48,9 +67,10 @@ public class PasueDisplayC : MonoBehaviour
     {
       
         #region//メニュー画面が開く処理
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("q") && menuFlag == false)
         {
-            if(pauseUIInstance == null)
+            pUC = FindObjectOfType<PauseUIC>();
+            if (pauseUIInstance == null)
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
@@ -63,6 +83,7 @@ public class PasueDisplayC : MonoBehaviour
                 Destroy(pauseUIInstance);
                 Time.timeScale = 1f;
             }
+            //Debug.Log("確認:" + pUC.OpenManual);
         }
         //メニューが開かれたら
         if(menuFlag == true)
@@ -76,22 +97,24 @@ public class PasueDisplayC : MonoBehaviour
     private void PauseMenu()
     {
         //escキーおしたとき
+        /*
         if (Input.GetKey(KeyCode.Escape)) 
         { 
-             /*#if UNITY_EDITOR
+             #if UNITY_EDITOR
              UnityEditor.EditorApplication.isPlaying = false;
             //エディタ上の動作
             #else
             Application.Quit();
             //エディタ以外の操作
-            #endif*/
+            #endif
             ResetCommand();
             SceneManager.LoadScene("LoadBill");
             Time.timeScale = 1f;
             menuFlag = false;
-        }
-        //tabキー押したとき
-        if (Input.GetKeyDown(KeyCode.Tab))
+        }*/
+
+        //tabキー押したとき && pUC.OpenManual == true
+        if (Input.GetKeyDown(KeyCode.Tab) && openManual == true)
         {
             onlyFlag = true;
             //操作説明開くコルーチン
@@ -124,6 +147,7 @@ public class PasueDisplayC : MonoBehaviour
             if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
             {
                 operationExpFlag = false;
+                openManual = false;
                 Destroy(playOperateUIInstance);
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Debug.Log(pauseUIInstance);
