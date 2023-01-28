@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameOverS : MonoBehaviour
 {
+    //ゲームオーバーシーンのスプリクト
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,7 @@ public class GameOverS : MonoBehaviour
         
     }
 
+    //ボタンごとにロードするシーンを使い分ける
     public void Retry()
     {
         SceneManager.LoadScene("LoadBill");

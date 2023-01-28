@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class PasueDisplayC : MonoBehaviour
 {
     //ポーズ関係のスプリクト
+
+    //ゲーマネを呼び出している
     private totalGameManager totalGM;
 
     //ポーズが開いたかのフラグ
@@ -59,6 +61,7 @@ public class PasueDisplayC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //ゲーマネ呼び出し
         totalGM = FindObjectOfType<totalGameManager>();
     }
 
@@ -67,15 +70,19 @@ public class PasueDisplayC : MonoBehaviour
     {
       
         #region//メニュー画面が開く処理
+        //メニューが開かれていないときかつQキーおしたとき
         if (Input.GetKeyDown("q") && menuFlag == false)
         {
+            //ここでスプリクトを見つける
             pUC = FindObjectOfType<PauseUIC>();
+            //ポーズ画面出す
             if (pauseUIInstance == null)
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
                 menuFlag = true;
             }
+            //ポーズ画面を消す
             else
             {
                 menuFlag = false;
@@ -135,7 +142,7 @@ public class PasueDisplayC : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(onlyFlag);
+            //ポーズ画面を消して、操作画面UIを出す
             if (onlyFlag == true)
             {
                 Destroy(pauseUIInstance);
@@ -144,8 +151,10 @@ public class PasueDisplayC : MonoBehaviour
                 onlyFlag = false;
             }
             Debug.Log(playOperateUIInstance);
+            //Tabキーから離れてた時かつ操作画面UIが出ていたら
             if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
             {
+                //ポーズ画面UIを出し、操作画面UIを消す
                 operationExpFlag = false;
                 openManual = false;
                 Destroy(playOperateUIInstance);
@@ -157,6 +166,7 @@ public class PasueDisplayC : MonoBehaviour
         }
     }
 
+    //リセットするときに値を変える
     private void ResetCommand()
     {
         totalGM.PlayerHp = 3;

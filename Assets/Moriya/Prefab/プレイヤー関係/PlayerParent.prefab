@@ -347,7 +347,7 @@ MonoBehaviour:
   - {fileID: 3968110149181625485, guid: 5de7aff205f2f6f4f9b241d6768fd10a, type: 3}
   - {fileID: 2628503446174141760, guid: d7e18c061c913e245853acd51169c3d7, type: 3}
   jumpSE: {fileID: 8300000, guid: dd986e6367069a747aa6b789439f5548, type: 3}
-  randingSE: {fileID: 8300000, guid: 9d7c78f43e5773942be591bafbff4f1a, type: 3}
-  damegeSE: {fileID: 8300000, guid: c479bfe288414c046a24f12cf773fae7, type: 3}
+  randingSE: {fileID: 8300000, guid: dfd8c79d0b36d274295d14a83ce41591, type: 3}
+  damegeSE: {fileID: 8300000, guid: 3c08f49f95c131c44aa4f55f86d5ba57, type: 3}
   runSE: {fileID: 8300000, guid: b4db56be49b3c1044a3e544d285edab2, type: 3}
   accelSE: {fileID: 8300000, guid: d85be985dfd4efb47a0dc762a8110837, type: 3}
