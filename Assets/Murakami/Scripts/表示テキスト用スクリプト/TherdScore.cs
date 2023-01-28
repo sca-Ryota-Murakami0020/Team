@@ -37,7 +37,7 @@ public class TherdScore : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //2位スコアの表記
-        if (totalGM.TimeText[2] == "2")
+        if (totalGM.BestTime[2] <= 0.0f)
         {
             //３位のデフォルト表示"
             oneSecImage.sprite = numberImage[0];

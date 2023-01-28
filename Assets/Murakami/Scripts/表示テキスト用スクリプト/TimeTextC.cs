@@ -28,12 +28,11 @@ public class TimeTextC : MonoBehaviour
     void Start()
     {
         totalGM = FindObjectOfType<totalGameManager>();
-        //00:00表示にする　＝　初期化
+        //00:00表示にする = 初期化
         oneSecImage.sprite = numberImage[0];
         tenSecImage.sprite = numberImage[0];
         oneMinImage.sprite = numberImage[0];
         tenMinImage.sprite = numberImage[0];
-
         counter = 0;
         th = FindObjectOfType<TherdScore>();
     }

@@ -37,7 +37,7 @@ public class SecondScore : MonoBehaviour
     {
         //Debug.Log(olt.OldSecondTime);
         //2位スコアの表記
-        if (totalGM.TimeText[1] == "1")
+        if (totalGM.BestTime[1] <= 0.0f)
         {
             //２位のデフォルト表示
             oneSecImage.sprite = numberImage[0];

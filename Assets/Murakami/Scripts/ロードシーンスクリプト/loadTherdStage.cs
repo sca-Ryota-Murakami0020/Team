@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class loadTherdStage : MonoBehaviour
 {
+    //現在のロード時間 = %
     private float nowGaze = 0.0f;
+    //最大読み込み時間
     private float maxload = 1.0f;
+    //動かすスライダー = ゲージ
     [SerializeField] private Slider loadGazeSlider;
-    //private GameObject LoadCanvas;
 
     void Start()
     {

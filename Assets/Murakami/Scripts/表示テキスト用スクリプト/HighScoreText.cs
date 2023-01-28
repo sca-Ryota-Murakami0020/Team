@@ -19,40 +19,33 @@ public class HighScoreText : MonoBehaviour
     void Start()
     {
         totalGM = FindObjectOfType<totalGameManager>();
-        for (int i = 0; i <= 2; i++)
+        oneSecImage.sprite = numberImage[0];
+        tenSecImage.sprite = numberImage[0];
+        oneMinImage.sprite = numberImage[0];
+        tenMinImage.sprite = numberImage[0];
+        counter = 0;
+    }
+
+    public void SetHighScore()
+    {
+        //ハイスコアの表記
+        if (totalGM.BestTime[0] <= 0.0f)
         {
+            //１位のデフォルト表示"
             oneSecImage.sprite = numberImage[0];
             tenSecImage.sprite = numberImage[0];
             oneMinImage.sprite = numberImage[0];
             tenMinImage.sprite = numberImage[0];
         }
-        counter = 0;
-        //anim = this.gameObject.GetComponent<Animator>();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log(olt.OldSecondTime);
-        //ハイスコアの表記
-
-            if(totalGM.TimeText[0] == "0")
-            {
-                //１位のデフォルト表示"
-                oneSecImage.sprite = numberImage[0];
-                tenSecImage.sprite = numberImage[0];
-                oneMinImage.sprite = numberImage[0];
-                tenMinImage.sprite = numberImage[0];
-            }
-            else {
-                //１位のランキング表示"
-                oneSecImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] % 10)];
-                tenSecImage.sprite = numberImage[Mathf.FloorToInt((totalGM.BestTime[0] % 60) / 10)];
-                oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 60)];
-                tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
-            }
-
-        //anim.SetBool("setHighScore", true);
+        else
+        {
+            //１位のランキング表示"
+            oneSecImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] % 10)];
+            tenSecImage.sprite = numberImage[Mathf.FloorToInt((totalGM.BestTime[0] % 60) / 10)];
+            oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 60)];
+            tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
+        }
     }
 
     private IEnumerator StartHighScore()
