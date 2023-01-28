@@ -166,11 +166,16 @@ public class Player : MonoBehaviour
         set { this.smr = value; }
     }
 
-
     public int JumpCount
     {
         get {return this.jumpCount; }
         set {this.jumpCount = value; }
+    }
+
+    public bool RollingJumpFlag
+    {
+        get { return this.RollingJumpFlag; }
+        set { this.RollingJumpFlag = value; }
     }
 
     public GameObject[] HeartArray
@@ -232,6 +237,7 @@ public class Player : MonoBehaviour
     {
         
         Debug.Log("fallFlag" +fallFlag);
+        Debug.Log(rollingJumpDidFlag);
         //Debug.Log("doLanding : " + anime.GetBool("doLanding"));
         //Debug.Log("doLandRolling : "+anime.GetBool("doLandRolling"));
         //Debug.Log("doRollingAriIdle : " + anime.GetBool("RollingAriIdle"));
@@ -930,9 +936,10 @@ public class Player : MonoBehaviour
             rollingJumpFlag = false; 
         }
 
+        //‰º‚Ì
         if (other.gameObject.CompareTag("OutSidePoint"))
         {
-            //transform.position = new Vector3(0,0,0);
+            transform.position = new Vector3(0,-2.73f,1.18f);
             //transform.position = new Vector3(-124.38f,123.80f,4.872f);
             jumpCount = 0;
             rollingJumpFlag = false;
