@@ -26,7 +26,7 @@ public class loadLastStage : MonoBehaviour
         loadGazeSlider.value = nowGaze / 5.0f;
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadScene("‰®ãŠK");
+            SceneManager.LoadScene("LastScene");
         }
     }
 }
