@@ -994,6 +994,11 @@ public class Player : MonoBehaviour
             //三個目のロードシーンにもちこむやつをかく
             SceneManager.LoadScene("LoadTherdStage");//ロードシーンの名前を書く;
         }
+
+        if(other.gameObject.name == "LoadLastPoint")
+        {
+            SceneManager.LoadScene("LoadLastStage");
+        }
     }
 
  

@@ -39,6 +39,12 @@ EditorBuildSettings:
     path: "Assets/Scenes/\uFF13\u968E.unity"
     guid: 570602591b601ee499a6d132f537ca94
   - enabled: 1
+    path: "Assets/Scenes/\u5404\u7A2E\u30ED\u30FC\u30C9\u30B7\u30FC\u30F3/LoadLastStage.unity"
+    guid: afa4e595e0896cf478f64e8726dbb26e
+  - enabled: 1
+    path: Assets/Scenes/LastScene.unity
+    guid: 567396282baf657408b667c423a97bee
+  - enabled: 1
     path: Assets/Scenes/GoalScene.unity
     guid: dcbcf1237cfe61d44b8ae8e2948b218d
   - enabled: 1
