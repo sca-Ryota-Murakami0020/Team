@@ -70,37 +70,30 @@ public class PasueDisplayC : MonoBehaviour
     {
       
         #region//メニュー画面が開く処理
-<<<<<<< HEAD
+
         //メニューが開かれていないときかつQキーおしたとき
-        if (Input.GetKeyDown("q") && menuFlag == false)
-=======
+     
         if (Input.GetKeyDown("q"))
->>>>>>> 45
         {
             //ここでスプリクトを見つける
             pUC = FindObjectOfType<PauseUIC>();
-<<<<<<< HEAD
             //ポーズ画面出す
-            if (pauseUIInstance == null)
-=======
             if (pauseUIInstance == null && menuFlag == false)
->>>>>>> 45
+
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
                 menuFlag = true;
             }
-<<<<<<< HEAD
             //ポーズ画面を消す
-            else
-=======
             else if(pauseUIInstance != null && returnGame == true)
->>>>>>> 45
             {
                 menuFlag = false;
                 Destroy(playOperateUIInstance);
                 Destroy(pauseUIInstance);
                 Time.timeScale = 1f;
+                openManual = false;
+                returnGame = false;
             }
             //Debug.Log("確認:" + pUC.OpenManual);
         }

@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private int oldHp;
     //移動速度
     //ローリングジャンプした時のx方向スピード
-    private float jumpRollingSpeed = 5.0f;
+    private float jumpRollingSpeed = 3.0f;
     //ジャンプした時のx方向スピード
     private float jumpingRunSpeed = 2.5f;
     //ジャンプした時のy方向スピード
@@ -905,7 +905,7 @@ public class Player : MonoBehaviour
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 100, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
                 JumpCount++;
 
                 //重力を作用させる
