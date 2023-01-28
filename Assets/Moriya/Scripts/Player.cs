@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
     //加速制限時間
     private float speedTime = 1000.0f;
     //加速する値を入れる変数
-    private float accelSpeed;
+    private float accelSpeed = 7.5f;
     //加速リセットする際に使う変数
     private float defaultSpeed = 5.0f;
 
@@ -151,6 +151,7 @@ public class Player : MonoBehaviour
 
     //コルーチン戻り値用
     private Coroutine lineCast;
+
 
     //プレイヤーの状態用列挙型（ノーマル、ダメージ、２種類）
     enum STATE
@@ -225,9 +226,6 @@ public class Player : MonoBehaviour
         fallenPosition = transform.position.y;
         fallFlag= false;
 
-        //加速に使う時の速度
-        accelSpeed = runSpeed * 1.5f;
-
         //ray投射開始
         lineCast = StartCoroutine("StartLineCast");
     }
@@ -237,7 +235,9 @@ public class Player : MonoBehaviour
     {
         
         Debug.Log("fallFlag" +fallFlag);
-    
+
+        //input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
@@ -744,6 +744,7 @@ public class Player : MonoBehaviour
         //十字キー操作
         //中の処理はWASDどれも同じ
         //左方向に向いて移動したら
+
          if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
          {
             moveFlag = true;
