@@ -67,7 +67,9 @@ public class Player : MonoBehaviour
     //　レイを飛ばす距離
     [SerializeField]
     private float rayRange;
-    //　落ちた場所
+    //ジャンプ地点
+    private float　jumpPosition; 
+    //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
     private float fallenDistance;
@@ -939,6 +941,16 @@ public class Player : MonoBehaviour
         {
             jumpCount = 0;
             rollingJumpFlag = false; 
+        }
+
+        if (other.gameObject.CompareTag("OutSidePoint"))
+        {
+            //transform.position = new Vector3(0,0,0);
+            //transform.position = new Vector3(-124.38f,123.80f,4.872f);
+            jumpCount = 0;
+            rollingJumpFlag = false;
+            pWallC.WallJumpHitFlag = false;
+
         }
     }
 
