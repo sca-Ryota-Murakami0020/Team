@@ -233,7 +233,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //コントローラー入力からの入力 縦軸 取得
+        //float horizontalInput = Input.GetAxis("Horizontal");
+        //コントローラ入力からの入力 縦軸 を取得
+        //float verticalInput = Input.GetAxis("Vertical");
+        //LRトリガーの入力受付
+        //float trigger = Input.GetAxis("L_R_Trigger");
+
         Debug.Log("fallFlag" +fallFlag);
 
         //input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
@@ -289,422 +295,26 @@ public class Player : MonoBehaviour
         //　落ちている状態
         //スタートでは落下状態ではないのでfallFlagはfalseとなっている
 
-        if (fallFlag == true)
-        {
-            //ローリング着地に関わる値をリセット
-            anime.SetBool("doFall", true);
-            anime.SetBool("doLandRolling",false);
-            anime.SetBool("doLanding",false);
-
-            //ジャンプやローリングジャンプしなかった時にここに入る
-            if (rollingJumpDidFlag == false && jumpFlag == false && moveFlag == true)
-            {
-                anime.SetBool("doWalk", true);
-                anime.SetBool("doJump",false);
-            }
-
-            //ジャンプしたらここに入る
-            if(jumpFlag == true)
-            {
-                anime.SetBool("doWalk",true);
-                anime.SetBool("RollingAriIdle", false);
-            }
-
-            //ローリングジャンプした時にここに入る
-            if(rollingJumpDidFlag == true)
-            {
-                anime.SetBool("doWalk",false);
-                anime.SetBool("doJump",false);
-                anime.SetBool("RollingAriIdle", true);
-            }
-
-            //壁ジャンプ中ならここに入る
-            if(wallJumpDidFlag == true)
-            {
-                anime.SetBool("doWalk", false);
-                anime.SetBool("doJump", false);
-                anime.SetBool("RollingAriIdle", true);
-            }
-
-            //壁ジャンプできる壁に触れたらここに入る
-            if(pWallC.WallJumpHitFlag == true)
-            { 
-                //Rキーが押されていたら
-                if(Input.GetKey(KeyCode.R))
-                {
-                    //普通のジャンプをしていたら
-                    if (jumpFlag == true)
-                    {
-                        jumpFlag = false;
-                        anime.SetBool("doJump", false);
-                    }
-
-                    //ローリングジャンプをしていたら
-                    if (rollingJumpDidFlag == true)
-                    {
-                        //ローロング空中待機モーションから待機モーションへ
-                        anime.SetBool("RollingAriIdle", false);
-                        rollingJumpDidFlag = false;
-                    }
-
-                    //壁ジャンをしていたら
-                    if(wallJumpDidFlag == true)
-                    {
-                        wallJumpDidFlag = false;
-                    }
-
-                    //アニメーション関係
-                    anime.SetTrigger("WallJumpHit");
-                    this.transform.Rotate(0, 180.0f, 0);
-
-                    //フラグ関係
-                    PlaySE(randingSE);
-                    fallFlag = false;
-                    wallJumpFlag = true;
-
-                    //プレイヤーの座標固定＆向き反転
-                    doInputButtonFlag = true;
-                    rb.useGravity = false;
-                    rb.velocity = new Vector3(0, 0f, 0);
-                    Debug.Log("壁はりつき中:"+rb.useGravity);
-                    Debug.Log("固定化");
-                    //壁に張り付いてるフラグを立てる
-                    doStayWall = true;
-
-                    //壁に触れている時のコルーチン発動
-                    //StartCoroutine("StartWallStay");
-                }
-            }
-            //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
-            //落下地点 = 落下地点かプレイヤーの落下地点の最大値
-            fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
-            RaycastHit hit;
-
-            //レイが非null = レイを飛ばす状況なら
-            if(lineCast != null)
-            {
-                //　地面にレイが届いていたら
-                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
-                {
-                    Debug.Log("レイが届いたよ");
-                    //　落下距離を計算
-                    fallenDistance = fallenPosition - transform.position.y;
-                    if (fallenDistance >= takeDamageDistance)
-                    {
-                        anime.SetBool("doFall", false);
-                        //スローモーション移行
-                        StartCoroutine("StartSlowmotion");
-
-                        Debug.Log("落下ダメージ受けるかどうか終わったよ");
-
-                        //ダメージが入るフラグが立っていない時
-                        //Eキーが押されたらこの中に入る
-                        if (fallDamageHitFlag == false)
-                        {
-                            //ローロング着地のフラグを立てる
-                            anime.SetBool("doLandRolling", true);
-                            //地面に着地したら
-                            if (hit.transform.gameObject.CompareTag("Ground"))
-                            {
-                                //普通のジャンプをしていたら
-                                if (jumpFlag == true)
-                                {
-                                    jumpFlag = false;
-                                    anime.SetBool("doJump", false);
-                                    //着地モーションから待機モーションへ
-                                    if (jumpFlag == false)
-                                    {
-                                        anime.SetBool("doIdle", true);
-                                        /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                        Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                        Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                    }
-                                }
-
-                                //ローリングジャンプをしていたら
-                                if (rollingJumpDidFlag == true)
-                                {
-                                    Debug.Log("ここに入ったよ");
-                                    //ローロング空中待機モーションから待機モーションへ
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    rollingJumpDidFlag = false;
-                                }
-
-                                //壁ジャンしていたら
-                                if (wallJumpDidFlag == true)
-                                {
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    wallJumpDidFlag = false;
-                                }
-                            }
-
-                            //ローロングジャンプポイントに着地したら
-                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                            {
-                                //普通のジャンプをしていたら
-                                if (jumpFlag == true)//||wallJampFlag == true 
-                                {
-                                    jumpFlag = false;
-                                    anime.SetBool("doJump", false);
-                                    //着地モーションから待機モーションへ
-                                    if (jumpFlag == false)
-                                    {
-                                        anime.SetBool("doIdle", true);
-                                        rollingJumpFlag = true;
-                                        /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                        Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                        Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                    }
-                                }
-
-                                //ローリングジャンプをしていたら
-                                if (rollingJumpDidFlag == true)
-                                {
-                                    // //ローロング空中待機モーションから待機モーションへ
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    rollingJumpFlag = true;
-                                    rollingJumpDidFlag = false;
-                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                    De
-                                    bug.Log("doFall"+anime.GetBool("doFall"));*/
-                                }
-
-                                //壁ジャンしていたら
-                                if (wallJumpDidFlag == true)
-                                {
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    wallJumpDidFlag = false;
-                                }
-                            }
-                            //加速するフラグをたてる
-                            speedAccelerationFlag = true;
-                        }
-                        //ダメージが入るフラグがたった時
-                        //Eキーが押されなかった時に入る
-                        if (fallDamageHitFlag == true)
-                        {
-                            //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
-                            gm.PlayerHp--;
-                            fallDamageHitFlag = false;
-                            state = STATE.DAMAGED;
-                            StartCoroutine(_hit());
-                            anime.SetBool("doLanding", true);
-
-                            Debug.Log("落下ダメージが入ったよ");
-                            //地面に着地したら
-                            if (hit.transform.gameObject.CompareTag("Ground"))
-                            {
-                                //普通のジャンプをしていたら
-                                if (jumpFlag == true)
-                                {
-                                    jumpFlag = false;
-                                    anime.SetBool("doJump", false);
-                                    //着地モーションから待機モーションへ
-                                    if (jumpFlag == false)
-                                    {
-                                        anime.SetBool("doIdle", true);
-                                        /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                        Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                        Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                    }
-                                }
-
-                                //ローリングジャンプをしていたら
-                                if (rollingJumpDidFlag == true)
-                                {
-                                    //ローロング空中待機モーションから待機モーションへ
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    rollingJumpDidFlag = false;
-                                }
-
-                                //壁ジャンしていたら
-                                if (wallJumpDidFlag == true)
-                                {
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    wallJumpDidFlag = false;
-                                }
-                            }
-
-                            //ローロングジャンプポイントに着地したら
-                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                            {
-                                //普通のジャンプをしていたら
-                                if (jumpFlag == true)
-                                {
-                                    jumpFlag = false;
-                                    anime.SetBool("doJump", false);
-                                    //着地モーションから待機モーションへ
-                                    if (jumpFlag == false)
-                                    {
-                                        anime.SetBool("doIdle", true);
-                                        rollingJumpFlag = true;
-                                        /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                        Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                        Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                    }
-                                }
-                                //ローリングジャンプをしていたら
-                                if (rollingJumpDidFlag == true)
-                                {
-                                    // //ローロング空中待機モーションから待機モーションへ
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    rollingJumpFlag = true;
-                                    rollingJumpDidFlag = false;
-                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                }
-
-                                //壁ジャンしていたら
-                                if (wallJumpDidFlag == true)
-                                {
-                                    anime.SetBool("RollingAriIdle", false);
-                                    anime.SetBool("doIdle", true);
-                                    wallJumpDidFlag = false;
-                                }
-                            }
-                        }
-
-                    }
-                    //ダメージなしの着地
-                    if (fallenDistance <= takeDamageDistance)
-                    {
-                        //通常着地モーションをする
-                        anime.SetBool("doFall", false);
-                        anime.SetBool("doLanding", true);
-                        Debug.Log("落下ダメージうけない高さから落ちたよ");
-
-                        //上と同じくしている
-                        if (hit.transform.gameObject.CompareTag("Ground"))
-                        {
-                            if (jumpFlag == true)//||wallJampFlag == true 
-                            {
-                                //落下モーションか着地モーションへ
-                                anime.SetBool("doJump", false);
-                                anime.SetBool("doIdle", false);
-                                //Debug.Log("haitta");
-                                jumpFlag = false;
-                                //着地モーションから待機モーションへ
-                                if (jumpFlag == false)
-                                {
-                                    anime.SetBool("doIdle", true);
-                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                }
-                            }
-
-                            if (rollingJumpDidFlag == true)
-                            {
-                                anime.SetBool("RollingAriIdle", false);
-                                anime.SetBool("doIdle", true);
-                                rollingJumpDidFlag = false;
-                            }
-
-                            //壁ジャンしていたら
-                            if (wallJumpDidFlag == true)
-                            {
-                                anime.SetBool("RollingAriIdle", false);
-                                anime.SetBool("doIdle", true);
-                                wallJumpDidFlag = false;
-                            }
-                        }
-
-                        //上と同じ
-                        if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                        {
-                            if (jumpFlag == true)
-                            {
-
-                                //落下モーションか着地モーションへ
-                                anime.SetBool("doJump", false);
-                                anime.SetBool("doIdle", false);
-                                jumpFlag = false;
-                                //着地モーションから待機モーションへ
-                                if (jumpFlag == false)
-                                {
-                                    anime.SetBool("doIdle", true);
-                                    rollingJumpFlag = true;
-                                    /*Debug.Log("Landing" + anime.GetBool("doLanding"));
-                                    Debug.Log("doIdle" + anime.GetBool("doIdle"));
-                                    Debug.Log("doFall"+anime.GetBool("doFall"));*/
-                                }
-                            }
-
-                            if (rollingJumpDidFlag == true)
-                            {
-
-                                anime.SetBool("RollingAriIdle", false);
-                                //ローリングジャンプアニメーションをきる
-                                anime.SetBool("doIdle", true);
-                                rollingJumpFlag = true;
-                                rollingJumpDidFlag = false;
-                            }
-
-                            //壁ジャンしていたら
-                            if (wallJumpDidFlag == true)
-                            {
-                                anime.SetBool("RollingAriIdle", false);
-                                anime.SetBool("doIdle", true);
-                                wallJumpDidFlag = false;
-                            }
-                        }
-                    }
-                    Debug.Log("落下処理終わったよ");
-                    //ここでフラグおり＆着地の効果音を入れている
-                    fallFlag = false;
-                    PlaySE(randingSE);
-                }
-            }
-        }
-        else
-        {
-            //レイを飛ばせる状況にあるとき
-            if (lineCast != null)
-            {
-                //レイが届かないなら
-                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
-                {
-                    //地面から一回でもLineCastの線が離れたとき = 落下状態とする
-                    //その時に落下状態を判別するためfallFlagをtrueにする
-                    //最初の落下地点を設定
-                    fallenPosition = transform.position.y;
-                    fallenDistance = 0;
-                    //フラグを立てる
-                    fallFlag = true;
-                    Debug.Log("地面から離れたよ");
-                }
-            }
-        }
-      
-        /*
-        else//地面にいる時
-        {
-            //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
-            //壁にはりついていない時かつ地面にレイが届いていなければ落下地点を設定
-            if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
-            {
-                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
-                //その時に落下状態を判別するためfallFlagをtrueにする
-                //最初の落下地点を設定
-                fallenPosition = transform.position.y;
-                fallenDistance = 0;
-                //フラグを立てる
-                fallFlag = true;
-                Debug.Log("地面から離れたよ");
-            }
-        }
-        */
+        //落下中の処理(ほぼアニメーション)
+        FallAnime();
 
         #endregion
+
+        //壁にはりついたときにはりつき解除ボタンがおされたら
+        /*if(trigger > 0 && doStayWall)
+        {
+            anime.SetTrigger("LiftWall");
+            //重力を作用させる
+            rb.useGravity = true;
+            //壁ジャンプできるフラグをおる
+            wallJumpFlag = false;
+            //カメラに渡すフラグをおる
+            doInputButtonFlag = false;
+            //壁はりつき中のフラグをおる
+            doStayWall = false;
+            //壁から離れたのでフラグをおる
+            pWallC.WallJumpHitFlag = false;
+        }*/
 
         //Eボタンが押されたら
         if (doStayWall == true && Input.GetKey(KeyCode.E))
@@ -745,6 +355,37 @@ public class Player : MonoBehaviour
         //中の処理はWASDどれも同じ
         //左方向に向いて移動したら
 
+         /*if(horizontalInput < 0 && doInputButtonFlag == false)
+         {
+            moveFlag = true;
+
+            //落下中ではなければ歩きモーションをたてる
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
+
+            //普通の歩くスピード
+            if (jumpFlag == false)
+            {
+                _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
+            }
+
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
+            {
+                _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            //ローロングジャンプのスピード
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position -= mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
+            }
+            transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
+         }*/
+
          if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
          {
             moveFlag = true;
@@ -777,6 +418,34 @@ public class Player : MonoBehaviour
          }
 
          //右方向に向いて移動したら
+         /*if(horizontalInput > 0 && doInputButtonFlag == false)
+         {
+            moveFlag = true;
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
+            //普通の歩くスピード
+            if (jumpFlag == false && rollingJumpDidFlag == false)
+            {
+                _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
+            }
+
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
+            {
+                _parent.transform.position += mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position += mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
+            }
+
+            transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
+         }*/
+
          if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false)
          {
             moveFlag = true;
@@ -806,6 +475,35 @@ public class Player : MonoBehaviour
          }
 
          //上方向に向いて移動したら
+         /*if(verticalInput >0 && doInputButtonFlag == false)
+         {
+            moveFlag = true;
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
+            //普通の歩くスピード
+            if (jumpFlag == false && rollingJumpDidFlag == false)
+            {
+                _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
+
+            }
+
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
+            {
+                _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position += cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
+            }
+
+            transform.rotation = Quaternion.LookRotation(cameraDreNoY);
+         }*/
+
          if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false)
          {
             moveFlag = true;
@@ -835,7 +533,36 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
          }
 
-         //下方向に向いて移動したら
+        //下方向に向いて移動したら
+        /*if(verticalInput < 0 && doInputButtonFlag == false)
+        {
+            moveFlag = true;
+
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", false);
+                anime.SetBool("doWalk", true);
+            }
+            //普通の歩くスピード
+            if (jumpFlag == false && rollingJumpDidFlag == false)
+            {
+                _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
+            }
+
+            //通常ジャンプと壁ジャンプのスピード
+            if (jumpFlag == true || wallJumpDidFlag == true)
+            {
+                _parent.transform.position -= cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
+            }
+
+            if (rollingJumpDidFlag == true)
+            {
+                _parent.transform.position -= cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
+            }
+
+            transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
+        }*/
+
          if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false)
          {
             moveFlag = true;
@@ -866,6 +593,17 @@ public class Player : MonoBehaviour
          }
 
          //方向キーが押されていなければここに入る
+         /*if(horizontalInput == 0 && verticalInput == 0)
+         {
+            moveFlag = false;
+            //落下中でなければ待機モーションに入る
+            if (fallFlag == false)
+            {
+                anime.SetBool("doIdle", true);
+                anime.SetBool("doWalk", false);
+            }
+         }*/
+
         if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
@@ -876,6 +614,60 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk",false);
             }              
         }
+
+        //ジャンプの動き
+        //ボタンはA・配置的には0
+        /*if (Input.GetButton("Jump") && jumpCount == 0 && fallFlag == false)
+        {
+         //ジャンプの効果音を流す
+            PlaySE(jumpSE);
+
+            //ローロングジャンプができない状態なら
+            if (rollingJumpFlag == false && wallJumpFlag == false)
+            {
+                //ジャンプ時
+                anime.SetBool("doJump", true);
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpFlag = true;
+                jumpCount++;
+            }
+
+            //ローロングジャンプができる状態なら
+            if (rollingJumpFlag == true)
+            {
+                //ローリングジャンプ時
+                rollingJumpDidFlag = true;
+                anime.SetTrigger("RollingJump");
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                jumpCount++;
+                rollingJumpFlag = false;
+            }
+
+            //壁ジャンプができるなら
+            if(wallJumpFlag == true)
+            {
+                //壁ジャンプしたフラグとアニメーション関係
+                wallJumpDidFlag = true;
+                anime.SetTrigger("DoWallJump");
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 10, 0));
+                JumpCount++;
+
+                //重力を作用させる
+                rb.useGravity = true;
+                rb.velocity = transform.position;
+                //壁ジャンプできるフラグをおる
+                wallJumpFlag = false;
+                //カメラに渡すフラグをおる
+                doInputButtonFlag = false;
+                //加速フラグをたてる
+                speedAccelerationFlag = true;
+                //壁はりつき中のフラグをおる
+                doStayWall = false;
+                //壁から離れたのでフラグをおる......
+                pWallC.WallJumpHitFlag = false;
+            }
+
+        }*/
 
         if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)
         {
@@ -928,9 +720,11 @@ public class Player : MonoBehaviour
             }
 
         }
+
         #endregion
     }
 
+    //isTriggerがついてない時の判定
     private void OnCollisionEnter(Collision other)
     {
         //敵に当たったら
@@ -966,6 +760,7 @@ public class Player : MonoBehaviour
 
     }
 
+    //isTriggerがついている時の処理
     private void OnTriggerEnter(Collider other)
     { 
         //アイテムに当たったら
@@ -1039,8 +834,304 @@ public class Player : MonoBehaviour
        
     }
 
+    //地面にふれた時のアニメーション関係
+    public void FallAnime()
+    {
+        if (fallFlag)
+        {
+            ResetAnime();
+
+            //壁ジャンプできる壁に触れたらここに入る
+            if (pWallC.WallJumpHitFlag)
+            {
+                ClingToWall();
+            }
+              
+             //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+            //落下地点 = 落下地点かプレイヤーの落下地点の最大値
+            fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
+            RaycastHit hit;
+            //レイが非null = レイを飛ばす状況なら
+            if (lineCast != null)
+            {
+                //　地面にレイが届いていたら
+                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
+                {
+                    Debug.Log("レイが届いたよ");
+
+                    //　落下距離を計算
+                    fallenDistance = fallenPosition - transform.position.y;
+
+                    if (fallenDistance >= takeDamageDistance)
+                    {
+                        anime.SetBool("doFall", false);
+                        //スローモーション移行
+                        StartCoroutine("StartSlowmotion");
+
+                        Debug.Log("落下ダメージ受けるかどうか終わったよ");
+
+                        //ダメージが入るフラグが立っていない時
+                        //Eキーが押されたらこの中に入る
+                        if (fallDamageHitFlag == false)
+                        {
+                            //ローロング着地のフラグを立てる
+                            anime.SetBool("doLandRolling", true);
+                            //地面に着地したら
+                            if (hit.transform.gameObject.CompareTag("Ground"))
+                            {
+                                GroundAnime();
+                            }
+
+                            //ローロングジャンプポイントに着地したら
+                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
+                            {
+                                RollingPointAnime();
+                            }
+                            //加速するフラグをたてる
+                            speedAccelerationFlag = true;
+                        }
+                        //ダメージが入るフラグがたった時
+                        //Eキーが押されなかった時に入る
+                        if (fallDamageHitFlag == true)
+                        {
+                            //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
+                            gm.PlayerHp--;
+                            fallDamageHitFlag = false;
+                            state = STATE.DAMAGED;
+                            StartCoroutine(_hit());
+                            anime.SetBool("doLanding", true);
+
+                            Debug.Log("落下ダメージが入ったよ");
+                            //地面に着地したら
+                            if (hit.transform.gameObject.CompareTag("Ground"))
+                            {
+                                GroundAnime();
+                            }
+
+                            //ローロングジャンプポイントに着地したら
+                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
+                            {
+                               RollingPointAnime();
+                            }
+                        }
+                    }
+                    //ダメージなしの着地
+                    if (fallenDistance <= takeDamageDistance)
+                    {
+                        //通常着地モーションをする
+                        anime.SetBool("doFall", false);
+                        anime.SetBool("doLanding", true);
+                        Debug.Log("落下ダメージうけない高さから落ちたよ");
+
+                        //上と同じくしている
+                        if (hit.transform.gameObject.CompareTag("Ground"))
+                        {
+                           GroundAnime();
+                        }
+
+                        //上と同じ
+                        if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
+                        {
+                           RollingPointAnime();
+                        }
+                    }
+                    Debug.Log("落下処理終わったよ");
+                    //ここでフラグおり＆着地の効果音を入れている
+                    fallFlag = false;
+                    PlaySE(randingSE);
+                }
+            }
+        }
+
+        else
+        {
+            //レイを飛ばせる状況にあるとき
+            //fallFlagがfalse状態でかつプレイヤーが地面から離れた時にfallFlagをtrueにする
+            //壁にはりついていない時かつ地面にレイが届いていなければ落下地点を設定
+            if (lineCast != null)
+            {
+                //レイが届かないなら
+                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
+                {
+                    //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+                    //その時に落下状態を判別するためfallFlagをtrueにする
+                    //最初の落下地点を設定
+                    fallenPosition = transform.position.y;
+                    fallenDistance = 0;
+                    //フラグを立てる
+                    fallFlag = true;
+                    Debug.Log("地面から離れたよ");
+                }
+            }
+        }
+
+    }
+
+    //アニメーションのリセット
+    private void ResetAnime()
+    {
+        //ローリング着地に関わる値をリセット
+        anime.SetBool("doFall", true);
+        anime.SetBool("doLandRolling", false);
+        anime.SetBool("doLanding", false);
+
+        //ジャンプやローリングジャンプしなかった時にここに入る
+        if (rollingJumpDidFlag == false && jumpFlag == false && moveFlag == true)
+        {
+            anime.SetBool("doWalk", true);
+            anime.SetBool("doJump", false);
+        }
+
+        //ジャンプしたらここに入る
+        if (jumpFlag == true)
+        {
+            anime.SetBool("doWalk", true);
+            anime.SetBool("RollingAriIdle", false);
+        }
+
+        //ローリングジャンプした時にここに入る
+        if (rollingJumpDidFlag == true)
+        {
+            anime.SetBool("doWalk", false);
+            anime.SetBool("doJump", false);
+            anime.SetBool("RollingAriIdle", true);
+        }
+
+        //壁ジャンプ中ならここに入る
+        if (wallJumpDidFlag == true)
+        {
+            anime.SetBool("doWalk", false);
+            anime.SetBool("doJump", false);
+            anime.SetBool("RollingAriIdle", true);
+        }
+
+    }
+
+    //壁はりつきの関数
+    private void ClingToWall()
+    {
+        /*
+          if(trigger > 0 )
+          {
+
+          }
+          */
+        //Rキーが押されていたら
+        if (Input.GetKey(KeyCode.R))
+        {
+            //普通のジャンプをしていたら
+            if (jumpFlag == true)
+            {
+                jumpFlag = false;
+                anime.SetBool("doJump", false);
+            }
+
+            //ローリングジャンプをしていたら
+            if (rollingJumpDidFlag == true)
+            {
+                //ローロング空中待機モーションから待機モーションへ
+                anime.SetBool("RollingAriIdle", false);
+                rollingJumpDidFlag = false;
+            }
+
+            //壁ジャンをしていたら
+            if (wallJumpDidFlag == true)
+            {
+                wallJumpDidFlag = false;
+            }
+
+            //アニメーション関係
+            anime.SetTrigger("WallJumpHit");
+            this.transform.Rotate(0, 180.0f, 0);
+
+            //フラグ関係
+            PlaySE(randingSE);
+            fallFlag = false;
+            wallJumpFlag = true;
+
+            //プレイヤーの座標固定＆向き反転
+            doInputButtonFlag = true;
+            rb.useGravity = false;
+            rb.velocity = new Vector3(0, 0f, 0);
+            Debug.Log("壁はりつき中:" + rb.useGravity);
+            Debug.Log("固定化");
+            //壁に張り付いてるフラグを立てる
+            doStayWall = true;
+
+            //壁に触れている時のコルーチン発動
+            //StartCoroutine("StartWallStay");
+        }
+    }
+
+    //地面判定に触れた時のアニメ処理
+    private void GroundAnime()
+    {
+        //普通のジャンプをしていたら
+        if (jumpFlag == true)
+        {
+            jumpFlag = false;
+            anime.SetBool("doJump", false);
+            //着地モーションから待機モーションへ
+            if (jumpFlag == false)
+            {
+                anime.SetBool("doIdle", true);
+            }
+        }
+
+        //ローリングジャンプをしていたら
+        if (rollingJumpDidFlag == true)
+        {
+            //ローロング空中待機モーションから待機モーションへ
+            anime.SetBool("RollingAriIdle", false);
+            anime.SetBool("doIdle", true);
+            rollingJumpDidFlag = false;
+        }
+
+        //壁ジャンしていたら
+        if (wallJumpDidFlag == true)
+        {
+            anime.SetBool("RollingAriIdle", false);
+            anime.SetBool("doIdle", true);
+            wallJumpDidFlag = false;
+        }
+    }
+
+    //ローリングジャンプ地点に触れた時のアニメ処理
+    private void RollingPointAnime()
+    {
+        //普通のジャンプをしていたら
+        if (jumpFlag == true)
+        {
+            jumpFlag = false;
+            anime.SetBool("doJump", false);
+            //着地モーションから待機モーションへ
+            if (jumpFlag == false)
+            {
+                anime.SetBool("doIdle", true);
+                rollingJumpFlag = true;
+            }
+        }
+        //ローリングジャンプをしていたら
+        if (rollingJumpDidFlag == true)
+        {
+            // //ローロング空中待機モーションから待機モーションへ
+            anime.SetBool("RollingAriIdle", false);
+            anime.SetBool("doIdle", true);
+            rollingJumpFlag = true;
+            rollingJumpDidFlag = false;
+        }
+
+        //壁ジャンしていたら
+        if (wallJumpDidFlag == true)
+        {
+            anime.SetBool("RollingAriIdle", false);
+            anime.SetBool("doIdle", true);
+            wallJumpDidFlag = false;
+        }
+    }
+
     #region//コルーチン
-   //レイを投射するコルーチン
+    //レイを投射するコルーチン
     private IEnumerator StartLineCast()
     {
         while (true)
@@ -1091,6 +1182,13 @@ public class Player : MonoBehaviour
             {
                 fallDamageHitFlag = true;
             }
+
+            //今回はコントローラーでやるのでL_R_Triggerが0より小さくない時 =右トリガーが押されてなかったら
+            /*if(trigger <= 0)
+             {
+                fallDamageHitFlag = true;
+             }*/
+
             //スローモーション解除
             if (elapsedTime > slowTime)
             {
