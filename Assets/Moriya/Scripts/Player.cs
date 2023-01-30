@@ -617,12 +617,18 @@ public class Player : MonoBehaviour
         if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
-            //落下中でなければ待機モーションに入る
-            if (fallFlag == false)
+            if(doStayWall == false)
             {
-                anime.SetBool("doIdle", true);
-                anime.SetBool("doWalk",false);
-            }              
+                this.transform.Rotate(0, 0f, 0);
+                if(fallFlag == false)
+                {
+                   //落下中でなければ待機モーションに入る
+                  anime.SetBool("doIdle", true);
+                  anime.SetBool("doWalk", false);
+                }
+
+            }
+                
         }
 
         //ジャンプの動き
