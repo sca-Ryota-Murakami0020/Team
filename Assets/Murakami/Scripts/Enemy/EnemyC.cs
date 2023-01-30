@@ -22,14 +22,14 @@ public class EnemyC : MonoBehaviour
     private bool doEncount;
     //巡回開始のフラグ
     private bool startFlag;
-    //スタート地点
-    [SerializeField] private GameObject startPoint;
-    //終着点
-    [SerializeField] private GameObject endPoint;
-    //
+    //旋回位置
+    [SerializeField] private GameObject[] turnPoint;
+    //リセット時のポジション
     private Vector3 defaultPosition;
     //表示の管理を行う
     private ResetEnemyPosition rEP;
+    //Enemyの蘇生処理
+    private SponeEnemy sE;
     //ray関係
     private float rayDistance = 2.0f;
     //回転中かの判定
@@ -46,6 +46,10 @@ public class EnemyC : MonoBehaviour
     private int rotateCounter;
     //回転した距離
     private float rotationDistance;
+    
+    private Vector3 enemyPos;
+
+    private Vector3[] turnPos;
 
     //敵の回転する方向
     enum RotationPar
@@ -60,18 +64,6 @@ public class EnemyC : MonoBehaviour
     RotationPar rotationState;
 
     #region//プロパティ
-    public GameObject StartP
-    {
-        get { return this.startPoint;}
-        set { this.startPoint = value;}
-    }
-
-    public GameObject EndP
-    {
-        get { return this.endPoint;}
-        set { this.endPoint = value;}
-    }
-
     public bool DoEn
     {
         get { return this.doEncount;}
@@ -85,7 +77,15 @@ public class EnemyC : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
-        this.transform.position = this.startPoint.transform.position;
+
+        //sE = FindObjectOfType<SponeEnemy>();
+        /*
+        for(int i = 0; i < 2; i++)
+        {
+            this.turnPoint[i] = sE.TurnPos[i];
+        }*/
+
+        this.transform.position = this.turnPoint[0].transform.position;
         doEncount = false;
         startFlag = true;
         doTurn = false;
@@ -95,7 +95,12 @@ public class EnemyC : MonoBehaviour
         rotationDistance = 0.0f;
         defaultPosition = this.transform.position;
 
-        this.transform.LookAt(endPoint.transform.position);
+        this.transform.LookAt(turnPoint[1].transform.position);
+
+        for(int i = 0; i < 2; i++)
+        {
+            turnPos[i] = turnPoint[i].transform.position;
+        }
 
     }
 
@@ -119,6 +124,7 @@ public class EnemyC : MonoBehaviour
         if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
         else
         {
+            enemyPos = this.transform.position;
             if(!doTurn)
             {
                 this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
@@ -128,67 +134,72 @@ public class EnemyC : MonoBehaviour
             {
                 this.transform.position += new Vector3(0,0,0);
             }
+
+            /*
+            for(int i = 0; i < 2; i++)
+            {
+                if ((enemyPos.x >= turnPos[i].x && enemyPos.z >=turnPos[i].z ) || (enemyPos.x <= turnPos[i].x && enemyPos.z <= turnPos[i].z))
+                {
+
+                }
+            }*/
         }
+
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
 
-        if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("WallJumpPoint") || collision.gameObject.CompareTag("LimitWall") || collision.gameObject.CompareTag("Ground")) && doEncount == true)
+        if ((collision.gameObject.CompareTag("Wall") ||
+            collision.gameObject.CompareTag("WallJumpPoint") || 
+            collision.gameObject.CompareTag("LimitWall") || 
+            collision.gameObject.CompareTag("Ground")) && 
+            doEncount == true)
         {
             Debug.Log("消えた");
             StartCoroutine("ResetEnemy");
+            //sE.ReSponeEnemy();
+            Destroy(this);
         }
     }
     
     private void OnTriggerEnter(Collider other)
     {      
-        if (other.gameObject == this.startPoint && noCountFlag == false)
+        if ((other.gameObject == this.turnPoint[0] && noCountFlag == false) || 
+            other.gameObject == this.turnPoint[1])
         {
-            returnLookEndPosition();
-        }
-
-        if (other.gameObject == this.endPoint)
-        {
-            returnLookStartPosition();
+            returnLookPosition();
         }
     }
 
-    public void returnLookStartPosition()
+    public void returnLookPosition()
     {
-        //endPointの方向に向けるようにするために値を変更する
+        //次の終点位置の方向に向けるようにするために値を変更する
         defaultRotation = this.transform.rotation;
         doTurn = true;
         rotationState = RotationPar.RIGHT;
-        StartCoroutine("TurnLookForStartPoint");
-    }
-
-    public void returnLookEndPosition()
-    {
-        //startPointの方向に向けるようにするために値を変更する
-        defaultRotation = this.transform.rotation;
-        doTurn = true;
-        rotationState = RotationPar.RIGHT;
-        StartCoroutine("TurnLookForEndPoint");
+        StartCoroutine("TurnLookPosition");
     }
 
     private IEnumerator ResetEnemy()
     { 
         this.transform.position = this.defaultPosition;
-        rEP.StartCountDistance();
         doTurn = false;
         this.doEncount = false;
+        rEP.StartCountDistance();
         this.gameObject.SetActive(false);
+        Debug.Log("ResetEnemyでfalseに");
         yield break;
     }
 
-    private IEnumerator TurnLookForStartPoint()
+    private IEnumerator TurnLookPosition()
     {
-        yield return new WaitForSeconds(1);       
-        while(rotationState == RotationPar.RIGHT)
+        yield return new WaitForSeconds(1);
+        while (rotationState == RotationPar.RIGHT)
         {
             //一度ずつ回転
-            this.transform.Rotate(0,1.0f,0);
+            this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
             //始めは少し緩やかに回転
@@ -199,100 +210,6 @@ public class EnemyC : MonoBehaviour
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
 
             //回転した度数が45°を超えたら
-            if (rotateCounter >= 45)
-            {
-                rotationState = RotationPar.LEFT;
-                rotateCounter = 0;
-                yield return new WaitForSeconds(1);
-                break;
-            }         
-        }
-
-        //左方向に回転
-        while(rotationState == RotationPar.LEFT)
-        {
-            this.transform.Rotate(0, -1.0f, 0);
-            rotateCounter++;
-
-            if(rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
-            if (rotateCounter >= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
-
-            if (rotateCounter >= 85) yield return new WaitForSeconds(0.075f);
-
-            if (rotateCounter >= 90)
-            {
-                rotationState = RotationPar.RESET;
-                rotateCounter = 0;
-                yield return new WaitForSeconds(1);
-                break;
-            }
-        }
-
-        //正位置に戻る
-        while(rotationState == RotationPar.RESET)
-        {
-            this.transform.Rotate(0, 1.0f, 0);
-            rotateCounter++;
-
-            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
-            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
-
-            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
-
-            if (rotateCounter >= 45)
-            {
-                rotationState = RotationPar.TURN;
-                rotateCounter = 0;
-                yield return new WaitForSeconds(1);
-                break;
-            }         
-        }
-
-        while(rotationState == RotationPar.TURN)
-        {
-            this.transform.Rotate(0, 1.0f, 0);
-            rotateCounter++;
-
-            if (rotateCounter < 3) yield return new WaitForSeconds(0.01f);
-
-            if (rotateCounter >=3 && rotateCounter <= 175) yield return new WaitForSeconds(0.00075f);
-
-            if (rotateCounter >= 175) yield return new WaitForSeconds(0.075f);
-
-            if (rotateCounter >= 180)
-            {
-                rotateCounter = 0;
-                yield return new WaitForSeconds(1);
-                break;
-            }           
-        }
-        
-        doTurn = false;
-        rotationState = RotationPar.NULL;
-        if(noCountFlag == true)
-        {
-            noCountFlag = false;
-        }
-        yield break;
-    }
-
-    private IEnumerator TurnLookForEndPoint()
-    {
-        yield return new WaitForSeconds(1);
-        while (rotationState == RotationPar.RIGHT)
-        {
-            this.transform.Rotate(0, 1.0f, 0);
-            rotateCounter++;
-
-            if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
-            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
-
-            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
-
-            //Debug.Log("右回転中");
             if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.LEFT;
@@ -310,11 +227,10 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
 
-            if (rotateCounter>= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
+            if (rotateCounter >= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
 
-            if(rotateCounter >= 80) yield return new WaitForSeconds(0.075f);
+            if (rotateCounter >= 85) yield return new WaitForSeconds(0.075f);
 
-            //Debug.Log("左回転中");
             if (rotateCounter >= 90)
             {
                 rotationState = RotationPar.RESET;
@@ -332,9 +248,9 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
 
-            if (rotateCounter >= 3 && rotateCounter < 35) yield return new WaitForSeconds(0.01f);
+            if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
 
-            if (rotateCounter >= 35) yield return new WaitForSeconds(0.075f);
+            if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
 
             if (rotateCounter >= 45)
             {
@@ -366,6 +282,11 @@ public class EnemyC : MonoBehaviour
 
         doTurn = false;
         rotationState = RotationPar.NULL;
+
+        if (noCountFlag == true)
+        {
+            noCountFlag = false;
+        }
         yield break;
     }
 }

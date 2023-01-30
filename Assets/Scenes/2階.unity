@@ -1041,6 +1041,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1736095436}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 1736095436}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 1884000033}
     - target: {fileID: 7110650736930638616, guid: e639c46277c3808468bb2a01cef71388, type: 3}
       propertyPath: m_Name
       value: "2\u968E\u7528Enemy4"
@@ -1508,6 +1520,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1584331366}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 1584331366}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 248968184}
     - target: {fileID: 7110650736930638616, guid: e639c46277c3808468bb2a01cef71388, type: 3}
       propertyPath: m_Name
       value: "2\u968E\u7528Enemy3"
@@ -3668,6 +3692,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 825975276}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 825975276}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 628106440}
     - target: {fileID: 7110650736930638616, guid: e639c46277c3808468bb2a01cef71388, type: 3}
       propertyPath: m_Name
       value: "2\u968E\u7528Enemy5"
@@ -4374,6 +4410,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1327489223}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 1327489223}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 121887084}
     - target: {fileID: 7110650736930638616, guid: e639c46277c3808468bb2a01cef71388, type: 3}
       propertyPath: m_Name
       value: "2\u968E\u7528Enemy2"
@@ -5883,6 +5931,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1537720235}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 1537720235}
+    - target: {fileID: 3117518867120692370, guid: e639c46277c3808468bb2a01cef71388, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 1133878410}
     - target: {fileID: 7110650736930638616, guid: e639c46277c3808468bb2a01cef71388, type: 3}
       propertyPath: m_Name
       value: "2\u968E\u7528Enemy"
