@@ -697,7 +697,7 @@ public class Player : MonoBehaviour
             {
                 //ジャンプ時
                 anime.SetBool("doJump", true);
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 20, 0));
                 jumpFlag = true;
                 jumpCount++;
             }
@@ -719,7 +719,7 @@ public class Player : MonoBehaviour
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 20, 0));
 
                 Debug.Log("あすける");
                 jumpCount++;
