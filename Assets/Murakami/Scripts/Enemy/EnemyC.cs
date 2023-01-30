@@ -80,7 +80,7 @@ public class EnemyC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
         this.transform.position = this.startPoint.transform.position;
@@ -106,16 +106,13 @@ public class EnemyC : MonoBehaviour
         Debug.DrawRay(shotRayPosition.transform.position, shotRayPosition.transform.forward * this.rayDistance, Color.red ,1.0f);
         if (Physics.Raycast(ray, out hit, 100.0f))
         {
-            //Debug.Log("rayHit");
             if(hit.collider.gameObject.CompareTag("Player"))
             {
-                //Debug.Log("ray");
                 this.doEncount = true;
             }        
         }
 
         //速度関係
-        //Debug.Log("doTurn: " + doTurn);
         if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
         else
         {
@@ -135,10 +132,7 @@ public class EnemyC : MonoBehaviour
 
         if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("WallJumpPoint") || collision.gameObject.CompareTag("LimitWall")) && doEncount == true)
         {
-            //Destroy(this.gameObject);
-            //eSC.SponeEnemy();
             StartCoroutine("ResetEnemy");
-            //Debug.Log("引き渡し");
         }
     }
     
@@ -162,7 +156,6 @@ public class EnemyC : MonoBehaviour
         doTurn = true;
         rotationState = RotationPar.RIGHT;
         StartCoroutine("TurnLookForStartPoint");
-        //Debug.Log("始点から動き出す");
     }
 
     public void returnLookEndPosition()
@@ -172,7 +165,6 @@ public class EnemyC : MonoBehaviour
         doTurn = true;
         rotationState = RotationPar.RIGHT;
         StartCoroutine("TurnLookForEndPoint");
-        //Debug.Log("終点から動き出す");     
     }
 
     private IEnumerator ResetEnemy()
@@ -181,7 +173,6 @@ public class EnemyC : MonoBehaviour
         this.doEncount = false;
         rEP.StartCountDistance();
         this.gameObject.SetActive(false);
-        //Debug.Log("待機中");
         yield break;
     }
 
@@ -207,7 +198,6 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("左回転に移行する");
                 break;
             }         
         }
@@ -215,7 +205,6 @@ public class EnemyC : MonoBehaviour
         //左方向に回転
         while(rotationState == RotationPar.LEFT)
         {
-            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;]rotationDistance = defaultRotation.y + 75.0f;
             this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
 
@@ -225,13 +214,11 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter >= 85) yield return new WaitForSeconds(0.075f);
 
-            //Debug.Log("左回転中");
             if (rotateCounter >= 90)
             {
                 rotationState = RotationPar.RESET;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("リセットに移行する");
                 break;
             }
         }
@@ -239,7 +226,6 @@ public class EnemyC : MonoBehaviour
         //正位置に戻る
         while(rotationState == RotationPar.RESET)
         {
-            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -254,14 +240,12 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.TURN;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("OK,Go");
                 break;
             }         
         }
 
         while(rotationState == RotationPar.TURN)
         {
-            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -273,7 +257,6 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter >= 180)
             {
-                //Debug.Log("TURN");
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
                 break;
@@ -294,7 +277,6 @@ public class EnemyC : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (rotationState == RotationPar.RIGHT)
         {
-            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;rotationDistance = defaultRotation.y - 75.0f;
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -310,7 +292,6 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("左回転に移行する");
                 break;
             }
         }
@@ -318,7 +299,6 @@ public class EnemyC : MonoBehaviour
         //左方向に回転
         while (rotationState == RotationPar.LEFT)
         {
-            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;]rotationDistance = defaultRotation.y + 75.0f;
             this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
 
@@ -334,7 +314,6 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.RESET;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("リセットに移行する");
                 break;
             }
         }
@@ -342,7 +321,6 @@ public class EnemyC : MonoBehaviour
         //正位置に戻る
         while (rotationState == RotationPar.RESET)
         {
-            //transform.rotation = Quaternion.AngleAxis(-2.0f, this.transform.up) * defaultRotation;
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -357,14 +335,12 @@ public class EnemyC : MonoBehaviour
                 rotationState = RotationPar.TURN;
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
-                //Debug.Log("OK,Go");
                 break;
             }
         }
 
         while (rotationState == RotationPar.TURN)
         {
-            //transform.rotation = Quaternion.AngleAxis(2.0f, this.transform.up) * defaultRotation;
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -383,7 +359,6 @@ public class EnemyC : MonoBehaviour
             }
         }
 
-        //Debug.Log("終点に向けて動き出す");
         doTurn = false;
         rotationState = RotationPar.NULL;
         yield break;
