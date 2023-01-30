@@ -20,7 +20,7 @@ public class ResetEnemyPosition : MonoBehaviour
 
     public void StartCountDistance()
     {
-        //EnemyCから受け取る指示
+        //EnemyCから受け取た時に指示するコルーチンを呼び出す
         StartCoroutine("ActiveEnemy");
     }
 

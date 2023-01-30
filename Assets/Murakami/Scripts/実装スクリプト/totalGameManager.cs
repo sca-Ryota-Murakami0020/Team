@@ -105,6 +105,7 @@ public class totalGameManager : MonoBehaviour
         {
             bestTime[loadCount] = totalTime;
         }
+
         //２回目プレイ～３回目時の記録を記録
         if (loadCount >= 1 && loadCount <= 2)
         {
@@ -125,6 +126,7 @@ public class totalGameManager : MonoBehaviour
                 }
             }
         }
+
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCount >= 3)
         {
@@ -145,6 +147,7 @@ public class totalGameManager : MonoBehaviour
             }
         }
 
+        //リザルト画面に飛んだ回数を足す
         loadCount += 1;
     }
     #endregion
@@ -166,7 +169,7 @@ public class totalGameManager : MonoBehaviour
             timeCounter = false;
         }
 
-        //ゲームオーバーシーンまたはリザルト画面が呼び出されたら
+        //ゲームオーバーシーンorリザルト画面が呼び出されたら
         if (nextScene.name == "GameOverScene" || nextScene.name == "GoalScene")
         {
             //タイム計測を一旦停止させる

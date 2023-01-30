@@ -37,13 +37,7 @@ public class TimeTextC : MonoBehaviour
         th = FindObjectOfType<TherdScore>();
     }
 
-    // Update is called once per frame
     void Update()
-    {
-
-    }
-
-    public void SetStartCowrotine()
     {
         //ハイスコアの表記
         //ゲーム時間の1秒単位の表示を行う
@@ -58,15 +52,21 @@ public class TimeTextC : MonoBehaviour
         StartCoroutine("StartText");
     }
 
+    public void SetStartTimer()
+    {
+
+    }
+
     private IEnumerator StartText()
     {
+        yield return new WaitForSeconds(1.5f);
         //1ゲームのタイムを00:00表示で画面外から-x方向に500だけ動かす
         if (counter <= 500)
         {
             timer.position -= new Vector3(2.0f, 0, 0);
             counter++;
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
         //設置完了1秒後にTherdScoreのコルーチンを開始させる
         th.StartCoroutine("StartTherdScore");
         yield break;

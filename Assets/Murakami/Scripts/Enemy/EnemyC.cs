@@ -128,7 +128,6 @@ public class EnemyC : MonoBehaviour
                 this.transform.position += new Vector3(0,0,0);
             }
         }
-        //Debug.Log("エンカウント:" + rotationState);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -203,7 +202,7 @@ public class EnemyC : MonoBehaviour
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
 
             //回転した度数が45°を超えたら
-            if (rotateCounter >=45)
+            if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;

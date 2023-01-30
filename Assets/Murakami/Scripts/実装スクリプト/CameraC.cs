@@ -56,6 +56,7 @@ public class CameraC : MonoBehaviour
     void Update()
     {
         if (Player == null) return;
+
         //マウスの移動量を取得
         mousex = Input.GetAxis("Mouse X");
         mousey = Input.GetAxis("Mouse Y");
@@ -102,8 +103,6 @@ public class CameraC : MonoBehaviour
             //一定範囲を超えたら目標に視点に近づける
             float move_distance = (distance - lookPlayerdistance) * (Time.deltaTime * cameraSpeed);
             D += vec.normalized * move_distance;
-            //Debug.Log("UpdateLook");
-            //Debug.Log("D" + D);
         }
     }
 
@@ -158,8 +157,6 @@ public class CameraC : MonoBehaviour
 
         //平行移動により若干距離が変わるので補正する
         this.transform.position += transform.forward * (after_distance - prev_distans);
-        //D.z = 0.0f;
-        //Player.transform.rotation = Quaternion.LookRotation(D);
     }
 
     //カメラリセット
@@ -200,11 +197,9 @@ public class CameraC : MonoBehaviour
 
         //カメラの更新
         this.transform.position = pos;
-        //this.transform.LookAt(D);
+        this.transform.LookAt(D);
 
         //平行移動により若干距離が変わるので補正する
         this.transform.position += transform.forward * (after_distance - prev_distans);
-        //D.z = 0.0f;
-        //Player.transform.rotation = Quaternion.LookRotation(D);
     }
 }

@@ -25,24 +25,31 @@ public class SecondScore : MonoBehaviour
     //コルーチンでテキストを動かした分を計算する変数
     private int counter;
 
-    // Start is called before the first frame update
     void Start()
     {
         totalGM = FindObjectOfType<totalGameManager>();
-        oneSecImage.sprite = numberImage[0];
-        tenSecImage.sprite = numberImage[0];
-        oneMinImage.sprite = numberImage[0];
-        tenMinImage.sprite = numberImage[0];
-        counter = 0;
         hst = FindObjectOfType<HighScoreText>();
+
+        //1秒単位のImage画像の初期化
+        oneSecImage.sprite = numberImage[0];
+        //10秒単位のImage画像の初期化
+        tenSecImage.sprite = numberImage[0];
+        //1分単位のImage画像の初期化
+        oneMinImage.sprite = numberImage[0];
+        //10分単位のImage画像の初期化
+        tenMinImage.sprite = numberImage[0];
+
+        counter = 0;
+
+        //ハイスコア更新
         UpLoadSecondTime();
     }
 
-    // Update is called once per frame
+    /*
     void Update()
     {
 
-    }
+}   */
 
     public void UpLoadSecondTime()
     {
@@ -58,28 +65,34 @@ public class SecondScore : MonoBehaviour
         else
         {
             //２位のランキング表示
+            //1秒単位のImage画像の更新
             oneSecImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[1] % 10)];
+            //10秒単位のImage画像の更新
             tenSecImage.sprite = numberImage[Mathf.FloorToInt((totalGM.BestTime[1] % 60) / 10)];
+            //1分単位のImage画像の更新
             oneMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[1] / 60)];
+            //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[1] / 600)];
-            //if(olt.LoadCout > 3)
-            //Debug.Log("text2 " + olt.TimeText[1]);
         }
     }
 
     private IEnumerator StartSecondScore()
     {
+        //画面外から移動してくる
         if (counter <= 300 && counter >= 0)
         {
             timer.position -= new Vector3(2.0f, 0, 0);
             counter++;
         }
+        //ある程度進んだら減速する
         if (counter <= 500 && counter >= 300)
         {
             timer.position -= new Vector3(1.0f, 0, 0);
             counter++;
         }
-        yield return new WaitForSeconds(1);
+        //一秒間待機する
+        yield return new WaitForSeconds(1.5f);
+        //待機が終わった後に1位のハイスコアのテキストを動かすコルーチンを作動させる
         hst.StartCoroutine("StartHighScore");
         yield break;
     }
