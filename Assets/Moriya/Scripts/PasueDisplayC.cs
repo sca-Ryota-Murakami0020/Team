@@ -72,6 +72,8 @@ public class PasueDisplayC : MonoBehaviour
         #region//メニュー画面が開く処理
 
         //メニューが開かれていないときかつQキーおしたとき
+
+
      
         if (Input.GetKeyDown("q"))
         {
