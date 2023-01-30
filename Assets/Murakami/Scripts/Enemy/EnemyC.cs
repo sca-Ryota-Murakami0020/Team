@@ -26,6 +26,8 @@ public class EnemyC : MonoBehaviour
     [SerializeField] private GameObject startPoint;
     //終着点
     [SerializeField] private GameObject endPoint;
+    //
+    private Vector3 defaultPosition;
     //表示の管理を行う
     private ResetEnemyPosition rEP;
     //ray関係
@@ -91,6 +93,7 @@ public class EnemyC : MonoBehaviour
         rotateCounter = 0;
         rotationState = RotationPar.NULL;
         rotationDistance = 0.0f;
+        defaultPosition = this.transform.position;
 
         this.transform.LookAt(endPoint.transform.position);
 
@@ -119,6 +122,7 @@ public class EnemyC : MonoBehaviour
             if(!doTurn)
             {
                 this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+
             }
             else
             {
@@ -130,8 +134,9 @@ public class EnemyC : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("WallJumpPoint") || collision.gameObject.CompareTag("LimitWall")) && doEncount == true)
+        if ((collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("WallJumpPoint") || collision.gameObject.CompareTag("LimitWall") || collision.gameObject.CompareTag("Ground")) && doEncount == true)
         {
+            Debug.Log("消えた");
             StartCoroutine("ResetEnemy");
         }
     }
@@ -169,9 +174,10 @@ public class EnemyC : MonoBehaviour
 
     private IEnumerator ResetEnemy()
     { 
-        this.transform.position = this.startPoint.transform.position;
-        this.doEncount = false;
+        this.transform.position = this.defaultPosition;
         rEP.StartCountDistance();
+        doTurn = false;
+        this.doEncount = false;
         this.gameObject.SetActive(false);
         yield break;
     }
@@ -352,7 +358,6 @@ public class EnemyC : MonoBehaviour
 
             if (rotateCounter >= 180)
             {
-                Debug.Log("TURN");
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
                 break;
