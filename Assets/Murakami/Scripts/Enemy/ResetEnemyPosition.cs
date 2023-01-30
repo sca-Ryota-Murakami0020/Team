@@ -21,15 +21,18 @@ public class ResetEnemyPosition : MonoBehaviour
     public void StartCountDistance()
     {
         //EnemyCから受け取た時に指示するコルーチンを呼び出す
+        Debug.Log("引き渡し成功");
         StartCoroutine("ActiveEnemy");
     }
 
     private IEnumerator ActiveEnemy()
     {
+        Debug.Log("処理中");
         //10秒間待機する
         yield return new WaitForSeconds(10);
         //10秒後にEnemyCの方でSetSctiveをfalseにしたGameObjectのSetActiveをtrueにして再び活動できるようにしてあげる
         enemy.SetActive(true);
+        Debug.Log("処理完了");
         yield break;
     }
 }
