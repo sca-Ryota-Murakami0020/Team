@@ -241,6 +241,8 @@ public class Player : MonoBehaviour
         //float trigger = Input.GetAxis("L_R_Trigger");
 
         Debug.Log("fallFlag" +fallFlag);
+        Debug.Log(wallJumpFlag);  
+        Debug.Log(jumpCount);
 
         //input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
@@ -316,20 +318,28 @@ public class Player : MonoBehaviour
             pWallC.WallJumpHitFlag = false;
         }*/
 
-        //Eボタンが押されたら
-        if (doStayWall == true && Input.GetKey(KeyCode.E))
+
+        //落下中に壁ジャン地点に当たったら
+        if (doStayWall == true)
         {
-            anime.SetTrigger("LiftWall");
-            //重力を作用させる
-            rb.useGravity = true;
-            //壁ジャンプできるフラグをおる
-            wallJumpFlag = false;
-            //カメラに渡すフラグをおる
-            doInputButtonFlag = false;
-            //壁はりつき中のフラグをおる
-            doStayWall = false;
-            //壁から離れたのでフラグをおる
-            pWallC.WallJumpHitFlag = false;
+            Debug.Log("ここに入ったよ");
+            jumpCount = 0;
+            rollingJumpFlag = false;
+            //Eボタンがおされたら
+            if (Input.GetKey(KeyCode.E))
+            {
+                anime.SetTrigger("LiftWall");
+                //重力を作用させる
+                rb.useGravity = true;
+                //壁ジャンプできるフラグをおる
+                wallJumpFlag = false;
+                //カメラに渡すフラグをおる
+                doInputButtonFlag = false;
+                //壁はりつき中のフラグをおる
+                doStayWall = false;
+                //壁から離れたのでフラグをおる
+                pWallC.WallJumpHitFlag = false;
+            }
         }
 
         //アニメーションしたら加速
@@ -669,6 +679,8 @@ public class Player : MonoBehaviour
 
         }*/
 
+
+
         if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)
         {
             //ジャンプの効果音を流す
@@ -701,8 +713,10 @@ public class Player : MonoBehaviour
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 10, 0));
-                JumpCount++;
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 50, 0));
+
+                Debug.Log("あすける");
+                jumpCount++;
 
                 //重力を作用させる
                 rb.useGravity = true;
@@ -749,15 +763,6 @@ public class Player : MonoBehaviour
             pWallC.WallJumpHitFlag = false;
             jumpCount = 0;
         }
-
-        //落下中に壁ジャン地点に当たったら
-        if((other.gameObject.CompareTag("WallJumpPoint") && fallFlag == false) || pWallC.WallJumpHitFlag == true)
-                
-        {
-            jumpCount = 0;
-            rollingJumpFlag = false; 
-        }
-
     }
 
     //isTriggerがついている時の処理
@@ -1044,9 +1049,7 @@ public class Player : MonoBehaviour
             anime.SetTrigger("WallJumpHit");
             this.transform.Rotate(0, 180.0f, 0);
 
-            //フラグ関係
-            PlaySE(randingSE);
-            fallFlag = false;
+           
             wallJumpFlag = true;
 
             //プレイヤーの座標固定＆向き反転
@@ -1060,6 +1063,9 @@ public class Player : MonoBehaviour
 
             //壁に触れている時のコルーチン発動
             //StartCoroutine("StartWallStay");
+            //フラグ関係
+            PlaySE(randingSE);
+            fallFlag = false;
         }
     }
 
