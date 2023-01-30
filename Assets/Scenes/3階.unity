@@ -1762,6 +1762,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 83526881}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 83526881}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 307506700}
     - target: {fileID: 8368035724190703382, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
       propertyPath: m_Name
       value: "\uFF13\u968E\u7528Enemy2"
@@ -2077,7 +2089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3676349265314255139, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3676349265314255141, guid: 3e6f45e477c352841921bbadcb33a35e, type: 3}
       propertyPath: m_RootOrder
@@ -2422,6 +2434,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 363646988}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 363646988}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 221257354}
     - target: {fileID: 8368035724190703382, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
       propertyPath: m_Name
       value: "\uFF13\u968E\u7528Enemy3"
@@ -4186,8 +4210,8 @@ MonoBehaviour:
   leaveCamera: 1
   cameraHeightMin: -2
   cameraHeightMax: 5
-  verticalMag: 8
-  holizontalMag: 6
+  verticalMag: 15
+  holizontalMag: 10
 --- !u!1 &976099680 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8368035724190703382, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
@@ -6506,6 +6530,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 266131403}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 266131403}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 49148813}
     - target: {fileID: 8368035724190703382, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
       propertyPath: m_Name
       value: "\uFF13\u968E\u7528Enemy (1)"
@@ -8172,6 +8208,18 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 1412457072}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[0]
+      value: 
+      objectReference: {fileID: 1412457072}
+    - target: {fileID: 4453076966202542236, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
+      propertyPath: turnPoint.Array.data[1]
+      value: 
+      objectReference: {fileID: 875868557}
     - target: {fileID: 8368035724190703382, guid: cda0baaeabf562c4e914eee51f074294, type: 3}
       propertyPath: m_Name
       value: "\uFF13\u968E\u7528Enemy"

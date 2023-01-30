@@ -4,23 +4,18 @@ using UnityEngine;
 
 public class SponeEnemy : MonoBehaviour
 {
-    //旋回位置
-    [SerializeField] private GameObject[] turnPoint;
     //スタート位置
     private Vector3 startPos;
     //呼び出すEnemy
     [SerializeField] private GameObject enemy;
+    //呼び出すときのEnemyの角度
+    [SerializeField] 
 
-    public GameObject[] TurnPos
-    {
-        get { return this.turnPoint;}
-        set { this.turnPoint = value;}
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        startPos = turnPoint[0].transform.position;
+        startPos = this.transform.position;
         Instantiate(enemy, startPos, Quaternion.identity);
     }
 

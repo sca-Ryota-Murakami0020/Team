@@ -22,8 +22,12 @@ public class EnemyC : MonoBehaviour
     private bool doEncount;
     //巡回開始のフラグ
     private bool startFlag;
-    //旋回位置
-    [SerializeField] private GameObject[] turnPoint;
+    //巡回距離
+    [SerializeField] private float limitDistance;
+    //走行距離
+    private float distance = 0.0f;
+    //旋回位置[SerializeField] 
+    private Transform[] turnPoint;
     //リセット時のポジション
     private Vector3 defaultPosition;
     //表示の管理を行う
@@ -49,7 +53,7 @@ public class EnemyC : MonoBehaviour
     
     private Vector3 enemyPos;
 
-    private Vector3[] turnPos;
+    private Transform[] turnPos;
 
     //敵の回転する方向
     enum RotationPar
@@ -78,14 +82,6 @@ public class EnemyC : MonoBehaviour
         pl = GameObject.Find("Player").GetComponent<PlayerC>();
         rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
 
-        //sE = FindObjectOfType<SponeEnemy>();
-        /*
-        for(int i = 0; i < 2; i++)
-        {
-            this.turnPoint[i] = sE.TurnPos[i];
-        }*/
-
-        this.transform.position = this.turnPoint[0].transform.position;
         doEncount = false;
         startFlag = true;
         doTurn = false;
@@ -95,18 +91,27 @@ public class EnemyC : MonoBehaviour
         rotationDistance = 0.0f;
         defaultPosition = this.transform.position;
 
+        sE = FindObjectOfType<SponeEnemy>();
+
+        for (int i = 0; i < 2; i++)
+        {
+            Debug.Log("旋回位置の初期化");
+            this.turnPoint[i] = sE.TurnPos[i];
+        }
+        this.transform.position = this.turnPoint[0].transform.position;
+
         this.transform.LookAt(turnPoint[1].transform.position);
 
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
-            turnPos[i] = turnPoint[i].transform.position;
+            turnPos[i] = turnPoint[i];
         }
-
     }
 
     // Update is called once per frameshotRayPosition.transform.position, 
     void Update()
     {
+        Debug.Log("sEの取得はできてる" + sE.TurnPos[0]);
         //ここで進行先のPlayerを感知する
         Vector3 rayPosition = shotRayPosition.transform.position;
         RaycastHit hit;
@@ -125,27 +130,25 @@ public class EnemyC : MonoBehaviour
         else
         {
             enemyPos = this.transform.position;
-            if(!doTurn)
+
+            Debug.Log("触れた");
+            if (distance >= limitDistance)
+            {
+                doTurn = true;
+            }
+
+            if (!doTurn)
             {
                 this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
 
             }
+
             else
             {
+                returnLookPosition();
                 this.transform.position += new Vector3(0,0,0);
             }
-
-            /*
-            for(int i = 0; i < 2; i++)
-            {
-                if ((enemyPos.x >= turnPos[i].x && enemyPos.z >=turnPos[i].z ) || (enemyPos.x <= turnPos[i].x && enemyPos.z <= turnPos[i].z))
-                {
-
-                }
-            }*/
         }
-
-
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -158,20 +161,21 @@ public class EnemyC : MonoBehaviour
             doEncount == true)
         {
             Debug.Log("消えた");
-            StartCoroutine("ResetEnemy");
-            //sE.ReSponeEnemy();
+            //StartCoroutine("ResetEnemy");
+            sE.ReSponeEnemy();
             Destroy(this);
         }
     }
-    
+
+    /*
     private void OnTriggerEnter(Collider other)
     {      
         if ((other.gameObject == this.turnPoint[0] && noCountFlag == false) || 
             other.gameObject == this.turnPoint[1])
         {
-            returnLookPosition();
+
         }
-    }
+    }*/
 
     public void returnLookPosition()
     {
