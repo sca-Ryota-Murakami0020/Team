@@ -20,6 +20,7 @@ public class goalLogC : MonoBehaviour
 
     private IEnumerator UpScale()
     {
+        Debug.Log("Šg‘åŠJŽn");
         while(this.transform.localScale.x >= 1000 && this.transform.localScale.y >= 300)
         {
             this.transform.localScale += new Vector3(10,3,0);

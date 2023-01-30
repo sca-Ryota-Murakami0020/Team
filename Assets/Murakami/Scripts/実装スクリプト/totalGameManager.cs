@@ -89,6 +89,7 @@ public class totalGameManager : MonoBehaviour
     void Update()
     {
         #region //時間計測（村上担当）
+        //計測させるフラグtimeCoounterがtrueの間は時間計測を行う
         if (timeCounter == true)
         {
             this.totalTime += Time.deltaTime;

@@ -5,15 +5,26 @@ using UnityEngine.UI;
 
 public class TherdScore : MonoBehaviour
 {
+    //totalGameManager
     private totalGameManager totalGM;
-    [SerializeField] private Sprite[] numberImage;
-    [SerializeField] private Image oneSecImage;
-    [SerializeField] private Image tenSecImage;
-    [SerializeField] private Image oneMinImage;
-    [SerializeField] private Image tenMinImage;
-    [SerializeField] private RectTransform timer;
-    private int counter;
+    //SecondScore
     private SecondScore ss;
+
+    //タイム表示で用いる数字の画像
+    [SerializeField] private Sprite[] numberImage;
+    //1秒単位の画像貼り換えを行うImage(0～9)
+    [SerializeField] private Image oneSecImage;
+    //10秒単位の画像貼り換えを行うImage(0～5)
+    [SerializeField] private Image tenSecImage;
+    //1秒単位の画像貼り換えを行うImage(0～9)
+    [SerializeField] private Image oneMinImage;
+    //10秒単位の画像貼り換えを行うImage(0～5)
+    [SerializeField] private Image tenMinImage;
+    //テキストを動かすために必要な宣言
+    [SerializeField] private RectTransform timer;
+    //テキストの動いた距離を計測する変数
+    private int counter;
+
     //private Animator anim;
 
     // Start is called before the first frame update

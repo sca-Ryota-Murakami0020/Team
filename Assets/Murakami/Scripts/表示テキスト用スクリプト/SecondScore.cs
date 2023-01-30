@@ -5,37 +5,47 @@ using UnityEngine.UI;
 
 public class SecondScore : MonoBehaviour
 {
+    //totalGameManager
     private totalGameManager totalGM;
-    //private Animator anim;
-    [SerializeField] private Image oneSecImage;
-    [SerializeField] private Image tenSecImage;
-    [SerializeField] private Image oneMinImage;
-    [SerializeField] private Image tenMinImage;
-    [SerializeField] private Sprite[] numberImage;
-    [SerializeField] private RectTransform timer;
-    private int counter;
+    //HighScoreText
     private HighScoreText hst;
+
+    //1秒単位の画像貼り換えを行うImage(0～9)
+    [SerializeField] private Image oneSecImage;
+    //10秒単位の画像貼り換えを行うImage(0～5)
+    [SerializeField] private Image tenSecImage;
+    //1分単位の画像貼り換えを行うImage(0～9)
+    [SerializeField] private Image oneMinImage;
+    //10分単位の画像貼り換えを行うImage(0～5)
+    [SerializeField] private Image tenMinImage;
+    //時間表示で用いる数字の画僧配列
+    [SerializeField] private Sprite[] numberImage;
+    //テキストを動かすために必要な宣言
+    [SerializeField] private RectTransform timer;
+    //コルーチンでテキストを動かした分を計算する変数
+    private int counter;
 
     // Start is called before the first frame update
     void Start()
     {
         totalGM = FindObjectOfType<totalGameManager>();
-        for (int i = 0; i <= 2; i++)
-        {
-            oneSecImage.sprite = numberImage[0];
-            tenSecImage.sprite = numberImage[0];
-            oneMinImage.sprite = numberImage[0];
-            tenMinImage.sprite = numberImage[0];
-        }
+        oneSecImage.sprite = numberImage[0];
+        tenSecImage.sprite = numberImage[0];
+        oneMinImage.sprite = numberImage[0];
+        tenMinImage.sprite = numberImage[0];
         counter = 0;
         hst = FindObjectOfType<HighScoreText>();
-        //anim = this.gameObject.GetComponent<Animator>();
+        UpLoadSecondTime();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(olt.OldSecondTime);
+
+    }
+
+    public void UpLoadSecondTime()
+    {
         //2位スコアの表記
         if (totalGM.BestTime[1] <= 0.0f)
         {
@@ -55,9 +65,8 @@ public class SecondScore : MonoBehaviour
             //if(olt.LoadCout > 3)
             //Debug.Log("text2 " + olt.TimeText[1]);
         }
-
-        //anim.SetBool("setSecondScore", true);
     }
+
     private IEnumerator StartSecondScore()
     {
         if (counter <= 300 && counter >= 0)
