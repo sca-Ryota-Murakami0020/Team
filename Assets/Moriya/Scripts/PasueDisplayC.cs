@@ -68,13 +68,40 @@ public class PasueDisplayC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+
+        //コントローラ入力からの入力 縦軸 を取得
+        //float verticalInput = Input.GetAxis("Vertical");
+
         #region//メニュー画面が開く処理
 
         //メニューが開かれていないときかつQキーおしたとき
 
+        /*if (Input.GetButton("menu"))
+        {
+        /ここでスプリクトを見つける
+            pUC = FindObjectOfType<PauseUIC>();
+            //ポーズ画面出す
+            if (pauseUIInstance == null && menuFlag == false)
 
-     
+            {
+                pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
+                Time.timeScale=0f;
+                menuFlag = true;
+            }
+            //ポーズ画面を消す
+            else if(pauseUIInstance != null && returnGame == true)
+            {
+                menuFlag = false;
+                Destroy(playOperateUIInstance);
+                Destroy(pauseUIInstance);
+                Time.timeScale = 1f;
+                openManual = false;
+                returnGame = false;
+            }
+            //Debug.Log("確認:" + pUC.OpenManual);
+        }*/
+
+
         if (Input.GetKeyDown("q"))
         {
             //ここでスプリクトを見つける
@@ -128,6 +155,13 @@ public class PasueDisplayC : MonoBehaviour
         }*/
 
         //tabキー押したとき && pUC.OpenManual == true
+        /*if(Input.GetButton("Decision") && openManual == true)
+        {
+            onlyFlag = true;
+            //操作説明開くコルーチン
+            StartCoroutine("PlayerXplanation");
+        }*/
+
         if (Input.GetKeyDown(KeyCode.Tab) && openManual == true)
         {
             onlyFlag = true;

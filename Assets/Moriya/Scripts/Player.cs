@@ -953,7 +953,6 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
         else
         {
             //レイを飛ばせる状況にあるとき
@@ -975,7 +974,6 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
     }
 
     //アニメーションのリセット
