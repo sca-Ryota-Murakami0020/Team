@@ -95,6 +95,14 @@ public class CameraC : MonoBehaviour
             //常にプレイヤーのいる方向を向く
             this.transform.LookAt(D);
         }
+
+        if(pDC.OnlyFlag == true && Input.GetMouseButton(0))
+        {
+            pDC.CloseManual();
+            Debug.Log("操作説明を閉じる");
+        }
+
+        Debug.Log("OnlyFlag" + pDC.OnlyFlag);
     }
 
     //カメラ視点の制御

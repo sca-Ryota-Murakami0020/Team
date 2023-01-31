@@ -58,6 +58,12 @@ public class PasueDisplayC : MonoBehaviour
         set { this.returnGame = value; }
     }
 
+    public bool OnlyFlag
+    {
+        get { return this.onlyFlag;}
+        set { this.onlyFlag = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,52 +74,23 @@ public class PasueDisplayC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //コントローラ入力からの入力 縦軸 を取得
         //float verticalInput = Input.GetAxis("Vertical");
 
         #region//メニュー画面が開く処理
 
-        //メニューが開かれていないときかつQキーおしたとき
-
-        /*if (Input.GetButton("menu"))
-        {
-        /ここでスプリクトを見つける
-            pUC = FindObjectOfType<PauseUIC>();
-            //ポーズ画面出す
-            if (pauseUIInstance == null && menuFlag == false)
-
-            {
-                pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
-                Time.timeScale=0f;
-                menuFlag = true;
-            }
-            //ポーズ画面を消す
-            else if(pauseUIInstance != null && returnGame == true)
-            {
-                menuFlag = false;
-                Destroy(playOperateUIInstance);
-                Destroy(pauseUIInstance);
-                Time.timeScale = 1f;
-                openManual = false;
-                returnGame = false;
-            }
-            //Debug.Log("確認:" + pUC.OpenManual);
-        }*/
-
-
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             //ここでスプリクトを見つける
             pUC = FindObjectOfType<PauseUIC>();
             //ポーズ画面出す
             if (pauseUIInstance == null && menuFlag == false)
-
             {
                 pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
                 Time.timeScale=0f;
                 menuFlag = true;
             }
+            /*
             //ポーズ画面を消す
             else if(pauseUIInstance != null && returnGame == true)
             {
@@ -124,6 +101,7 @@ public class PasueDisplayC : MonoBehaviour
                 openManual = false;
                 returnGame = false;
             }
+            */
             //Debug.Log("確認:" + pUC.OpenManual);
         }
         //メニューが開かれたら
@@ -152,59 +130,73 @@ public class PasueDisplayC : MonoBehaviour
             Time.timeScale = 1f;
             menuFlag = false;
         }
+    }
 
-        //tabキー押したとき && pUC.OpenManual == true
-        /*if(Input.GetButton("Decision") && openManual == true)
-        {
-            onlyFlag = true;
-            //操作説明開くコルーチン
-            StartCoroutine("PlayerXplanation");
-        }*/
+    //操作画面の呼び出し
+    public void DisplayManual()
+    {
+        onlyFlag = true;
+        //操作説明開くコルーチン
+        Destroy(pauseUIInstance);
+        playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
+        operationExpFlag = true;
 
-        if (Input.GetKeyDown(KeyCode.Tab) && openManual == true)
-        {
-            onlyFlag = true;
-            //操作説明開くコルーチン
-            StartCoroutine("PlayerXplanation");
-        }
+    }
 
-        /*if(Input.GetKey(KeyCode.T)){
-           ResetCommand();
-           SceneManager.LoadScene("TitleScene");
-           Time.timeScale = 1f;
-           menuFlag = false;
-        }*/
+    //ゲームに戻る
+    public void CloseMenu()
+    {
+        menuFlag = false;
+        Destroy(playOperateUIInstance);
+        Destroy(pauseUIInstance);
+        Time.timeScale = 1f;
+        openManual = false;
+        returnGame = false;
+    }
+
+    //操作説明画面を閉じる
+    public void CloseManual()
+    {
+        //Tabキーから離れてた時かつ操作画面UIが出ていたら
+        //ポーズ画面UIを出し、操作画面UIを消す
+        onlyFlag = false;
+        operationExpFlag = false;
+        openManual = false;
+        Destroy(playOperateUIInstance);
+        pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
     }
     #endregion
 
-    //操作説明の際のコルーチン
-    private IEnumerator PlayerXplanation()
-    {
-        while (true)
+        /*
+        //操作説明の際のコルーチン
+        private IEnumerator PlayerXplanation()
         {
-            //ポーズ画面を消して、操作画面UIを出す
-            if (onlyFlag == true)
+            while (true)
             {
-                Destroy(pauseUIInstance);
-                playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
-                operationExpFlag = true;
-                onlyFlag = false;
+                //ポーズ画面を消して、操作画面UIを出す
+                if (onlyFlag == true)
+                {
+                    Destroy(pauseUIInstance);
+                    playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
+                    operationExpFlag = true;
+                    onlyFlag = false;
+                }
+                Debug.Log(playOperateUIInstance);
+                //Tabキーから離れてた時かつ操作画面UIが出ていたら
+                if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
+                {
+                    //ポーズ画面UIを出し、操作画面UIを消す
+                    operationExpFlag = false;
+                    openManual = false;
+                    Destroy(playOperateUIInstance);
+                    pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
+                    Debug.Log(pauseUIInstance);
+                    yield break;
+                }
+               yield return null; 
             }
-            Debug.Log(playOperateUIInstance);
-            //Tabキーから離れてた時かつ操作画面UIが出ていたら
-            if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
-            {
-                //ポーズ画面UIを出し、操作画面UIを消す
-                operationExpFlag = false;
-                openManual = false;
-                Destroy(playOperateUIInstance);
-                pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
-                Debug.Log(pauseUIInstance);
-                yield break;
-            }
-           yield return null; 
         }
-    }
+        */
 
     //リセットするときに値を変える
     private void ResetCommand()
@@ -212,10 +204,6 @@ public class PasueDisplayC : MonoBehaviour
         totalGM.PlayerHp = 3;
         totalGM.PlayerIC = 0;
         totalGM.TimeCounter = false;
-        /*for (int i = 0; i < tatalGM.PlayerHp; i++)
-        {
-            tatalGM.HeartArray[i].gameObject.SetActive(true);
-        }*/
     }
 
 }
