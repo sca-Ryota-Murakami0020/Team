@@ -788,18 +788,18 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("GoalScene");
         }
 
-        if(other.gameObject.name == "LoadFirstStagePoint")
+        if(other.gameObject.name == "LoadFirstStagePoint" && gm.PlayerIC >= 1)
         {
             SceneManager.LoadScene("LoadFirstStage");
         }
 
-        if (other.gameObject.name == "LoadSecondPoint")
+        if (other.gameObject.name == "LoadSecondPoint" && gm.PlayerIC >= 2)
         {
             //二個目のロードシーンにもちこむをかく
-            SceneManager.LoadScene("LoadSecondStage");//ロードシーンの名前を書く;
+            SceneManager.LoadScene("LoadSecondStage");
         }
 
-        if (other.gameObject.name == "LoadTherdPoint")
+        if (other.gameObject.name == "LoadTherdPoint" && gm.PlayerIC >= 3)
         {
             //三個目のロードシーンにもちこむやつをかく
             SceneManager.LoadScene("LoadTherdStage");//ロードシーンの名前を書く;

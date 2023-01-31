@@ -2,58 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.IO.MemoryMappedFiles;
 
 public class EnemyC : MonoBehaviour
 {
-    //プレイヤーの情報を取得するために使用
-    private PlayerC pl;
+    //表示の管理を行う
+    private ResetEnemyPosition rEP;
+    //Enemyの蘇生処理
+    private ReSponeEnemy rSE;
+    //RigidBody
+    private Rigidbody rb;
+
     //移動速度
     [SerializeField] private float enemySpeed = 0.7f;
-    //位置
-    private Vector3 pos;
-    //RigidBody
-    Rigidbody rb;
+    //巡回距離
+    [SerializeField] private float limitDistance;
     //ノックバック速度
     private float speed = 1.5f;
     //追跡中使うスピード
     private float addSpeed = 3.0f;
+    //回転回数
+    private int rotateCounter;
+    //回転時間
+    private float rotateTime = 0.0f;
+    //走行距離
+    private float distance = 0.0f;
+    //回転した距離
+    private float rotationDistance;
+
     //追跡フラグ
     private bool doEncount;
     //巡回開始のフラグ
     private bool startFlag;
-    //巡回距離
-    [SerializeField] private float limitDistance;
-    //走行距離
-    private float distance = 0.0f;
-    //旋回位置[SerializeField] 
-    private Transform[] turnPoint;
-    //リセット時のポジション
-    private Vector3 defaultPosition;
-    //表示の管理を行う
-    private ResetEnemyPosition rEP;
-    //Enemyの蘇生処理
-    private SponeEnemy sE;
-    //ray関係
-    private float rayDistance = 2.0f;
     //回転中かの判定
     private bool doTurn;
+    //最初に振り向く処理を向こうにする
+    private bool noCountFlag;
+
+    //位置
+    private Vector3 pos;
+    //ray関係
+    private float rayDistance = 2.0f;
     //rayを飛ばすオブジェクト
     [SerializeField] private GameObject shotRayPosition;
     //回転の軸を設定するために必要
     private Quaternion defaultRotation;
-    //回転時間
-    private float rotateTime = 0.0f;
-    //最初に振り向く処理を向こうにする
-    private bool noCountFlag;
-    //回転回数
-    private int rotateCounter;
-    //回転した距離
-    private float rotationDistance;
-    
-    private Vector3 enemyPos;
-
-    private Transform[] turnPos;
+    //リセット時のポジション
+    private Vector3 defaultPosition;
 
     //敵の回転する方向
     enum RotationPar
@@ -79,8 +73,8 @@ public class EnemyC : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        pl = GameObject.Find("Player").GetComponent<PlayerC>();
         rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
+        rSE = FindObjectOfType<ReSponeEnemy>();
 
         doEncount = false;
         startFlag = true;
@@ -91,27 +85,11 @@ public class EnemyC : MonoBehaviour
         rotationDistance = 0.0f;
         defaultPosition = this.transform.position;
 
-        sE = FindObjectOfType<SponeEnemy>();
-
-        for (int i = 0; i < 2; i++)
-        {
-            Debug.Log("旋回位置の初期化");
-            this.turnPoint[i] = sE.TurnPos[i];
-        }
-        this.transform.position = this.turnPoint[0].transform.position;
-
-        this.transform.LookAt(turnPoint[1].transform.position);
-
-        for (int i = 0; i < 2; i++)
-        {
-            turnPos[i] = turnPoint[i];
-        }
     }
 
     // Update is called once per frameshotRayPosition.transform.position, 
     void Update()
     {
-        Debug.Log("sEの取得はできてる" + sE.TurnPos[0]);
         //ここで進行先のPlayerを感知する
         Vector3 rayPosition = shotRayPosition.transform.position;
         RaycastHit hit;
@@ -129,24 +107,17 @@ public class EnemyC : MonoBehaviour
         if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
         else
         {
-            enemyPos = this.transform.position;
-
-            Debug.Log("触れた");
-            if (distance >= limitDistance)
-            {
-                doTurn = true;
-            }
-
             if (!doTurn)
             {
-                this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
-
-            }
-
-            else
-            {
-                returnLookPosition();
-                this.transform.position += new Vector3(0,0,0);
+                //this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+                distance += 0.01f;
+                this.transform.position = new Vector3(pos.x, pos.y, pos.z + Mathf.Sin(distance) * limitDistance * enemySpeed);
+                if(rotateTime >= 1.0f)
+                {
+                    doTurn = true;
+                    distance = 0.0f;
+                    returnLookPosition();
+                }
             }
         }
     }
@@ -162,46 +133,28 @@ public class EnemyC : MonoBehaviour
         {
             Debug.Log("消えた");
             //StartCoroutine("ResetEnemy");
-            sE.ReSponeEnemy();
+            rSE.SponeEnemy();
             Destroy(this);
         }
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
-    {      
-        if ((other.gameObject == this.turnPoint[0] && noCountFlag == false) || 
-            other.gameObject == this.turnPoint[1])
-        {
-
-        }
-    }*/
-
     public void returnLookPosition()
     {
         //次の終点位置の方向に向けるようにするために値を変更する
-        defaultRotation = this.transform.rotation;
-        doTurn = true;
-        rotationState = RotationPar.RIGHT;
-        StartCoroutine("TurnLookPosition");
-    }
-
-    private IEnumerator ResetEnemy()
-    { 
-        this.transform.position = this.defaultPosition;
-        doTurn = false;
+        this.defaultRotation = this.transform.rotation;
+        this.doTurn = true;
         this.doEncount = false;
-        rEP.StartCountDistance();
-        this.gameObject.SetActive(false);
-        Debug.Log("ResetEnemyでfalseに");
-        yield break;
+        this.rotationState = RotationPar.RIGHT;
+        StartCoroutine("TurnLookPosition");
     }
 
     private IEnumerator TurnLookPosition()
     {
         yield return new WaitForSeconds(1);
+
         while (rotationState == RotationPar.RIGHT)
         {
+            /* 
             //一度ずつ回転
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
@@ -212,12 +165,23 @@ public class EnemyC : MonoBehaviour
             if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
             //最後は少し緩やかに回転する
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
-
-            //回転した度数が45°を超えたら
+                        //回転した度数が45°を超えたら
             if (rotateCounter >= 45)
             {
                 rotationState = RotationPar.LEFT;
                 rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                break;
+            }
+            */
+
+            rotateTime += 0.01f;
+            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
+
+            if (rotateTime >= 0.25f)
+            {
+                rotationState = RotationPar.LEFT;
+                rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
             }
@@ -226,6 +190,7 @@ public class EnemyC : MonoBehaviour
         //左方向に回転
         while (rotationState == RotationPar.LEFT)
         {
+            /*
             this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
 
@@ -241,12 +206,24 @@ public class EnemyC : MonoBehaviour
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
                 break;
+            }*/
+
+            rotateTime += 0.01f;
+            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime) * -1, 0));
+
+            if (rotateTime >= 0.5)
+            {
+                rotationState = RotationPar.RESET;
+                rotateTime = 0.0f;
+                yield return new WaitForSeconds(1);
+                break;
             }
         }
 
         //正位置に戻る
         while (rotationState == RotationPar.RESET)
         {
+            /*
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -263,10 +240,22 @@ public class EnemyC : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 break;
             }
+            */
+            rotateTime += 0.01f;
+            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
+
+            if (rotateTime >= 0.25f)
+            {
+                rotationState = RotationPar.TURN;
+                rotateTime = 0.0f;
+                yield return new WaitForSeconds(1);
+                break;
+            }
         }
 
         while (rotationState == RotationPar.TURN)
         {
+            /*
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -279,6 +268,18 @@ public class EnemyC : MonoBehaviour
             if (rotateCounter >= 180)
             {
                 rotateCounter = 0;
+                yield return new WaitForSeconds(1);
+                break;
+            }
+            */
+
+            rotateTime += 0.01f;
+            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
+
+            if (rotateTime >= 1.0f)
+            {
+                rotationState = RotationPar.TURN;
+                rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
             }
