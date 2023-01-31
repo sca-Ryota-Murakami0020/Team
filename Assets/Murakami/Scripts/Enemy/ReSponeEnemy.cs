@@ -20,8 +20,6 @@ public class ReSponeEnemy : MonoBehaviour
         set { this.aliveFlag = value;}
     }*/
 
-
-    // Start is called before the first frame update
     void Start()
     {
         aliveFlag = false;
@@ -30,7 +28,6 @@ public class ReSponeEnemy : MonoBehaviour
         Debug.Log("最初の呼び出し完了");
     }
 
-    // Update is called once per frame
     void Update()
     {      
         //初期設置
@@ -46,6 +43,7 @@ public class ReSponeEnemy : MonoBehaviour
 
     public void SponeEnemy()
     {
+        //生成処理するコルーチンの起動
         StartCoroutine("StartSponeEnemy");
     }
 

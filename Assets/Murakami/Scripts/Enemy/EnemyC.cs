@@ -84,73 +84,103 @@ public class EnemyC : MonoBehaviour
         rotationState = RotationPar.NULL;
         rotationDistance = 0.0f;
         //defaultPosition = this.transform.position;
-
     }
 
     // Update is called once per frameshotRayPosition.transform.position, 
     void Update()
     {
-        //ここで進行先のPlayerを感知する
-        Vector3 rayPosition = shotRayPosition.transform.position;
-        RaycastHit hit;
-        Ray ray = new Ray(rayPosition, this.gameObject.transform.forward);
-        Debug.DrawRay(shotRayPosition.transform.position, shotRayPosition.transform.forward * this.rayDistance, Color.red ,1.0f);
-        if (Physics.Raycast(ray, out hit, 100.0f))
-        {
-            if(hit.collider.gameObject.CompareTag("Player"))
-            {
-                this.doEncount = true;
-            }        
-        }
+        //プレイヤーの索敵
+        SearchPlayer();
 
         //速度関係
-        if (this.doEncount) this.transform.position += transform.forward * addSpeed * Time.deltaTime;
-        else
+        //Playerを発見したら
+        if (this.doEncount)
         {
-            if (!doTurn)
-            {
-                //this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
-                distance += 0.01f;
-                this.transform.position = new Vector3(pos.x, pos.y, pos.z + Mathf.Sin(distance) * limitDistance * enemySpeed);
-                if(rotateTime >= 1.0f)
-                {
-                    doTurn = true;
-                    distance = 0.0f;
-                    returnLookPosition();
-                }
-            }
+            this.transform.position += transform.forward * addSpeed * Time.deltaTime;
+        }
+
+        //巡回行動
+        //旋回位置に着くまでの処理
+        if (!doTurn && this.doEncount == false)
+        {
+            MoveEnemy();
         }
     }
 
+    //接触判定
     private void OnCollisionEnter(Collision collision)
     {
-
+        //壁にぶつかったら
         if ((collision.gameObject.CompareTag("Wall") ||
             collision.gameObject.CompareTag("WallJumpPoint") || 
             collision.gameObject.CompareTag("LimitWall") || 
             collision.gameObject.CompareTag("Ground")) && 
             doEncount == true)
         {
-            Debug.Log("消えた");
             //StartCoroutine("ResetEnemy");
+            //生成処理開始
             rSE.SponeEnemy();
             Destroy(this);
         }
     }
 
+    #region//関数関係
+
+    //Rayを用いたプレイヤーの索敵
+    public void SearchPlayer()
+    {
+        //ここで進行先のPlayerを感知する
+        Vector3 rayPosition = shotRayPosition.transform.position;
+        RaycastHit hit;
+        Ray ray = new Ray(rayPosition, this.gameObject.transform.forward);
+        Debug.DrawRay(shotRayPosition.transform.position, shotRayPosition.transform.forward * this.rayDistance, Color.red, 1.0f);
+        if (Physics.Raycast(ray, out hit, 100.0f))
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                this.doEncount = true;
+            }
+        }
+    }
+
+    //巡回行動
+    public void MoveEnemy()
+    {
+        //this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+        //ここでEnemyを巡回行動をさせる
+        distance += 0.001f;
+        this.transform.position = new Vector3(0, 0, Mathf.Sin(distance) * limitDistance * enemySpeed);
+        //往復点についたら一旦停止する
+        if (distance >= 0.25f)
+        {
+            //旋回させるためのフラグを立てる
+            doTurn = true;
+            distance = 0.0f;
+            Debug.Log("一旦停止");
+            returnLookPosition();
+        }
+    }
+
+    //旋回処理
     public void returnLookPosition()
     {
         //次の終点位置の方向に向けるようにするために値を変更する
         this.defaultRotation = this.transform.rotation;
+        //旋回中にする
         this.doTurn = true;
-        this.doEncount = false;
+        //旋回する方向をステータスで管理しているのでここで回転方向を決める
         this.rotationState = RotationPar.RIGHT;
+        Debug.Log("旋回開始");
+        //各方向に旋回するコルーチン
         StartCoroutine("TurnLookPosition");
     }
 
+    #endregion
+
     private IEnumerator TurnLookPosition()
     {
-        yield return new WaitForSeconds(1);
+        //旋回前に少し待つ
+        yield return new WaitForSeconds(1.5f);
 
         while (rotationState == RotationPar.RIGHT)
         {
@@ -174,11 +204,12 @@ public class EnemyC : MonoBehaviour
                 break;
             }
             */
+            Debug.Log("右旋回中");
 
-            rotateTime += 0.01f;
+            rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
 
-            if (rotateTime >= 0.25f)
+            if (rotateTime >= 0.125f)
             {
                 rotationState = RotationPar.LEFT;
                 rotateTime = 0.0f;
@@ -207,11 +238,12 @@ public class EnemyC : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 break;
             }*/
+            Debug.Log("左旋回中");
 
-            rotateTime += 0.01f;
+            rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime) * -1, 0));
 
-            if (rotateTime >= 0.5)
+            if (rotateTime >= 0.25)
             {
                 rotationState = RotationPar.RESET;
                 rotateTime = 0.0f;
@@ -241,10 +273,11 @@ public class EnemyC : MonoBehaviour
                 break;
             }
             */
-            rotateTime += 0.01f;
+            Debug.Log("正面を向く");
+            rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
 
-            if (rotateTime >= 0.25f)
+            if (rotateTime >= 0.125f)
             {
                 rotationState = RotationPar.TURN;
                 rotateTime = 0.0f;
@@ -253,6 +286,7 @@ public class EnemyC : MonoBehaviour
             }
         }
 
+        //次の終点の方向に旋回
         while (rotationState == RotationPar.TURN)
         {
             /*
@@ -272,11 +306,11 @@ public class EnemyC : MonoBehaviour
                 break;
             }
             */
-
-            rotateTime += 0.01f;
+            Debug.Log("向きを反転");
+            rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
 
-            if (rotateTime >= 1.0f)
+            if (rotateTime >= 0.5f)
             {
                 rotationState = RotationPar.TURN;
                 rotateTime = 0.0f;
