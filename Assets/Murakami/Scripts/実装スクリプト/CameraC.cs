@@ -22,6 +22,8 @@ public class CameraC : MonoBehaviour
     private float mousey;
     //壁ジャンで用いるスクリプト
     private PlayerWallCon pWC;
+    //
+    private PasueDisplayC pDC;
     #endregion
 
     #region//stageによって変わる数値
@@ -50,46 +52,49 @@ public class CameraC : MonoBehaviour
     void Start()
     {
         pWC = FindObjectOfType<PlayerWallCon>();
+        pDC = FindObjectOfType<PasueDisplayC>();
     }
 
     //視点とカメラ座標を随時更新
     void Update()
     {
         if (Player == null) return;
-
-        //マウスの移動量を取得
-        mousex = Input.GetAxis("Mouse X");
-        mousey = Input.GetAxis("Mouse Y");
-
-        //通常のカメラ操作
-        if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
+        if(pDC.MenuFlag == false)
         {
-            //135行目から
-            Roll(-mousex, -mousey);
+            //マウスの移動量を取得
+            mousex = Input.GetAxis("Mouse X");
+            mousey = Input.GetAxis("Mouse Y");
+
+            //通常のカメラ操作
+            if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
+            {
+                //135行目から
+                Roll(-mousex, -mousey);
+            }
+
+            //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
+            if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
+            {
+                //185行目から
+                PlayerDoWallJump(-mousex);
+            }
+
+            //視点のリセット
+            if (Input.GetKey(KeyCode.RightShift))
+            {
+                //165行目から
+                Reset();
+            }
+
+            //94行目から
+            UpdateLookPosition();
+
+            //109行目から
+            UpdateCameraPosition();
+
+            //常にプレイヤーのいる方向を向く
+            this.transform.LookAt(D);
         }
-
-        //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
-        if(Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
-        {
-            //185行目から
-            PlayerDoWallJump(-mousex);
-        }
-
-        //視点のリセット
-        if (Input.GetKey(KeyCode.RightShift))
-        {
-            //165行目から
-            Reset();
-        }
-
-        //94行目から
-        UpdateLookPosition();
-
-        //109行目から
-        UpdateCameraPosition();
-
-        //常にプレイヤーのいる方向を向く
-        this.transform.LookAt(D);
     }
 
     //カメラ視点の制御

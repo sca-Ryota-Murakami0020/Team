@@ -123,63 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &21860375
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_RootOrder
-      value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 13.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192569, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744343839711192573, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
-      propertyPath: m_Name
-      value: WallJumpPoint ver.2 (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b69dfae03aa709e4794046b46063f1c3, type: 3}
 --- !u!1 &189036309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +991,7 @@ MonoBehaviour:
   cameraHeightMin: -5
   cameraHeightMax: 8.5
   verticalMag: 5
-  holizontalMag: 10
+  holizontalMag: 2
 --- !u!1 &1671673023
 GameObject:
   m_ObjectHideFlags: 0

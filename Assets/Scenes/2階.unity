@@ -4362,6 +4362,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 3238567104662629896, guid: 6a992298e5af22548b035ef8b0df76d1, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 5901147640908076609, guid: 6a992298e5af22548b035ef8b0df76d1, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -4893,7 +4897,7 @@ GameObject:
   - component: {fileID: 2077461400}
   m_Layer: 0
   m_Name: totalWall
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

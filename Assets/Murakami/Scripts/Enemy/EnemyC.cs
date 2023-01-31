@@ -83,7 +83,7 @@ public class EnemyC : MonoBehaviour
         rotateCounter = 0;
         rotationState = RotationPar.NULL;
         rotationDistance = 0.0f;
-        defaultPosition = this.transform.position;
+        //defaultPosition = this.transform.position;
 
     }
 

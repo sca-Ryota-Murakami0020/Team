@@ -326,7 +326,7 @@ public class Player : MonoBehaviour
             jumpCount = 0;
             rollingJumpFlag = false;
             //Eボタンがおされたら
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetMouseButton(1))
             {
                 anime.SetTrigger("LiftWall");
                 //重力を作用させる
@@ -1025,8 +1025,8 @@ public class Player : MonoBehaviour
 
           }
           */
-        //Rキーが押されていたら
-        if (Input.GetKey(KeyCode.R))
+        //左マウスボタンが押されていたら
+        if (Input.GetMouseButton(0))
         {
             //普通のジャンプをしていたら
             if (jumpFlag == true)
@@ -1187,8 +1187,8 @@ public class Player : MonoBehaviour
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
-            //　落下によるダメージが発生する距離を超える場合にEキーが押されていなかったらダメージを与える
-            if (!Input.GetKey(KeyCode.E))
+            //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
+            if (!Input.GetMouseButton(1))
             {
                 fallDamageHitFlag = true;
             }

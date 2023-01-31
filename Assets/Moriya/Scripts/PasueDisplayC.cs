@@ -138,7 +138,6 @@ public class PasueDisplayC : MonoBehaviour
     private void PauseMenu()
     {
         //escキーおしたとき
-        /*
         if (Input.GetKey(KeyCode.Escape)) 
         { 
              #if UNITY_EDITOR
@@ -152,7 +151,7 @@ public class PasueDisplayC : MonoBehaviour
             SceneManager.LoadScene("LoadBill");
             Time.timeScale = 1f;
             menuFlag = false;
-        }*/
+        }
 
         //tabキー押したとき && pUC.OpenManual == true
         /*if(Input.GetButton("Decision") && openManual == true)
