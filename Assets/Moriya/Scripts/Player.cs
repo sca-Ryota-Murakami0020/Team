@@ -697,7 +697,7 @@ public class Player : MonoBehaviour
             {
                 //ƒWƒƒƒ“ƒvŽž
                 anime.SetBool("doJump", true);
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 20, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 30, 0));
                 jumpFlag = true;
                 jumpCount++;
             }
