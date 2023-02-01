@@ -101,8 +101,6 @@ public class CameraC : MonoBehaviour
             pDC.CloseManual();
             Debug.Log("‘€ìà–¾‚ğ•Â‚¶‚é");
         }
-
-        Debug.Log("OnlyFlag" + pDC.OnlyFlag);
     }
 
     //ƒJƒƒ‰‹“_‚Ì§Œä

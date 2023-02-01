@@ -5,10 +5,6 @@ using UnityEditor;
 
 public class EnemyC : MonoBehaviour
 {
-    //表示の管理を行う
-    private ResetEnemyPosition rEP;
-    //Enemyの蘇生処理
-    private ReSponeEnemy rSE;
     //RigidBody
     private Rigidbody rb;
 
@@ -21,22 +17,26 @@ public class EnemyC : MonoBehaviour
     //追跡中使うスピード
     private float addSpeed = 3.0f;
     //回転回数
-    private int rotateCounter;
+    private int rotateCounter = 0;
     //回転時間
     private float rotateTime = 0.0f;
     //走行距離
     private float distance = 0.0f;
     //回転した距離
-    private float rotationDistance;
+    private float rotationDistance = 0.0f;
+    //透明化時間
+    private int invisibleTime = 0;
+    //
+    private Vector3 defSize;
 
     //追跡フラグ
-    private bool doEncount;
-    //巡回開始のフラグ
-    private bool startFlag;
+    private bool doEncount = false;
     //回転中かの判定
-    private bool doTurn;
+    private bool doTurn = false;
     //最初に振り向く処理を向こうにする
-    private bool noCountFlag;
+    private bool noCountFlag = true;
+    //消滅処理中
+    private bool isInvisible = false;
 
     //位置
     private Vector3 pos;
@@ -48,6 +48,10 @@ public class EnemyC : MonoBehaviour
     private Quaternion defaultRotation;
     //リセット時のポジション
     private Vector3 defaultPosition;
+    //消滅処理の際にEnemyを戻す位置
+    private Vector3 trueDefaultPosition;
+    //消去処理後のEnemyの角度
+    private Quaternion tDQ;
 
     //敵の回転する方向
     enum RotationPar
@@ -73,24 +77,22 @@ public class EnemyC : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rEP = GameObject.Find("startPos").GetComponent<ResetEnemyPosition>();
-        rSE = FindObjectOfType<ReSponeEnemy>();
 
-        doEncount = false;
-        startFlag = true;
-        doTurn = false;
-        noCountFlag = true;
-        rotateCounter = 0;
         rotationState = RotationPar.NULL;
-        rotationDistance = 0.0f;
-        //defaultPosition = this.transform.position;
+        defaultPosition = this.transform.position;
+        trueDefaultPosition = this.transform.position;
+        tDQ = this.transform.rotation;
+        defSize = this.transform.localScale;
     }
 
     // Update is called once per frameshotRayPosition.transform.position, 
     void Update()
     {
         //プレイヤーの索敵
-        SearchPlayer();
+        if(isInvisible == false)
+        {
+            SearchPlayer();
+        }
 
         //速度関係
         //Playerを発見したら
@@ -101,7 +103,7 @@ public class EnemyC : MonoBehaviour
 
         //巡回行動
         //旋回位置に着くまでの処理
-        if (!doTurn && this.doEncount == false)
+        if (doTurn == false && isInvisible == false && this.doEncount == false)
         {
             MoveEnemy();
         }
@@ -114,13 +116,15 @@ public class EnemyC : MonoBehaviour
         if ((collision.gameObject.CompareTag("Wall") ||
             collision.gameObject.CompareTag("WallJumpPoint") || 
             collision.gameObject.CompareTag("LimitWall") || 
+            collision.gameObject.CompareTag("OutSidePoint") ||
             collision.gameObject.CompareTag("Ground")) && 
             doEncount == true)
         {
-            //StartCoroutine("ResetEnemy");
+
             //生成処理開始
-            rSE.SponeEnemy();
-            Destroy(this);
+            //rSE.SponeEnemy();
+            //this.gameObject.SetActive(false);
+            ReSetEnemy();
         }
     }
 
@@ -146,17 +150,19 @@ public class EnemyC : MonoBehaviour
     //巡回行動
     public void MoveEnemy()
     {
-        //this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
         //ここでEnemyを巡回行動をさせる
-        distance += 0.001f;
-        this.transform.position = new Vector3(0, 0, Mathf.Sin(distance) * limitDistance * enemySpeed);
-        //往復点についたら一旦停止する
-        if (distance >= 0.25f)
+        this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
+        Vector3 enamyPasoion = this.transform.position;
+        //distance += 0.001f;
+        //this.transform.position = new Vector3(0, 0, Mathf.Sin(distance) * limitDistance * enemySpeed);
+        //往復点についたら一旦停止するdistance >= 0.25f
+        if (enamyPasoion.z >= defaultPosition.z + limitDistance || 
+            enamyPasoion.x >= defaultPosition.x + limitDistance ||
+            enamyPasoion.z <= defaultPosition.z - limitDistance ||
+            enamyPasoion.x <= defaultPosition.x - limitDistance)
         {
-            //旋回させるためのフラグを立てる
-            doTurn = true;
-            distance = 0.0f;
-            Debug.Log("一旦停止");
+            //distance = 0.0f;
+            //Debug.Log("一旦停止");
             returnLookPosition();
         }
     }
@@ -164,18 +170,54 @@ public class EnemyC : MonoBehaviour
     //旋回処理
     public void returnLookPosition()
     {
+        //旋回位置を次の出発地点にする
+        defaultPosition = this.transform.position;
         //次の終点位置の方向に向けるようにするために値を変更する
         this.defaultRotation = this.transform.rotation;
         //旋回中にする
         this.doTurn = true;
         //旋回する方向をステータスで管理しているのでここで回転方向を決める
         this.rotationState = RotationPar.RIGHT;
-        Debug.Log("旋回開始");
+        //Debug.Log("旋回開始");
         //各方向に旋回するコルーチン
         StartCoroutine("TurnLookPosition");
     }
 
+    //
+    private void ReSetEnemy()
+    {
+        //位置の初期化
+        this.transform.position = trueDefaultPosition;
+        //向きの初期化
+        this.transform.rotation = tDQ;
+        //プレイヤーを見つけた判定をリセットする
+        doEncount = false;
+        //透明化
+        isInvisible = true;
+        //最初にブロックに触れても消えない様にする
+        noCountFlag = true;
+        Debug.Log("透明化処理開始");
+        StartCoroutine("ResetEnemy");
+    }
     #endregion
+
+    #region//コルーチン
+    //リセット機能
+    private IEnumerator ResetEnemy()
+    {
+        Debug.Log("透明化処理中");
+        while(invisibleTime <= 10)
+        {
+            this.transform.localScale = Vector3.zero;
+            yield return new WaitForSeconds(1.0f);
+            invisibleTime++;
+        }
+        Debug.Log("透明化処理終了");
+        this.transform.localScale = defSize;
+        isInvisible = false;
+        invisibleTime = 0;
+        yield break;
+    }
 
     private IEnumerator TurnLookPosition()
     {
@@ -184,7 +226,7 @@ public class EnemyC : MonoBehaviour
 
         while (rotationState == RotationPar.RIGHT)
         {
-            /* 
+             
             //一度ずつ回転
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
@@ -203,7 +245,7 @@ public class EnemyC : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 break;
             }
-            */
+            /*
             Debug.Log("右旋回中");
 
             rotateTime += 0.001f;
@@ -215,13 +257,13 @@ public class EnemyC : MonoBehaviour
                 rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
-            }
+            }*/
         }
 
         //左方向に回転
         while (rotationState == RotationPar.LEFT)
         {
-            /*
+            
             this.transform.Rotate(0, -1.0f, 0);
             rotateCounter++;
 
@@ -237,9 +279,9 @@ public class EnemyC : MonoBehaviour
                 rotateCounter = 0;
                 yield return new WaitForSeconds(1);
                 break;
-            }*/
-            Debug.Log("左旋回中");
-
+            }
+            //Debug.Log("左旋回中");
+            /*
             rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime) * -1, 0));
 
@@ -249,13 +291,13 @@ public class EnemyC : MonoBehaviour
                 rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
-            }
+            }*/
         }
 
         //正位置に戻る
         while (rotationState == RotationPar.RESET)
         {
-            /*
+            
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -272,8 +314,9 @@ public class EnemyC : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 break;
             }
-            */
-            Debug.Log("正面を向く");
+            
+            /*
+             * Debug.Log("正面を向く");
             rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
 
@@ -283,13 +326,13 @@ public class EnemyC : MonoBehaviour
                 rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
-            }
+            }*/
         }
 
         //次の終点の方向に旋回
         while (rotationState == RotationPar.TURN)
         {
-            /*
+            
             this.transform.Rotate(0, 1.0f, 0);
             rotateCounter++;
 
@@ -305,7 +348,7 @@ public class EnemyC : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 break;
             }
-            */
+            /*
             Debug.Log("向きを反転");
             rotateTime += 0.001f;
             this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
@@ -316,7 +359,7 @@ public class EnemyC : MonoBehaviour
                 rotateTime = 0.0f;
                 yield return new WaitForSeconds(1);
                 break;
-            }
+            }*/
         }
 
         doTurn = false;
@@ -328,4 +371,5 @@ public class EnemyC : MonoBehaviour
         }
         yield break;
     }
+    #endregion
 }

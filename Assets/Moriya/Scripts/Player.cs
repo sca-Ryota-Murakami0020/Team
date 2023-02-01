@@ -240,10 +240,6 @@ public class Player : MonoBehaviour
         //LRトリガーの入力受付
         //float trigger = Input.GetAxis("L_R_Trigger");
 
-        Debug.Log("fallFlag" +fallFlag);
-        Debug.Log(wallJumpFlag);  
-        Debug.Log(jumpCount);
-
         //input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
         //プレイヤーhp表示をするためのfor文
@@ -868,7 +864,6 @@ public class Player : MonoBehaviour
                 //　地面にレイが届いていたら
                 if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
                 {
-                    Debug.Log("レイが届いたよ");
 
                     //　落下距離を計算
                     fallenDistance = fallenPosition - transform.position.y;
@@ -932,7 +927,6 @@ public class Player : MonoBehaviour
                         //通常着地モーションをする
                         anime.SetBool("doFall", false);
                         anime.SetBool("doLanding", true);
-                        Debug.Log("落下ダメージうけない高さから落ちたよ");
 
                         //上と同じくしている
                         if (hit.transform.gameObject.CompareTag("Ground"))
@@ -946,7 +940,6 @@ public class Player : MonoBehaviour
                            RollingPointAnime();
                         }
                     }
-                    Debug.Log("落下処理終わったよ");
                     //ここでフラグおり＆着地の効果音を入れている
                     fallFlag = false;
                     PlaySE(randingSE);
