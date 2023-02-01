@@ -30,7 +30,7 @@ public class loadBill : MonoBehaviour
         if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadSceneAsync("bill");
-            Debug.Log("ビルを呼び出した");
+            //Debug.Log("ビルを呼び出した");
         }
     }
 }

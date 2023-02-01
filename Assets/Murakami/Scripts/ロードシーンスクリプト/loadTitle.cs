@@ -27,11 +27,9 @@ public class loadTitle : MonoBehaviour
     {
         nowGaze += Time.deltaTime;
         loadGazeSlider.value = nowGaze / 5.0f;
-        Debug.Log("Loading...");
         if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadSceneAsync("TitleScene");
-            Debug.Log("タイトルを呼び出した");
         }
     }
 }

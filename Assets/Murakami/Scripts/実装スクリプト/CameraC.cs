@@ -12,6 +12,8 @@ public class CameraC : MonoBehaviour
     private float xpos;
     //旋回した時のｚ座標
     private float zpos;
+    //最初の数秒は縦移動しない　ー＞　バグ防止
+    private float startTime = 0.0f;
     //実際にカメラを向ける座標//カメラとプレイヤーとの距離
     private Vector3 D= Vector3.zero;
     //Playerを追従しないでカメラの向きだけ変える範囲
@@ -22,7 +24,7 @@ public class CameraC : MonoBehaviour
     private float mousey;
     //壁ジャンで用いるスクリプト
     private PlayerWallCon pWC;
-    //
+    //PasueDisplayC
     private PasueDisplayC pDC;
     #endregion
 
@@ -52,7 +54,7 @@ public class CameraC : MonoBehaviour
     void Start()
     {
         pWC = FindObjectOfType<PlayerWallCon>();
-        pDC = FindObjectOfType<PasueDisplayC>();
+        pDC = FindObjectOfType<PasueDisplayC>(); 
     }
 
     //視点とカメラ座標を随時更新
@@ -65,15 +67,18 @@ public class CameraC : MonoBehaviour
             mousex = Input.GetAxis("Mouse X");
             mousey = Input.GetAxis("Mouse Y");
 
+            //スタートカウント
+            startTime += Time.deltaTime;
+
             //通常のカメラ操作
-            if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
+            if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false && startTime >= 1.5f)
             {
                 //135行目から
                 Roll(-mousex, -mousey);
             }
 
             //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
-            if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
+            if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true || startTime <= 1.5f)
             {
                 //185行目から
                 PlayerDoWallJump(-mousex);
@@ -96,7 +101,7 @@ public class CameraC : MonoBehaviour
             this.transform.LookAt(D);
         }
 
-        if(pDC.OnlyFlag == true && Input.GetMouseButton(0))
+        if(pDC.OnlyFlag == true && Input.anyKey)
         {
             pDC.CloseManual();
             Debug.Log("操作説明を閉じる");

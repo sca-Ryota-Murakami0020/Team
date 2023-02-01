@@ -14,7 +14,7 @@ public class PlayExplanation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.anyKey)
         {
             SceneManager.LoadScene("LoadBill");
         }
