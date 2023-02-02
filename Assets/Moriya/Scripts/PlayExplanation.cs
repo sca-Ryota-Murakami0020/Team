@@ -14,6 +14,7 @@ public class PlayExplanation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //“K“–‚Éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½Žž
         if (Input.anyKey)
         {
             SceneManager.LoadScene("LoadBill");

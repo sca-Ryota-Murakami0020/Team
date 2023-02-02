@@ -13,13 +13,6 @@ public class ReSponeEnemy : MonoBehaviour
     //åƒÇ—èoÇ∑à íu
     private Vector3 sponePosition;
 
-    /*
-    public bool AliveFlag
-    {
-        get { return this.aliveFlag;}
-        set { this.aliveFlag = value;}
-    }*/
-
     void Start()
     {
         aliveFlag = false;

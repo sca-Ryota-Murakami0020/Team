@@ -20,7 +20,7 @@ public class MenuBottonC : MonoBehaviour
 
     public void OnManual()
     {
+        //‘€ì‰æ–Ê‚ÌŠJ¦
         pDC.DisplayManual();
-        Debug.Log("‘€ìà–¾ŠJ¦");
     }
 }

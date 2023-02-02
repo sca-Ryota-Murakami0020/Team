@@ -31,8 +31,6 @@ public class PasueDisplayC : MonoBehaviour
     [SerializeField]
     //操作説明UIのプレハブ
     private GameObject playOperatePrafab;
-    //メニュー画面のカーソルに合わせて動作するために定義する
-    private PauseUIC pUC;
 
     //操作説明フラグを立てるフラグ
     private bool openManual = false;
@@ -81,8 +79,6 @@ public class PasueDisplayC : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //ここでスプリクトを見つける
-            pUC = FindObjectOfType<PauseUIC>();
             //ポーズ画面出す
             if (pauseUIInstance == null && menuFlag == false)
             {

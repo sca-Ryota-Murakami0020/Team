@@ -25,8 +25,11 @@ public class loadTitle : MonoBehaviour
 
     void Update()
     {
+        //ロード処理
         nowGaze += Time.deltaTime;
         loadGazeSlider.value = nowGaze / 5.0f;
+
+        //ロードゲージが最大になったら
         if (nowGaze / 5.0f >= maxload)
         {
             SceneManager.LoadSceneAsync("TitleScene");

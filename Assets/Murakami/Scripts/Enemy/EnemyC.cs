@@ -8,27 +8,24 @@ public class EnemyC : MonoBehaviour
     //RigidBody
     private Rigidbody rb;
 
+    #region//ステータス
     //移動速度
-    [SerializeField] private float enemySpeed = 0.7f;
-    //巡回距離
+    private float enemySpeed = 0.7f;
+    //移動距離
     [SerializeField] private float limitDistance;
     //ノックバック速度
-    private float speed = 1.5f;
+    private float knocbuckSpeed = 1.5f;
     //追跡中使うスピード
     private float addSpeed = 3.0f;
     //回転回数
     private int rotateCounter = 0;
-    //回転時間
-    private float rotateTime = 0.0f;
-    //走行距離
-    private float distance = 0.0f;
-    //回転した距離
-    private float rotationDistance = 0.0f;
-    //透明化時間
+    //透明化時間（サイズを0にする時間）
     private int invisibleTime = 0;
-    //
+    //消去した後に元のサイズに戻すために使う変数
     private Vector3 defSize;
+    #endregion
 
+    #region//フラグ
     //追跡フラグ
     private bool doEncount = false;
     //回転中かの判定
@@ -37,7 +34,9 @@ public class EnemyC : MonoBehaviour
     private bool noCountFlag = true;
     //消滅処理中
     private bool isInvisible = false;
+    #endregion
 
+    #region//プレイ中に変化するEnemyの位置・旋回情報
     //位置
     private Vector3 pos;
     //ray関係
@@ -52,6 +51,7 @@ public class EnemyC : MonoBehaviour
     private Vector3 trueDefaultPosition;
     //消去処理後のEnemyの角度
     private Quaternion tDQ;
+    #endregion
 
     //敵の回転する方向
     enum RotationPar
@@ -63,6 +63,7 @@ public class EnemyC : MonoBehaviour
         TURN,
     };
     
+    //パラメータ
     RotationPar rotationState;
 
     #region//プロパティ
@@ -73,7 +74,6 @@ public class EnemyC : MonoBehaviour
     }
     #endregion
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -85,7 +85,6 @@ public class EnemyC : MonoBehaviour
         defSize = this.transform.localScale;
     }
 
-    // Update is called once per frameshotRayPosition.transform.position, 
     void Update()
     {
         //プレイヤーの索敵
@@ -121,9 +120,8 @@ public class EnemyC : MonoBehaviour
             doEncount == true)
         {
 
-            //生成処理開始
-            //rSE.SponeEnemy();
-            //this.gameObject.SetActive(false);
+            //敵がオブジェクトに当たった時に10秒後に元の場所、元の向きに
+            //戻してあげる
             ReSetEnemy();
         }
     }
@@ -153,16 +151,14 @@ public class EnemyC : MonoBehaviour
         //ここでEnemyを巡回行動をさせる
         this.transform.position += transform.forward * enemySpeed * Time.deltaTime;
         Vector3 enamyPasoion = this.transform.position;
-        //distance += 0.001f;
-        //this.transform.position = new Vector3(0, 0, Mathf.Sin(distance) * limitDistance * enemySpeed);
-        //往復点についたら一旦停止するdistance >= 0.25f
+        //往復点についたら一旦停止する
+        //条件が4つあるのは敵の動く方向が様々だから
         if (enamyPasoion.z >= defaultPosition.z + limitDistance || 
             enamyPasoion.x >= defaultPosition.x + limitDistance ||
             enamyPasoion.z <= defaultPosition.z - limitDistance ||
             enamyPasoion.x <= defaultPosition.x - limitDistance)
         {
-            //distance = 0.0f;
-            //Debug.Log("一旦停止");
+            //旋回処理
             returnLookPosition();
         }
     }
@@ -170,7 +166,7 @@ public class EnemyC : MonoBehaviour
     //旋回処理
     public void returnLookPosition()
     {
-        //旋回位置を次の出発地点にする
+        //現在地（旋回位置）を次の出発地点にする
         defaultPosition = this.transform.position;
         //次の終点位置の方向に向けるようにするために値を変更する
         this.defaultRotation = this.transform.rotation;
@@ -178,12 +174,11 @@ public class EnemyC : MonoBehaviour
         this.doTurn = true;
         //旋回する方向をステータスで管理しているのでここで回転方向を決める
         this.rotationState = RotationPar.RIGHT;
-        //Debug.Log("旋回開始");
         //各方向に旋回するコルーチン
         StartCoroutine("TurnLookPosition");
     }
 
-    //
+    //Enemyを消去する演出を行う
     private void ReSetEnemy()
     {
         //位置の初期化
@@ -196,7 +191,7 @@ public class EnemyC : MonoBehaviour
         isInvisible = true;
         //最初にブロックに触れても消えない様にする
         noCountFlag = true;
-        Debug.Log("透明化処理開始");
+        //コルーチン開始
         StartCoroutine("ResetEnemy");
     }
     #endregion
@@ -227,144 +222,114 @@ public class EnemyC : MonoBehaviour
         while (rotationState == RotationPar.RIGHT)
         {
              
-            //一度ずつ回転
+            //一度ずつ右方向に回転
             this.transform.Rotate(0, 1.0f, 0);
+            //傾きを計算する
             rotateCounter++;
 
-            //始めは少し緩やかに回転
+            //2度までは少し緩やかに回転
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-            //f痛の回転速度で回転
+            //3度から39度までは一定の回転速度で回転
             if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
-            //最後は少し緩やかに回転する
+            //40度以降は少し緩やかに回転する
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
-                        //回転した度数が45°を超えたら
+            //回転した度数が45度を超えたら
             if (rotateCounter >= 45)
             {
+                //回転状態のステータスを「左方向」に変更
                 rotationState = RotationPar.LEFT;
+                //計算した角度数をリセット
                 rotateCounter = 0;
-                yield return new WaitForSeconds(1);
+                //1.3秒待機
+                yield return new WaitForSeconds(1.3f);
                 break;
             }
-            /*
-            Debug.Log("右旋回中");
-
-            rotateTime += 0.001f;
-            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
-
-            if (rotateTime >= 0.125f)
-            {
-                rotationState = RotationPar.LEFT;
-                rotateTime = 0.0f;
-                yield return new WaitForSeconds(1);
-                break;
-            }*/
         }
 
         //左方向に回転
         while (rotationState == RotationPar.LEFT)
         {
-            
+            //1度ずつ左方向に回転する
             this.transform.Rotate(0, -1.0f, 0);
+            //傾いた角度を計算する
             rotateCounter++;
 
+            //2度までは少し緩やかに回転
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
+            //3度から85度までは一定の回転速度で回転する
             if (rotateCounter >= 3 && rotateCounter < 85) yield return new WaitForSeconds(0.01f);
-
+            //85度以降は少し緩やかに回転する
             if (rotateCounter >= 85) yield return new WaitForSeconds(0.075f);
-
+            //回転した角度が90度を超えたら
             if (rotateCounter >= 90)
             {
+                //回転状態のステータスを「リセット」に変更する
                 rotationState = RotationPar.RESET;
+                //計算した角度数をリセットする
                 rotateCounter = 0;
-                yield return new WaitForSeconds(1);
+                //1.3秒待機
+                yield return new WaitForSeconds(1.3f);
                 break;
             }
-            //Debug.Log("左旋回中");
-            /*
-            rotateTime += 0.001f;
-            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime) * -1, 0));
-
-            if (rotateTime >= 0.25)
-            {
-                rotationState = RotationPar.RESET;
-                rotateTime = 0.0f;
-                yield return new WaitForSeconds(1);
-                break;
-            }*/
         }
 
         //正位置に戻る
         while (rotationState == RotationPar.RESET)
         {
-            
+            //1度ずつ回転する
             this.transform.Rotate(0, 1.0f, 0);
+            //傾いた角度を計算する
             rotateCounter++;
 
+            //2度までは少し緩やかに回転する
             if (rotateCounter < 3) yield return new WaitForSeconds(0.1f);
-
+            //3度から39度までは一定の回転速度で回転する
             if (rotateCounter >= 3 && rotateCounter < 40) yield return new WaitForSeconds(0.01f);
-
+            //40度以降は少し緩やかに回転する
             if (rotateCounter >= 40) yield return new WaitForSeconds(0.075f);
-
+            //回転した角度が45度を超えたら
             if (rotateCounter >= 45)
             {
+                //回転状態のステータスを「逆方向に向く」にする
                 rotationState = RotationPar.TURN;
+                //計算した角度数をリセットする
                 rotateCounter = 0;
-                yield return new WaitForSeconds(1);
+                //1.3秒待機
+                yield return new WaitForSeconds(1.3f);
                 break;
             }
-            
-            /*
-             * Debug.Log("正面を向く");
-            rotateTime += 0.001f;
-            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
-
-            if (rotateTime >= 0.125f)
-            {
-                rotationState = RotationPar.TURN;
-                rotateTime = 0.0f;
-                yield return new WaitForSeconds(1);
-                break;
-            }*/
         }
 
         //次の終点の方向に旋回
         while (rotationState == RotationPar.TURN)
         {
-            
+            //1度ずつ回転する
             this.transform.Rotate(0, 1.0f, 0);
+            //傾いた角度を計算する
             rotateCounter++;
 
+            //2度までは少し緩やかに回転する
             if (rotateCounter < 3) yield return new WaitForSeconds(0.01f);
-
+            //3度から175度までは一定の速度で回転する
             if (rotateCounter >= 3 && rotateCounter <= 175) yield return new WaitForSeconds(0.00075f);
-
+            //175度以降は少し緩やかに回転する
             if (rotateCounter >= 175) yield return new WaitForSeconds(0.075f);
-
+            //回転した角度が180度を超えたら
             if (rotateCounter >= 180)
             {
+                //計算した角度数をリセットする
                 rotateCounter = 0;
-                yield return new WaitForSeconds(1);
+                //1.3秒待機
+                yield return new WaitForSeconds(1.3f);
                 break;
             }
-            /*
-            Debug.Log("向きを反転");
-            rotateTime += 0.001f;
-            this.transform.Rotate(new Vector3(0, Mathf.Sin(rotateTime), 0));
-
-            if (rotateTime >= 0.5f)
-            {
-                rotationState = RotationPar.TURN;
-                rotateTime = 0.0f;
-                yield return new WaitForSeconds(1);
-                break;
-            }*/
         }
 
+        //ここで旋回処理が終了するのでfalseにする
         doTurn = false;
+        //回転状態のステータスを初期化
         rotationState = RotationPar.NULL;
-
+        //リセット処理をした際にブロックに触れても消えないフラグがtrueならfalseにする
         if (noCountFlag == true)
         {
             noCountFlag = false;

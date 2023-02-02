@@ -19,7 +19,7 @@ public class ReturnGameButtonC : MonoBehaviour
 
     public void ReturnGame()
     {
+        //ポーズ画面を閉じる
         pDC.CloseMenu();
-        Debug.Log("メニューを閉じる");
     }
 }

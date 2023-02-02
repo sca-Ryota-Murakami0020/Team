@@ -101,10 +101,11 @@ public class CameraC : MonoBehaviour
             this.transform.LookAt(D);
         }
 
+        //ポーズ中操作画面で何かボタンを押したとき
         if(pDC.OnlyFlag == true && Input.anyKey)
         {
+            //操作説明画面を閉じる
             pDC.CloseManual();
-            Debug.Log("操作説明を閉じる");
         }
     }
 
