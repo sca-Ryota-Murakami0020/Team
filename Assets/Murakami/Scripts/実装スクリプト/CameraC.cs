@@ -13,7 +13,7 @@ public class CameraC : MonoBehaviour
     //旋回した時のｚ座標
     private float zpos;
     //実際にカメラを向ける座標//カメラとプレイヤーとの距離
-    private Vector3 D= Vector3.zero;
+    private Vector3 D;
     //Playerを追従しないでカメラの向きだけ変える範囲
     private float lookPlayerdistance = 0.1f;
     //横方向のマウスの移動量
@@ -54,7 +54,9 @@ public class CameraC : MonoBehaviour
     void Start()
     {
         pWC = FindObjectOfType<PlayerWallCon>();
-        pDC = FindObjectOfType<PasueDisplayC>(); 
+        pDC = FindObjectOfType<PasueDisplayC>();
+        D = GameObject.Find("Main Camera").transform.position;
+
     }
 
     //視点とカメラ座標を随時更新
@@ -95,7 +97,7 @@ public class CameraC : MonoBehaviour
             UpdateCameraPosition();
 
             //常にプレイヤーのいる方向を向く
-            this.transform.LookAt(D);
+            //this.transform.LookAt(D);
         }
 
         //ポーズ中操作画面で何かボタンを押したとき
