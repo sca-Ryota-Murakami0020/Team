@@ -348,7 +348,7 @@ public class Player : MonoBehaviour
             }
 
             //普通の歩くスピード
-            if (jumpFlag == false )
+            if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
             }
@@ -383,7 +383,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
             }
             //普通の歩くスピード
-            if (jumpFlag == false && rollingJumpDidFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
             }
@@ -418,7 +418,7 @@ public class Player : MonoBehaviour
             }
 
             //普通の歩くスピード
-            if (jumpFlag == false && rollingJumpDidFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
               
@@ -454,7 +454,7 @@ public class Player : MonoBehaviour
                 anime.SetBool("doWalk", true);
             }
             //普通の歩くスピード
-            if (jumpFlag == false && rollingJumpDidFlag == false)
+            if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
             }
@@ -484,8 +484,7 @@ public class Player : MonoBehaviour
             moveFlag = false;
             if(doStayWall == false)
             {
-                this.transform.Rotate(0, 0f, 0);
-                if(fallFlag == false)
+                if (fallFlag == false)
                 {
                    //落下中でなければ待機モーションに入る
                   anime.SetBool("doIdle", true);
@@ -493,7 +492,6 @@ public class Player : MonoBehaviour
                 }
 
             }
-                
         }
 
         //ジャンプの動き
