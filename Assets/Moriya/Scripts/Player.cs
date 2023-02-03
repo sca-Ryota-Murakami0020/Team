@@ -497,7 +497,7 @@ public class Player : MonoBehaviour
             PlaySE(jumpSE);
 
             //ローロングジャンプができない状態なら
-            if (jumpFlag= false && rollingJumpFlag == false && wallJumpFlag == false)
+            if (rollingJumpFlag == false && wallJumpFlag == false)
             {
                 //ジャンプ時
                 anime.SetBool("doJump", true);
