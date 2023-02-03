@@ -282,12 +282,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        #region//落下状態
         //　落ちている状態
         //落下中の処理(ほぼアニメーション)
         FallAnime();
-
-        #endregion
 
         //落下中に壁ジャン地点に当たったら
         if (doStayWall == true)
@@ -638,7 +635,7 @@ public class Player : MonoBehaviour
         }
     }
 
- //走るときの効果音の処理
+    //走るときの効果音の処理
     public void ActiveWalkSE()
     {
         if (speedAccelerationFlag == true)
@@ -657,6 +654,7 @@ public class Player : MonoBehaviour
     {
         if (fallFlag)
         {
+            //アニメーション関係の初期化
             ResetAnime();
 
             //壁ジャンプできる壁に触れたらここに入る
@@ -675,17 +673,16 @@ public class Player : MonoBehaviour
                 //　地面にレイが届いていたら
                 if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit, LayerMask.GetMask("Ground")))
                 {
-
                     //　落下距離を計算
                     fallenDistance = fallenPosition - transform.position.y;
 
                     if (fallenDistance >= takeDamageDistance)
                     {
+
+                        //アニメーションフラグをおる
                         anime.SetBool("doFall", false);
                         //スローモーション移行
                         StartCoroutine("StartSlowmotion");
-
-                        //Debug.Log("落下ダメージ受けるかどうか終わったよ");
 
                         //ダメージが入るフラグが立っていない時
                         //Eキーが押されたらこの中に入る
@@ -704,6 +701,7 @@ public class Player : MonoBehaviour
                             {
                                 RollingPointAnime();
                             }
+
                             //加速するフラグをたてる
                             speedAccelerationFlag = true;
                         }
@@ -718,7 +716,6 @@ public class Player : MonoBehaviour
                             StartCoroutine(_hit());
                             anime.SetBool("doLanding", true);
 
-                            //Debug.Log("落下ダメージが入ったよ");
                             //地面に着地したら
                             if (hit.transform.gameObject.CompareTag("Ground"))
                             {
@@ -963,6 +960,7 @@ public class Player : MonoBehaviour
         StopCoroutine("StartSlowmotion");
         StopCoroutine("Slowmotion");
     }
+
     //スローモーションするコルーチン
     private IEnumerator Slowmotion()
     {
@@ -972,7 +970,6 @@ public class Player : MonoBehaviour
         //時間計測＋キー判定
         while (elapsedTime < slowTime)
         {
-           
             //1秒いないならスローモーションにする
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
@@ -980,6 +977,7 @@ public class Player : MonoBehaviour
             //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
             if (!Input.GetMouseButton(1))
             {
+                Debug.Log("ダメｰジ入るフラグが立ったよ");
                 fallDamageHitFlag = true;
             }
             //スローモーション解除
