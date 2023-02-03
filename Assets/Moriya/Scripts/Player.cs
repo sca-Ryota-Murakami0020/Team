@@ -525,7 +525,7 @@ public class Player : MonoBehaviour
                 anime.SetTrigger("DoWallJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 4, 0));
 
-                //Debug.Log("あすける");
+                Debug.Log("壁ジャンプしたよ");
                 jumpCount++;
 
                 //重力を作用させる
