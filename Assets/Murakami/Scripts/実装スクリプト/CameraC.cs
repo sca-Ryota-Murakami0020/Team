@@ -12,8 +12,6 @@ public class CameraC : MonoBehaviour
     private float xpos;
     //旋回した時のｚ座標
     private float zpos;
-    //最初の数秒は縦移動しない　ー＞　バグ防止
-    private float startTime = 0.0f;
     //実際にカメラを向ける座標//カメラとプレイヤーとの距離
     private Vector3 D= Vector3.zero;
     //Playerを追従しないでカメラの向きだけ変える範囲
@@ -21,7 +19,21 @@ public class CameraC : MonoBehaviour
     //横方向のマウスの移動量
     private float mousex;
     //縦方向のマウスの移動量
-    private float mousey;
+    private float mousey; 
+    //PLayerを追従する速度
+    private float cameraSpeed = 3.0f;
+    //視点からカメラまでの距離
+    private float cameraDistance = 4.0f;
+    //デフォルトの高さ
+    private float cameraHeight = 2.0f;
+    //離れる時の速度
+    private float leaveCamera = 15.0f;
+    //視点からカメラの距離の遊び
+    private float cPDistance = 0.5f;
+    //縦移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
+    private float verticalMag = 20.0f;
+    //横移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
+    private float holizontalMag = 20.0f;
     //壁ジャンで用いるスクリプト
     private PlayerWallCon pWC;
     //PasueDisplayC
@@ -29,26 +41,14 @@ public class CameraC : MonoBehaviour
     #endregion
 
     #region//stageによって変わる数値
-    //PLayerを追従する速度
-    [SerializeField] private float cameraSpeed;// = 4.0f;
-    //視点からカメラまでの距離
-    [SerializeField] private float cameraDistance;// = 1.5f;
-    //デフォルトの高さ
-    [SerializeField] private float cameraHeight;// = 1.0f;
+
     //現在のカメラの高さ
     [SerializeField] private float nowCameraHeight;// = 1.0f;
-    //視点からカメラの距離の遊び
-    [SerializeField] private float cPDistance;// = 0.3f;
-    //離れる時の速度
-    [SerializeField] private float leaveCamera;// = 20.0f;
     //カメラの最低高度
     [SerializeField] private float cameraHeightMin;// = -5.0f;
     //カメラの最高高度
     [SerializeField] private float cameraHeightMax;// = 8.5f;
-    //縦移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
-    [SerializeField] private float verticalMag;
-    //横移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
-    [SerializeField] private float holizontalMag;
+
     #endregion
 
     void Start()
@@ -67,18 +67,15 @@ public class CameraC : MonoBehaviour
             mousex = Input.GetAxis("Mouse X");
             mousey = Input.GetAxis("Mouse Y");
 
-            //スタートカウント
-            startTime += Time.deltaTime;
-
             //通常のカメラ操作
-            if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false && startTime >= 1.5f)
+            if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
             {
                 //135行目から
                 Roll(-mousex, -mousey);
             }
 
             //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
-            if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true || startTime <= 1.5f)
+            if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
             {
                 //185行目から
                 PlayerDoWallJump(-mousex);

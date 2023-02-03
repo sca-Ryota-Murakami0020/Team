@@ -513,16 +513,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1137065849}
-  cameraSpeed: 4
-  cameraDistance: 3
-  cameraHeight: 1
-  nowCameraHeight: 1
-  cPDistance: 0.3
-  leaveCamera: 20
+  nowCameraHeight: 4
   cameraHeightMin: -2
   cameraHeightMax: 5
-  verticalMag: 18
-  holizontalMag: 15
 --- !u!82 &499663380
 AudioSource:
   m_ObjectHideFlags: 0
