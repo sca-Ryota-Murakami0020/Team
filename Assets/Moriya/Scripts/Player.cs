@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     //ジャンプした時のx方向スピード
     private float jumpingRunSpeed = 2.5f;
     //壁ジャンプした時のプレイヤーのスピード
-    private float wallJumpRunSpeed = 1.5f;
+    private float wallJumpRunSpeed = 3.0f;
     //ジャンプした時のy方向スピード
     private float jumpSpeed =10.0f;
     //方向速度
@@ -282,14 +282,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        #region//落下状態
         //　落ちている状態
-        //スタートでは落下状態ではないのでfallFlagはfalseとなっている
-
         //落下中の処理(ほぼアニメーション)
         FallAnime();
-
-        #endregion
 
         //落下中に壁ジャン地点に当たったら
         if (doStayWall == true)
@@ -482,7 +477,8 @@ public class Player : MonoBehaviour
         if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
-            if(doStayWall == false)
+            rb.angularVelocity = Vector3.zero;
+            if (doStayWall == false)
             {
                 if (fallFlag == false)
                 {
@@ -639,7 +635,7 @@ public class Player : MonoBehaviour
         }
     }
 
- //走るときの効果音の処理
+    //走るときの効果音の処理
     public void ActiveWalkSE()
     {
         if (speedAccelerationFlag == true)
@@ -658,6 +654,7 @@ public class Player : MonoBehaviour
     {
         if (fallFlag)
         {
+            //アニメーション関係の初期化
             ResetAnime();
 
             //壁ジャンプできる壁に触れたらここに入る
@@ -674,19 +671,18 @@ public class Player : MonoBehaviour
             if (lineCast != null)
             {
                 //　地面にレイが届いていたら
-                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
+                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit, LayerMask.GetMask("Ground")))
                 {
-
                     //　落下距離を計算
                     fallenDistance = fallenPosition - transform.position.y;
 
                     if (fallenDistance >= takeDamageDistance)
                     {
+
+                        //アニメーションフラグをおる
                         anime.SetBool("doFall", false);
                         //スローモーション移行
                         StartCoroutine("StartSlowmotion");
-
-                        //Debug.Log("落下ダメージ受けるかどうか終わったよ");
 
                         //ダメージが入るフラグが立っていない時
                         //Eキーが押されたらこの中に入る
@@ -705,6 +701,7 @@ public class Player : MonoBehaviour
                             {
                                 RollingPointAnime();
                             }
+
                             //加速するフラグをたてる
                             speedAccelerationFlag = true;
                         }
@@ -719,7 +716,6 @@ public class Player : MonoBehaviour
                             StartCoroutine(_hit());
                             anime.SetBool("doLanding", true);
 
-                            //Debug.Log("落下ダメージが入ったよ");
                             //地面に着地したら
                             if (hit.transform.gameObject.CompareTag("Ground"))
                             {
@@ -766,7 +762,7 @@ public class Player : MonoBehaviour
             if (lineCast != null)
             {
                 //レイが届かないなら
-                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
+                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")) && doStayWall == false)
                 {
                     //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                     //その時に落下状態を判別するためfallFlagをtrueにする
@@ -827,6 +823,16 @@ public class Player : MonoBehaviour
         //左マウスボタンが押されていたら
         if (Input.GetMouseButton(0))
         {
+            wallJumpFlag = true;
+            //プレイヤーの座標固定＆向き反転
+            doInputButtonFlag = true;
+            rb.useGravity = false;
+            rb.velocity = new Vector3(0, 0f, 0);
+            //壁に張り付いてるフラグを立てる
+            doStayWall = true;
+            //アニメーション関係
+            anime.SetTrigger("WallJumpHit");
+            StartCoroutine("StartRotate");
             //普通のジャンプをしていたら
             if (jumpFlag == true)
             {
@@ -848,24 +854,6 @@ public class Player : MonoBehaviour
                 wallJumpDidFlag = false;
             }
 
-            //アニメーション関係
-            anime.SetTrigger("WallJumpHit");
-            this.transform.Rotate(0, 180.0f, 0);
-
-           
-            wallJumpFlag = true;
-
-            //プレイヤーの座標固定＆向き反転
-            doInputButtonFlag = true;
-            rb.useGravity = false;
-            rb.velocity = new Vector3(0, 0f, 0);
-            //Debug.Log("壁はりつき中:" + rb.useGravity);
-            //Debug.Log("固定化");
-            //壁に張り付いてるフラグを立てる
-            doStayWall = true;
-
-            //壁に触れている時のコルーチン発動
-            //StartCoroutine("StartWallStay");
             //フラグ関係
             PlaySE(randingSE);
             fallFlag = false;
@@ -972,6 +960,7 @@ public class Player : MonoBehaviour
         StopCoroutine("StartSlowmotion");
         StopCoroutine("Slowmotion");
     }
+
     //スローモーションするコルーチン
     private IEnumerator Slowmotion()
     {
@@ -981,7 +970,6 @@ public class Player : MonoBehaviour
         //時間計測＋キー判定
         while (elapsedTime < slowTime)
         {
-           
             //1秒いないならスローモーションにする
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
@@ -989,15 +977,9 @@ public class Player : MonoBehaviour
             //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
             if (!Input.GetMouseButton(1))
             {
+                Debug.Log("ダメｰジ入るフラグが立ったよ");
                 fallDamageHitFlag = true;
             }
-
-            //今回はコントローラーでやるのでL_R_Triggerが0より小さくない時 =右トリガーが押されてなかったら
-            /*if(trigger <= 0)
-             {
-                fallDamageHitFlag = true;
-             }*/
-
             //スローモーション解除
             if (elapsedTime > slowTime)
             {
@@ -1048,6 +1030,17 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
             //PlayerRisetController();
             SceneManager.LoadScene("GameOverScene");
+            break;
+        }
+    }
+
+    //回転処理
+    private IEnumerator StartRotate()
+    {
+        while (true)
+        {
+            this.transform.Rotate(0, 180.0f, 0);
+            yield return null;
             break;
         }
     }
