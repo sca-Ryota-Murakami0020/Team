@@ -497,7 +497,7 @@ public class Player : MonoBehaviour
             PlaySE(jumpSE);
 
             //ローロングジャンプができない状態なら
-            if (rollingJumpFlag == false && wallJumpFlag == false)
+            if (jumpFlag= false && rollingJumpFlag == false && wallJumpFlag == false)
             {
                 //ジャンプ時
                 anime.SetBool("doJump", true);
@@ -523,7 +523,7 @@ public class Player : MonoBehaviour
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
-                this.rb.AddForce(new Vector3(0, jumpSpeed * 4, 0));
+                this.rb.AddForce(new Vector3(0, jumpSpeed * 40, 0));
 
                 //Debug.Log("あすける");
                 jumpCount++;
