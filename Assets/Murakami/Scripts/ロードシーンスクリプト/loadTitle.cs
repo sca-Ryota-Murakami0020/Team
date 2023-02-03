@@ -32,7 +32,7 @@ public class loadTitle : MonoBehaviour
         //ロードゲージが最大になったら
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadSceneAsync("TitleScene");
+            SceneManager.LoadScene("TitleScene");
         }
     }
 }

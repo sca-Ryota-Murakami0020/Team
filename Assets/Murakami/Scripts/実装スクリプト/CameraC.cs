@@ -56,7 +56,6 @@ public class CameraC : MonoBehaviour
         pWC = FindObjectOfType<PlayerWallCon>();
         pDC = FindObjectOfType<PasueDisplayC>();
         D = Player.transform.position;
-
     }
 
     //視点とカメラ座標を随時更新
