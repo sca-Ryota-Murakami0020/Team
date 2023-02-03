@@ -530,7 +530,6 @@ public class Player : MonoBehaviour
 
                 //重力を作用させる
                 rb.useGravity = true;
-                //rb.velocity = transform.position;
                 //壁ジャンプできるフラグをおる
                 wallJumpFlag = false;
                 //カメラに渡すフラグをおる
