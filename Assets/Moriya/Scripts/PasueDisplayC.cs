@@ -122,7 +122,6 @@ public class PasueDisplayC : MonoBehaviour
             //エディタ以外の操作
             #endif
             ResetCommand();
-            SceneManager.LoadScene("LoadBill");
             Time.timeScale = 1f;
             menuFlag = false;
         }

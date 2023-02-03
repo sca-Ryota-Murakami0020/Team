@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
             //Debug.Log("ここに入ったよ");
             jumpCount = 0;
             rollingJumpFlag = false;
-            //Eボタンがおされたら
+            //左クリックおされたら
             if (Input.GetMouseButton(1))
             {
                 anime.SetTrigger("LiftWall");
@@ -486,7 +486,6 @@ public class Player : MonoBehaviour
                   anime.SetBool("doIdle", true);
                   anime.SetBool("doWalk", false);
                 }
-
             }
         }
 
@@ -951,7 +950,7 @@ public class Player : MonoBehaviour
 
         //レイは飛ばさない
         lineCast = null;
-
+         
         //1.0秒待つ
         yield return  new WaitForSecondsRealtime(1.0f);
 
@@ -989,6 +988,7 @@ public class Player : MonoBehaviour
                 lineCast = StartCoroutine(StartLineCast());//レイ復活
                 break;
             }
+            Debug.Log("スローモーション中");
             yield return null;
         };
     }
