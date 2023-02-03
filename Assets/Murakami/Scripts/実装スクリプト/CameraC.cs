@@ -55,7 +55,7 @@ public class CameraC : MonoBehaviour
     {
         pWC = FindObjectOfType<PlayerWallCon>();
         pDC = FindObjectOfType<PasueDisplayC>();
-        D = GameObject.Find("Main Camera").transform.position;
+        D = Player.transform.position;
 
     }
 
@@ -97,7 +97,7 @@ public class CameraC : MonoBehaviour
             UpdateCameraPosition();
 
             //常にプレイヤーのいる方向を向く
-            //this.transform.LookAt(D);
+            this.transform.LookAt(D);
         }
 
         //ポーズ中操作画面で何かボタンを押したとき
