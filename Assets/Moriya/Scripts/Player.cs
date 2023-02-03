@@ -284,8 +284,6 @@ public class Player : MonoBehaviour
 
         #region//落下状態
         //　落ちている状態
-        //スタートでは落下状態ではないのでfallFlagはfalseとなっている
-
         //落下中の処理(ほぼアニメーション)
         FallAnime();
 
@@ -827,6 +825,16 @@ public class Player : MonoBehaviour
         //左マウスボタンが押されていたら
         if (Input.GetMouseButton(0))
         {
+            wallJumpFlag = true;
+            //プレイヤーの座標固定＆向き反転
+            doInputButtonFlag = true;
+            rb.useGravity = false;
+            rb.velocity = new Vector3(0, 0f, 0);
+            //壁に張り付いてるフラグを立てる
+            doStayWall = true;
+            //アニメーション関係
+            anime.SetTrigger("WallJumpHit");
+            StartCoroutine("StartRotate");
             //普通のジャンプをしていたら
             if (jumpFlag == true)
             {
@@ -848,24 +856,6 @@ public class Player : MonoBehaviour
                 wallJumpDidFlag = false;
             }
 
-            //アニメーション関係
-            anime.SetTrigger("WallJumpHit");
-            this.transform.Rotate(0, 180.0f, 0);
-
-           
-            wallJumpFlag = true;
-
-            //プレイヤーの座標固定＆向き反転
-            doInputButtonFlag = true;
-            rb.useGravity = false;
-            rb.velocity = new Vector3(0, 0f, 0);
-            //Debug.Log("壁はりつき中:" + rb.useGravity);
-            //Debug.Log("固定化");
-            //壁に張り付いてるフラグを立てる
-            doStayWall = true;
-
-            //壁に触れている時のコルーチン発動
-            //StartCoroutine("StartWallStay");
             //フラグ関係
             PlaySE(randingSE);
             fallFlag = false;
@@ -991,13 +981,6 @@ public class Player : MonoBehaviour
             {
                 fallDamageHitFlag = true;
             }
-
-            //今回はコントローラーでやるのでL_R_Triggerが0より小さくない時 =右トリガーが押されてなかったら
-            /*if(trigger <= 0)
-             {
-                fallDamageHitFlag = true;
-             }*/
-
             //スローモーション解除
             if (elapsedTime > slowTime)
             {
@@ -1048,6 +1031,17 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
             //PlayerRisetController();
             SceneManager.LoadScene("GameOverScene");
+            break;
+        }
+    }
+
+    //回転処理
+    private IEnumerator StartRotate()
+    {
+        while (true)
+        {
+            this.transform.Rotate(0, 180.0f, 0);
+            yield return null;
             break;
         }
     }
