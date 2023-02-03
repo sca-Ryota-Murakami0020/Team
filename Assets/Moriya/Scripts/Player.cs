@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     //ジャンプした時のx方向スピード
     private float jumpingRunSpeed = 2.5f;
     //壁ジャンプした時のプレイヤーのスピード
-    private float wallJumpRunSpeed = 1.5f;
+    private float wallJumpRunSpeed = 3.0f;
     //ジャンプした時のy方向スピード
     private float jumpSpeed =10.0f;
     //方向速度
@@ -480,7 +480,8 @@ public class Player : MonoBehaviour
         if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
-            if(doStayWall == false)
+            rb.angularVelocity = Vector3.zero;
+            if (doStayWall == false)
             {
                 if (fallFlag == false)
                 {
@@ -672,7 +673,7 @@ public class Player : MonoBehaviour
             if (lineCast != null)
             {
                 //　地面にレイが届いていたら
-                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit))
+                if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, out hit, LayerMask.GetMask("Ground")))
                 {
 
                     //　落下距離を計算
@@ -764,7 +765,7 @@ public class Player : MonoBehaviour
             if (lineCast != null)
             {
                 //レイが届かないなら
-                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange) && doStayWall == false)
+                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")) && doStayWall == false)
                 {
                     //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                     //その時に落下状態を判別するためfallFlagをtrueにする
