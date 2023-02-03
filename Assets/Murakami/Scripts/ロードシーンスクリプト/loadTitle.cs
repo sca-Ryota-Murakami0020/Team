@@ -6,33 +6,96 @@ using UnityEngine.SceneManagement;
 
 public class loadTitle : MonoBehaviour
 {
-    float maxload = 1.0f;
-    [SerializeField] private Slider loadGazeSlider = null;
+    //ロード時間のグラフ
+    [SerializeField] private Slider loadGazeSlider;
+    //フェードイン・フェードアウトするパネル
+    [SerializeField] private GameObject fadePanel;
+    //フェードイン・フェードアウトするパネルの透明度を取得するために定義
+    [SerializeField] private Image fadeAlpha;
+
+    //現在のロード時間
     private float nowGaze = 0.0f;
-    //private GameObject LoadCanvas;
+    //ロード時間の上限
+    private float maxload = 1.0f;
+    //フェードインしたフラグ
+    private bool didFadeIn = false;
+    //現在の透明度
+    private Color pC;
 
     void Start()
     {
-
-        //oadGazeSlider = LoadCanvas.transform.Find("LoadBar").GetComponent<Slider>();
-
         //スライダーの最大値の設定
         loadGazeSlider.maxValue = maxload;
 
         //スライダーの現在値の設定
-        loadGazeSlider.value = 0f;
+        loadGazeSlider.value = 0.0f;
+
+        //パネルのイメージの取得
+        fadeAlpha = fadePanel.GetComponent<Image>();
+
+        //現在のパネルの透明度を取得
+        pC = fadeAlpha.color;
     }
 
     void Update()
     {
-        //ロード処理
-        nowGaze += Time.deltaTime;
-        loadGazeSlider.value = nowGaze / 5.0f;
-
-        //ロードゲージが最大になったら
-        if (nowGaze / 5.0f >= maxload)
+        //フェードインが行われていないなら
+        if (didFadeIn == false)
         {
-            SceneManager.LoadScene("TitleScene");
+            StartCoroutine("FadeIn");
         }
+    }
+
+    //フェードインの処理
+    private IEnumerator FadeIn()
+    {
+        //透明度が0以上なら
+        while (pC.a >= 0)
+        {
+            //指定時間分だけ待つ
+            yield return new WaitForSeconds(0.7f);
+            //少しずつ透明度を上げていく（パネルを透明にしていく）
+            pC.a -= 0.001f;
+            fadeAlpha.color = pC;
+        }
+        //フェードインが行われたフラグを立てる
+        didFadeIn = true;
+        //コルーチン開始
+        StartCoroutine("StartLoadTitle");
+        yield break;
+    }
+
+    //タイトルシーンの読み込み演出処理
+    private IEnumerator StartLoadTitle()
+    {
+        while (nowGaze / 5.0f <= maxload)
+        {
+            //指定時間分だけ待つ
+            yield return new WaitForSeconds(0.7f);
+            //ロード中の演出を行うためにゲージを増やす
+            nowGaze += 0.001f;
+            //ここでゲージを動かす
+            loadGazeSlider.value = nowGaze / 9.0f;
+        }
+        //コルーチン開始
+        StartCoroutine("FadeOut");
+        yield break;
+    }
+
+    //フェードアウトの処理
+    private IEnumerator FadeOut()
+    {
+        //透明度が1以下なら
+        while (pC.a <= 1)
+        {
+            //指定時間分だけ待つ
+            yield return new WaitForSeconds(0.7f);
+            //徐々に透明度を下げる（パネルを色濃くする）
+            pC.a += 0.001f;
+            fadeAlpha.color = pC;
+        }
+        //タイトルシーンを呼び出す
+        SceneManager.LoadScene("TitleScene");
+        yield break;
     }
 }
