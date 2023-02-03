@@ -29,7 +29,7 @@ public class loadBill : MonoBehaviour
         loadGazeSlider.value = nowGaze / 5.0f;
         if (nowGaze / 5.0f >= maxload)
         {
-            SceneManager.LoadSceneAsync("bill");
+            SceneManager.LoadScene("bill");
             //Debug.Log("ƒrƒ‹‚ğŒÄ‚Ño‚µ‚½");
         }
     }
