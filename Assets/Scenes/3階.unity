@@ -3397,8 +3397,8 @@ MonoBehaviour:
   leaveCamera: 1
   cameraHeightMin: -2
   cameraHeightMax: 5
-  verticalMag: 15
-  holizontalMag: 10
+  verticalMag: 18
+  holizontalMag: 15
 --- !u!82 &963194230
 AudioSource:
   m_ObjectHideFlags: 0
