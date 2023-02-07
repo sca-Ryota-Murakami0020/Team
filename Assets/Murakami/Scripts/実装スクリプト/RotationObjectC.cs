@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class RotationObjectC : MonoBehaviour
 {
+    private float countTime = 0.0f;
+    private Vector3 pos;
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("RotationObject");
+        pos = this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private IEnumerator RotationObject()
-    {
-        this.transform.Rotate(0, 1.0f, 0);
-        yield return new WaitForSeconds(0.1f);
+        countTime += 0.01f;
+        this.transform.position = new Vector3(pos.x, pos.y, pos.z + Mathf.Sin(countTime) * 0.07f);
+        this.transform.Rotate(0, 0, 0.05f);
     }
 }

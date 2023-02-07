@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float timeScale = 0.1f;
     //　時間を遅くしている時間
-    private float slowTime = 1f;
+    private float slowTime = 2f;
     //　経過時間
     private float elapsedTime = 0f;
     
@@ -235,7 +235,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(fallDamageHitFlag);
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
@@ -952,7 +952,7 @@ public class Player : MonoBehaviour
         lineCast = null;
          
         //1.0秒待つ
-        yield return  new WaitForSecondsRealtime(1.0f);
+        yield return  new WaitForSecondsRealtime(2.0f);
 
         //slowmotion本体をストップ
         StopCoroutine("StartSlowmotion");
@@ -973,7 +973,7 @@ public class Player : MonoBehaviour
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
             //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
-            if (!Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) == false)
             {
                 Debug.Log("ダメｰジ入るフラグが立ったよ");
                 fallDamageHitFlag = true;

@@ -982,16 +982,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 832238420}
-  cameraSpeed: 4
-  cameraDistance: 7
-  cameraHeight: 1
   nowCameraHeight: 1
-  cPDistance: 0.3
-  leaveCamera: 20
   cameraHeightMin: -5
   cameraHeightMax: 8.5
-  verticalMag: 5
-  holizontalMag: 2
 --- !u!1 &1671673023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,7 +1823,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 3c08f49f95c131c44aa4f55f86d5ba57, type: 3}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: rayRange
-      value: 0.3
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4174694748530694819, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
       propertyPath: loopCount
