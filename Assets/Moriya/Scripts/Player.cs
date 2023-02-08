@@ -148,6 +148,8 @@ public class Player : MonoBehaviour
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip accelSE;//加速用
+    [SerializeField]
+    private AudioClip itemGetSE;
     //効果音がなったら
     private bool soundFlag = true;
 
@@ -235,6 +237,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
+        Debug.Log(fallDamageHitFlag);
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
@@ -578,6 +581,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Item"))
         {
             gm.PlayerIC++;
+            PlaySE(itemGetSE);
             other.gameObject.SetActive(false);
         }
 
@@ -969,10 +973,17 @@ public class Player : MonoBehaviour
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
+            //落下中に右ボタンが押されていたらダメージを発生させない
+            if (Input.GetMouseButton(1))
+            {
+                fallDamageHitFlag = false;
+                Debug.Log("ダメージ無し");
+            }
             //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
             if (Input.GetMouseButton(1) == false)
             {
-                fallDamageHitFlag = false;
+                fallDamageHitFlag = true;
+                Debug.Log("ダメージありの処理");
             }
             //スローモーション解除
             if (elapsedTime > slowTime)

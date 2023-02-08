@@ -352,3 +352,4 @@ MonoBehaviour:
   damegeSE: {fileID: 8300000, guid: 3c08f49f95c131c44aa4f55f86d5ba57, type: 3}
   runSE: {fileID: 8300000, guid: b4db56be49b3c1044a3e544d285edab2, type: 3}
   accelSE: {fileID: 8300000, guid: 0e9d6d138e0f7584e9aa5b31a83a1d00, type: 3}
+  itemGetSE: {fileID: 8300000, guid: 37318f78e41ae844da0d2e0921ce90ff, type: 3}
