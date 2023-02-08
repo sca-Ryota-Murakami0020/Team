@@ -234,8 +234,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        Debug.Log(fallDamageHitFlag);
+    {        
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
@@ -523,8 +522,7 @@ public class Player : MonoBehaviour
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 40, 0));
-
-                Debug.Log("壁ジャンプしたよ");
+                
                 jumpCount++;
 
                 //重力を作用させる
@@ -628,8 +626,7 @@ public class Player : MonoBehaviour
             audios.PlayOneShot(clip);
         }
         else
-        {
-            Debug.Log("オーディオソースが設定されていません");
+        {            
         }
     }
 
@@ -706,7 +703,7 @@ public class Player : MonoBehaviour
                         //ダメージが入るフラグがたった時
                         //Eキーが押されなかった時に入る
                         if (fallDamageHitFlag == true)
-                        {
+                        {                            
                             //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
                             gm.PlayerHp--;
                             fallDamageHitFlag = false;
@@ -975,8 +972,7 @@ public class Player : MonoBehaviour
             //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
             if (Input.GetMouseButton(1) == false)
             {
-                Debug.Log("ダメｰジ入るフラグが立ったよ");
-                fallDamageHitFlag = true;
+                fallDamageHitFlag = false;
             }
             //スローモーション解除
             if (elapsedTime > slowTime)
@@ -987,8 +983,7 @@ public class Player : MonoBehaviour
                 StopCoroutine("Slowmotion");
                 lineCast = StartCoroutine(StartLineCast());//レイ復活
                 break;
-            }
-            Debug.Log("スローモーション中");
+            }            
             yield return null;
         };
     }
