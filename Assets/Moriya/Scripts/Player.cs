@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
     //壁ジャンプした時のプレイヤーのスピード
     private float wallJumpRunSpeed = 3.0f;
     //ジャンプした時のy方向スピード
-    private float jumpSpeed =10.0f;
+    private float jumpSpeed = 10.0f;
     //方向速度
     private float runSpeed = 5.0f;
     //落下中のy方向スピード(使っていない)
-    private float fallSpeed = -0.1f; 
+    private float fallSpeed = -0.1f;
     //ジャンプする回数
     private int jumpCount = 0;
     #endregion
@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
     private float slowTime = 2f;
     //　経過時間
     private float elapsedTime = 0f;
-    
+
     //親オブジェクト
     private GameObject _parent;
     //子オブジェクト
@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float flashInterval;
     //点滅させるときのループカウント
-    [SerializeField] 
+    [SerializeField]
     private int loopCount;
     //当たったかどうかのフラグ
     private bool isHit;
@@ -148,8 +148,6 @@ public class Player : MonoBehaviour
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip accelSE;//加速用
-    [SerializeField]
-    private AudioClip itemGetSE;
     //効果音がなったら
     private bool soundFlag = true;
 
@@ -173,8 +171,8 @@ public class Player : MonoBehaviour
 
     public int JumpCount
     {
-        get {return this.jumpCount; }
-        set {this.jumpCount = value; }
+        get { return this.jumpCount; }
+        set { this.jumpCount = value; }
     }
 
     public bool RollingJumpFlag
@@ -191,9 +189,9 @@ public class Player : MonoBehaviour
 
     public bool DoInputButtonFlag
     {
-        get { return this.doInputButtonFlag;}
-        set { this.doInputButtonFlag = value;}
-    }   
+        get { return this.doInputButtonFlag; }
+        set { this.doInputButtonFlag = value; }
+    }
 
     #endregion
 
@@ -215,20 +213,20 @@ public class Player : MonoBehaviour
 
         //hp初期化
         oldHp = gm.PlayerHp;
- 
+
         //親オブジェクト取得
         _parent = transform.root.gameObject;
 
         //子オブジェクト取得
-        child =transform.GetChild(2).gameObject;
-        
+        child = transform.GetChild(2).gameObject;
+
         //アニメーション初期化
-        anime.SetBool("doIdle",true);
+        anime.SetBool("doIdle", true);
 
         //落ちた時に使う数値リセット
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
-        fallFlag= false;
+        fallFlag = false;
 
         //ray投射開始
         lineCast = StartCoroutine("StartLineCast");
@@ -236,8 +234,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
-        Debug.Log(fallDamageHitFlag);
+    {
         //プレイヤーhp表示をするためのfor文
         for (int i = 0; i < gm.PlayerHp; i++)
         {
@@ -245,7 +242,7 @@ public class Player : MonoBehaviour
         }
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
-    
+
         // ステートがダメージならリターン
         if (state == STATE.DAMAGED)
         {
@@ -255,7 +252,7 @@ public class Player : MonoBehaviour
         //カメラの角度取得と単位ベクトル化
         mainCameraForwardDer = mainCamera.transform.forward.normalized;
         mainCameraRightDer = mainCamera.transform.right.normalized;
-        Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x,0,mainCameraForwardDer.z);
+        Vector3 cameraDreNoY = new Vector3(mainCameraForwardDer.x, 0, mainCameraForwardDer.z);
         cameraDreNoY = cameraDreNoY.normalized;
 
         //何もなかったら待機モーション
@@ -318,7 +315,7 @@ public class Player : MonoBehaviour
             //制限時間計算と速度変換
             speedCTime++;
             runSpeed = accelSpeed;
-            if(speedTime < speedCTime)
+            if (speedTime < speedCTime)
             {
                 //Debug.Log("加速終わったよ");
                 //制限時間＆速度リセット
@@ -333,12 +330,12 @@ public class Player : MonoBehaviour
         //十字キー操作
         //中の処理はWASDどれも同じ
         //左方向に向いて移動したら
-         if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
-         {
+        if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
+        {
             moveFlag = true;
 
             //落下中ではなければ歩きモーションをたてる
-            if( fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -353,28 +350,28 @@ public class Player : MonoBehaviour
             //通常ジャンプと壁ジャンプのスピード
             if (jumpFlag == true)
             {
-               _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
+                _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
 
             //ローロングジャンプのスピード
-            if(rollingJumpDidFlag == true)
+            if (rollingJumpDidFlag == true)
             {
                 _parent.transform.position -= mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
             }
 
-            if(wallJumpDidFlag == true)
+            if (wallJumpDidFlag == true)
             {
                 _parent.transform.position -= mainCameraRightDer * wallJumpRunSpeed * Time.deltaTime;
             }
 
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
-         }
+        }
 
-         //右方向に向いて移動したら
-         if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false)
-         {
+        //右方向に向いて移動したら
+        if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false)
+        {
             moveFlag = true;
-            if ( fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -402,11 +399,11 @@ public class Player : MonoBehaviour
             }
 
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
-         }
+        }
 
-         //上方向に向いて移動したら
-         if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false)
-         {
+        //上方向に向いて移動したら
+        if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false)
+        {
             moveFlag = true;
             if (fallFlag == false)
             {
@@ -418,7 +415,7 @@ public class Player : MonoBehaviour
             if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position += cameraDreNoY * runSpeed * Time.deltaTime;
-              
+
             }
 
             //通常ジャンプと壁ジャンプのスピード
@@ -428,7 +425,7 @@ public class Player : MonoBehaviour
             }
 
             if (rollingJumpDidFlag == true)
-            { 
+            {
                 _parent.transform.position += cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
             }
 
@@ -438,14 +435,14 @@ public class Player : MonoBehaviour
             }
 
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
-         }
+        }
 
         //下方向に向いて移動したら
-         if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false)
-         {
+        if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false)
+        {
             moveFlag = true;
 
-            if ( fallFlag == false)
+            if (fallFlag == false)
             {
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
@@ -473,10 +470,10 @@ public class Player : MonoBehaviour
             }
 
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
-         }
+        }
 
-         //方向キーが押されていなければここに入る
-        if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) &&!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        //方向キーが押されていなければここに入る
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             moveFlag = false;
             rb.angularVelocity = Vector3.zero;
@@ -484,15 +481,15 @@ public class Player : MonoBehaviour
             {
                 if (fallFlag == false)
                 {
-                   //落下中でなければ待機モーションに入る
-                  anime.SetBool("doIdle", true);
-                  anime.SetBool("doWalk", false);
+                    //落下中でなければ待機モーションに入る
+                    anime.SetBool("doIdle", true);
+                    anime.SetBool("doWalk", false);
                 }
             }
         }
 
         //ジャンプの動き
-        if (Input.GetKeyDown(KeyCode.Space)&& jumpCount == 0 && fallFlag == false)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && fallFlag == false)
         {
             //ジャンプの効果音を流す
             PlaySE(jumpSE);
@@ -519,13 +516,13 @@ public class Player : MonoBehaviour
             }
 
             //壁ジャンプができるなら
-            if(wallJumpFlag == true)
+            if (wallJumpFlag == true)
             {
                 //壁ジャンプしたフラグとアニメーション関係
                 wallJumpDidFlag = true;
                 anime.SetTrigger("DoWallJump");
                 this.rb.AddForce(new Vector3(0, jumpSpeed * 40, 0));
-                
+
                 jumpCount++;
 
                 //重力を作用させる
@@ -561,7 +558,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             rollingJumpFlag = false;
-            pWallC.WallJumpHitFlag =false;
+            pWallC.WallJumpHitFlag = false;
             jumpCount = 0;
         }
 
@@ -576,23 +573,22 @@ public class Player : MonoBehaviour
 
     //isTriggerがついている時の処理
     private void OnTriggerEnter(Collider other)
-    { 
+    {
         //アイテムに当たったら
         if (other.gameObject.CompareTag("Item"))
         {
             gm.PlayerIC++;
-            PlaySE(itemGetSE);
             other.gameObject.SetActive(false);
         }
 
         //シーン移動
-        if(other.gameObject.name == "goalPoint")
+        if (other.gameObject.name == "goalPoint")
         {
             gm.LoadGameClear();
             SceneManager.LoadScene("GoalScene");
         }
 
-        if(other.gameObject.name == "LoadFirstStagePoint" && gm.PlayerIC >= 1)
+        if (other.gameObject.name == "LoadFirstStagePoint" && gm.PlayerIC >= 1)
         {
             SceneManager.LoadScene("LoadFirstStage");
         }
@@ -609,13 +605,13 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("LoadTherdStage");//ロードシーンの名前を書く;
         }
 
-        if(other.gameObject.name == "LoadLastPoint")
+        if (other.gameObject.name == "LoadLastPoint")
         {
             SceneManager.LoadScene("LoadLastStage");
         }
     }
 
- 
+
     //Hp減った時の処理
     private void HpDisplay()
     {
@@ -630,7 +626,7 @@ public class Player : MonoBehaviour
             audios.PlayOneShot(clip);
         }
         else
-        {            
+        {
         }
     }
 
@@ -645,7 +641,7 @@ public class Player : MonoBehaviour
         {
             PlaySE(runSE);
         }
-       
+
     }
 
     //地面にふれた時のアニメーション関係
@@ -661,8 +657,8 @@ public class Player : MonoBehaviour
             {
                 ClingToWall();
             }
-              
-             //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
+
+            //落下地点と現在地の距離を計算（ジャンプ等で上に飛んで落下した場合を考慮する為の処理）
             //落下地点 = 落下地点かプレイヤーの落下地点の最大値
             fallenPosition = Mathf.Max(fallenPosition, transform.position.y);
             RaycastHit hit;
@@ -707,7 +703,7 @@ public class Player : MonoBehaviour
                         //ダメージが入るフラグがたった時
                         //Eキーが押されなかった時に入る
                         if (fallDamageHitFlag == true)
-                        {                            
+                        {
                             //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
                             gm.PlayerHp--;
                             fallDamageHitFlag = false;
@@ -724,7 +720,7 @@ public class Player : MonoBehaviour
                             //ローロングジャンプポイントに着地したら
                             if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
                             {
-                               RollingPointAnime();
+                                RollingPointAnime();
                             }
                         }
                     }
@@ -738,13 +734,13 @@ public class Player : MonoBehaviour
                         //上と同じくしている
                         if (hit.transform.gameObject.CompareTag("Ground"))
                         {
-                           GroundAnime();
+                            GroundAnime();
                         }
 
                         //上と同じ
                         if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
                         {
-                           RollingPointAnime();
+                            RollingPointAnime();
                         }
                     }
                     //ここでフラグおり＆着地の効果音を入れている
@@ -761,7 +757,7 @@ public class Player : MonoBehaviour
             if (lineCast != null)
             {
                 //レイが届かないなら
-                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange,LayerMask.GetMask("Ground")) && doStayWall == false)
+                if (!Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.down * rayRange, LayerMask.GetMask("Ground")) && doStayWall == false)
                 {
                     //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                     //その時に落下状態を判別するためfallFlagをtrueにする
@@ -932,40 +928,29 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-          if(fallFlag == true)
-          {
+            if (fallFlag == true)
+            {
                 break;
-          }
-          if(fallFlag == false)
-          {
+            }
+            if (fallFlag == false)
+            {
                 yield return null;
-          }
+            }
         }
     }
 
     //スローモーションの元コルーチン
     private IEnumerator StartSlowmotion()
     {
-        //slowmotion本体を起動
-        StartCoroutine("Slowmotion");
-
         //レイは飛ばさない
         lineCast = null;
-         
-        //1.0秒待つ
-        yield return  new WaitForSecondsRealtime(2.0f);
 
-        //slowmotion本体をストップ
-        StopCoroutine("StartSlowmotion");
-        StopCoroutine("Slowmotion");
-    }
-
-    //スローモーションするコルーチン
-    private IEnumerator Slowmotion()
-    {
         //遅くする
         Time.timeScale = timeScale;
-       
+
+        //スローモーション中に一回でも右クリックが押されたかどうかの判定
+        bool isClicked = false;
+
         //時間計測＋キー判定
         while (elapsedTime < slowTime)
         {
@@ -973,30 +958,27 @@ public class Player : MonoBehaviour
             Time.timeScale = timeScale;
             //スローモーションの制限時間用
             elapsedTime += Time.unscaledDeltaTime;
-            //落下中に右ボタンが押されていたらダメージを発生させない
-            if (Input.GetMouseButton(1))
+            //　落下によるダメージが発生する距離を超える場合に右クリックが押されているかどうか
+            if (Input.GetMouseButton(1) == true)
             {
-                fallDamageHitFlag = false;
-                Debug.Log("ダメージ無し");
-            }
-            //　落下によるダメージが発生する距離を超える場合に右マウスが押されていなかったらダメージを与える
-            if (Input.GetMouseButton(1) == false)
-            {
-                fallDamageHitFlag = true;
-                Debug.Log("ダメージありの処理");
+                isClicked = true;
             }
             //スローモーション解除
             if (elapsedTime > slowTime)
             {
+                //右クリックされていなければ，ダメージ判定をさせる
+                if (!isClicked) { fallDamageHitFlag = true; }
                 //Debug.Log("とけた");
                 Time.timeScale = 1f;
                 elapsedTime = 0.0f;
-                StopCoroutine("Slowmotion");
                 lineCast = StartCoroutine(StartLineCast());//レイ復活
                 break;
-            }            
+            }
             yield return null;
         };
+
+        //slowmotion本体をストップ
+        StopCoroutine("StartSlowmotion");
     }
 
     //ダメージが入った時の点滅処理
