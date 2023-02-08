@@ -148,6 +148,8 @@ public class Player : MonoBehaviour
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip accelSE;//加速用
+    [SerializeField]
+    private AudioClip itemGetSE;
     //効果音がなったら
     private bool soundFlag = true;
 
@@ -577,6 +579,7 @@ public class Player : MonoBehaviour
         //アイテムに当たったら
         if (other.gameObject.CompareTag("Item"))
         {
+            PlaySE(itemGetSE);
             gm.PlayerIC++;
             other.gameObject.SetActive(false);
         }
@@ -699,16 +702,16 @@ public class Player : MonoBehaviour
 
                             //加速するフラグをたてる
                             speedAccelerationFlag = true;
+
                         }
                         //ダメージが入るフラグがたった時
                         //Eキーが押されなかった時に入る
                         if (fallDamageHitFlag == true)
                         {
                             //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
-                            gm.PlayerHp--;
+                            Debug.Log("fahf :" + fallDamageHitFlag);
+                            OnDamaged();
                             fallDamageHitFlag = false;
-                            state = STATE.DAMAGED;
-                            StartCoroutine(_hit());
                             anime.SetBool("doLanding", true);
 
                             //地面に着地したら
@@ -922,6 +925,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    //落下ダメージ処理に入った時
+    private void OnDamaged()
+    {
+        gm.PlayerHp--;
+        state = STATE.DAMAGED;
+        StartCoroutine(_hit());
+
+    }
+
     #region//コルーチン
     //レイを投射するコルーチン
     private IEnumerator StartLineCast()
@@ -967,7 +979,13 @@ public class Player : MonoBehaviour
             if (elapsedTime > slowTime)
             {
                 //右クリックされていなければ，ダメージ判定をさせる
-                if (!isClicked) { fallDamageHitFlag = true; }
+                if (!isClicked)
+                {
+                    fallDamageHitFlag = true;
+                    Debug.Log("入った");
+                    //Debug.Log(fallDamageHitFlag);
+                    OnDamaged();
+                }
                 //Debug.Log("とけた");
                 Time.timeScale = 1f;
                 elapsedTime = 0.0f;
