@@ -574,27 +574,13 @@ public class Player : MonoBehaviour
             pWallC.WallJumpHitFlag = false;
             jumpCount = 0;
         }
-
-       
-
+      
         //ローリングジャンプポイントに当たったら
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
             rollingJumpFlag = true;
             pWallC.WallJumpHitFlag = false;
             jumpCount = 0;
-        }
-    }
-
-    //isTriggerがついている時の処理
-    private void OnTriggerEnter(Collider other)
-    {
-        //アイテムに当たったら
-        if (other.gameObject.CompareTag("Item"))
-        {
-            PlaySE(itemGetSE);
-            gm.PlayerIC++;
-            other.gameObject.SetActive(false);
         }
 
         //シーン移動
@@ -624,6 +610,18 @@ public class Player : MonoBehaviour
         if (other.gameObject.name == "LoadLastPoint")
         {
             SceneManager.LoadScene("LoadLastStage");
+        }
+    }
+
+    //isTriggerがついている時の処理
+    private void OnTriggerEnter(Collider other)
+    {
+        //アイテムに当たったら
+        if (other.gameObject.CompareTag("Item"))
+        {
+            PlaySE(itemGetSE);
+            gm.PlayerIC++;
+            other.gameObject.SetActive(false);
         }
     }
 
