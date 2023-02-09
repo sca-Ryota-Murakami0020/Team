@@ -663,24 +663,24 @@ public class Player : MonoBehaviour
     private void KnockBack()
     {
         RaycastHit hit;
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * raySideRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
-            Debug.Log("ノックバック修正");
+            Debug.Log("ノックバック前修正");
             this.transform.position += new Vector3(0,0,-0.1f);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * raySideRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
-            Debug.Log("ノックバック修正");
+            Debug.Log("ノックバック後ろ修正");
             this.transform.position += new Vector3(0, 0, 0.1f);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * raySideRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
-            Debug.Log("ノックバック修正");
+            Debug.Log("ノックバック左修正");
             this.transform.position += new Vector3(-0.1f, 0, 0);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * raySideRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
-            Debug.Log("ノックバック修正");
+            Debug.Log("ノックバック右修正");
             this.transform.position += new Vector3(0.1f, 0, 0);
         }
     }
