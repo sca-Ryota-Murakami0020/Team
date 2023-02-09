@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
         }
 
         //ノックバック
-        KnockBack();
+        //KnockBack();
 
         //　落ちている状態
         //落下中の処理(ほぼアニメーション)
@@ -660,7 +660,7 @@ public class Player : MonoBehaviour
     }
 
     //ノックバック
-    private void KnockBack()
+    /*private void KnockBack()
     {
         RaycastHit hit;
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * raySideRange, out hit, LayerMask.GetMask("Bill")))
@@ -683,7 +683,7 @@ public class Player : MonoBehaviour
             Debug.Log("ノックバック右修正");
             this.transform.position += new Vector3(-0.2f, 0, 0);
         }
-    }
+    }*/
 
     //地面にふれた時のアニメーション関係
     public void FallAnime()
