@@ -29,6 +29,7 @@ TagManager:
   - LoadTherdPoint
   - LoadFirstStagePoint
   - OutSidePoint
+  - Bill
   layers:
   - Default
   - TransparentFX

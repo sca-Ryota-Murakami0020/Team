@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private int oldHp;
     //移動速度
     //ローリングジャンプした時のx方向スピード
-    private float jumpRollingSpeed = 3.0f;
+    private float jumpRollingSpeed = 4.0f;
     //ジャンプした時のx方向スピード
     private float jumpingRunSpeed = 2.5f;
     //壁ジャンプした時のプレイヤーのスピード
@@ -245,6 +245,11 @@ public class Player : MonoBehaviour
 
         Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
 
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.right * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.back * rayRange, Color.red, 1.0f);
+
         // ステートがダメージならリターン
         if (state == STATE.DAMAGED)
         {
@@ -282,6 +287,9 @@ public class Player : MonoBehaviour
                 StartCoroutine(GameOver());
             }
         }
+
+        //ノックバック
+        
 
         //　落ちている状態
         //落下中の処理(ほぼアニメーション)
@@ -564,6 +572,8 @@ public class Player : MonoBehaviour
             jumpCount = 0;
         }
 
+       
+
         //ローリングジャンプポイントに当たったら
         if (other.gameObject.CompareTag("RollingJumpPoint"))
         {
@@ -605,7 +615,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.name == "LoadTherdPoint" && gm.PlayerIC >= 3)
         {
             //三個目のロードシーンにもちこむやつをかく
-            SceneManager.LoadScene("LoadTherdStage");//ロードシーンの名前を書く;
+            SceneManager.LoadScene("LoadTherdStage");
         }
 
         if (other.gameObject.name == "LoadLastPoint")
@@ -613,7 +623,6 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("LoadLastStage");
         }
     }
-
 
     //Hp減った時の処理
     private void HpDisplay()
@@ -645,6 +654,28 @@ public class Player : MonoBehaviour
             PlaySE(runSE);
         }
 
+    }
+
+    //ノックバック
+    private void KnockBack()
+    {
+        RaycastHit hit;
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, out hit, LayerMask.GetMask("Ground")))
+        {
+            this.transform.position += new Vector3(0,0,-0.1f);
+        }
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * rayRange, out hit, LayerMask.GetMask("Ground")))
+        {
+            this.transform.position += new Vector3(0, 0, 0.1f);
+        }
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * rayRange, out hit, LayerMask.GetMask("Ground")))
+        {
+            this.transform.position += new Vector3(-0.1f, 0, 0);
+        }
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * rayRange, out hit, LayerMask.GetMask("Ground")))
+        {
+            this.transform.position += new Vector3(0.1f, 0, 0);
+        }
     }
 
     //地面にふれた時のアニメーション関係

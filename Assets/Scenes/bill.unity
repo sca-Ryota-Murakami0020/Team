@@ -671,7 +671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.939197
+      value: 7.1234727
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_LocalScale.y
@@ -679,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.500122
+      value: 7.9081
       objectReference: {fileID: 0}
     - target: {fileID: 1140800084783159111, guid: 4f6cec6f676261f438fbc36a5e842879, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8269,9 +8269,9 @@ GameObject:
   - component: {fileID: 2253806336644089103}
   - component: {fileID: 2253806336644089096}
   - component: {fileID: 2253806336644089097}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BILL
-  m_TagString: Untagged
+  m_TagString: Bill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
