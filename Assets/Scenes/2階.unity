@@ -2048,6 +2048,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8563644905687810048, guid: 41989c32502719744a66db11e22c2ce4, type: 3}
   m_PrefabInstance: {fileID: 372210089}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &951249688
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951249687}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,16 +2160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 951249687}
-  cameraSpeed: 3
-  cameraDistance: 4
-  cameraHeight: 3
   nowCameraHeight: 4
-  cPDistance: 1
-  leaveCamera: 1
   cameraHeightMin: -3
   cameraHeightMax: 6
-  verticalMag: 15
-  holizontalMag: 12
 --- !u!82 &963194230
 AudioSource:
   m_ObjectHideFlags: 0
