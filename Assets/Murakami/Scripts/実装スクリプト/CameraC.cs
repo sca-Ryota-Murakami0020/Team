@@ -23,17 +23,17 @@ public class CameraC : MonoBehaviour
     //PLayerを追従する速度
     private float cameraSpeed = 3.0f;
     //視点からカメラまでの距離
-    private float cameraDistance = 4.0f;
+    private float cameraDistance = 4.6f;
     //デフォルトの高さ
-    private float cameraHeight = 2.0f;
+    private float cameraHeight = 2.5f;
     //離れる時の速度
     private float leaveCamera = 15.0f;
     //視点からカメラの距離の遊び
     private float cPDistance = 0.5f;
     //縦移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
-    private float verticalMag = 20.0f;
+    private float verticalMag = 21.5f;
     //横移動用速度倍率（数値が高いほどカメラの動きは遅くなる）
-    private float holizontalMag = 20.0f;
+    private float holizontalMag = 21.4f;
     //壁ジャンで用いるスクリプト
     private PlayerWallCon pWC;
     //PasueDisplayC

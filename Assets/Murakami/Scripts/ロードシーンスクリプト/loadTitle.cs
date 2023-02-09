@@ -68,14 +68,14 @@ public class loadTitle : MonoBehaviour
     //タイトルシーンの読み込み演出処理
     private IEnumerator StartLoadTitle()
     {
-        while (nowGaze / 5.0f <= maxload)
+        while (nowGaze <= maxload)
         {
             //指定時間分だけ待つ
             yield return new WaitForSeconds(0.7f);
             //ロード中の演出を行うためにゲージを増やす
             nowGaze += 0.001f;
             //ここでゲージを動かす
-            loadGazeSlider.value = nowGaze / 9.0f;
+            loadGazeSlider.value = nowGaze;
         }
         //コルーチン開始
         StartCoroutine("FadeOut");

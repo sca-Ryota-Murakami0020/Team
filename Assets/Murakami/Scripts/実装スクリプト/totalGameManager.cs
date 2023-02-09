@@ -156,14 +156,14 @@ public class totalGameManager : MonoBehaviour
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
     {
         //それぞれのプレイシーンが呼び出されたら
-        if (nextScene.name == "bill" || nextScene.name == "1階" || nextScene.name == "2階" || nextScene.name == "3階")
+        if (nextScene.name == "bill" || nextScene.name == "1階" || nextScene.name == "2階" || nextScene.name == "3階" || nextScene.name == "LastScene")
         {
             //タイム計測を開始or再開させる
             timeCounter = true;
         }
 
         //それぞれのプレイシーンの前に呼び出すロードシーンが呼び出されたら
-        if (nextScene.name == "LoadFirstStage" || nextScene.name == "LoadSecondStage" || nextScene.name == "LoadTherdStage")
+        if (nextScene.name == "LoadFirstStage" || nextScene.name == "LoadSecondStage" || nextScene.name == "LoadTherdStage" || nextScene.name == "LoadLastStage")
         {
             //タイム計測を一旦停止させる
             timeCounter = false;

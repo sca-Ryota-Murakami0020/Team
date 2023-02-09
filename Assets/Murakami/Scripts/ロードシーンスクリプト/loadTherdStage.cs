@@ -68,14 +68,14 @@ public class loadTherdStage : MonoBehaviour
     //3階ステージシーンの読み込み演出処理
     private IEnumerator StartLoadTherdStage()
     {
-        while (nowGaze / 5.0f <= maxload)
+        while (nowGaze <= maxload)
         {
             //１フレームだけ待つ
             yield return null;
             //ロード中の演出を行うためにゲージを増やす
             nowGaze += 0.001f;
             //ここでゲージを動かす
-            loadGazeSlider.value = nowGaze / 9.0f;
+            loadGazeSlider.value = nowGaze;
         }
         //コルーチン開始
         StartCoroutine("FadeOut");

@@ -680,52 +680,8 @@ public class Player : MonoBehaviour
                         //アニメーションフラグをおる
                         anime.SetBool("doFall", false);
                         //スローモーション移行
-                        StartCoroutine("StartSlowmotion");
+                        StartCoroutine("StartSlowmotion",hit);
 
-                        //ダメージが入るフラグが立っていない時
-                        //Eキーが押されたらこの中に入る
-                        if (fallDamageHitFlag == false)
-                        {
-                            //ローロング着地のフラグを立てる
-                            anime.SetBool("doLandRolling", true);
-                            //地面に着地したら
-                            if (hit.transform.gameObject.CompareTag("Ground"))
-                            {
-                                GroundAnime();
-                            }
-
-                            //ローロングジャンプポイントに着地したら
-                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                            {
-                                RollingPointAnime();
-                            }
-
-                            //加速するフラグをたてる
-                            speedAccelerationFlag = true;
-
-                        }
-                        //ダメージが入るフラグがたった時
-                        //Eキーが押されなかった時に入る
-                        if (fallDamageHitFlag == true)
-                        {
-                            //プレイヤーのHp減少・プレイヤー点滅処理・フラグを折る
-                            Debug.Log("fahf :" + fallDamageHitFlag);
-                            OnDamaged();
-                            fallDamageHitFlag = false;
-                            anime.SetBool("doLanding", true);
-
-                            //地面に着地したら
-                            if (hit.transform.gameObject.CompareTag("Ground"))
-                            {
-                                GroundAnime();
-                            }
-
-                            //ローロングジャンプポイントに着地したら
-                            if (hit.transform.gameObject.CompareTag("RollingJumpPoint"))
-                            {
-                                RollingPointAnime();
-                            }
-                        }
                     }
                     //ダメージなしの着地
                     if (fallenDistance <= takeDamageDistance)
@@ -926,11 +882,45 @@ public class Player : MonoBehaviour
     }
 
     //落下ダメージ処理に入った時
-    private void OnDamaged()
+    private void OnDamaged(RaycastHit hitray)
     {
         gm.PlayerHp--;
         state = STATE.DAMAGED;
         StartCoroutine(_hit());
+        fallDamageHitFlag = false;
+        anime.SetBool("doLanding", true);
+
+        //地面に着地したら
+        if (hitray.transform.gameObject.CompareTag("Ground"))
+        {
+            GroundAnime();
+        }
+
+        //ローロングジャンプポイントに着地したら
+        if (hitray.transform.gameObject.CompareTag("RollingJumpPoint"))
+        {
+            RollingPointAnime();
+        }
+    }
+
+    private void NoDamaged(RaycastHit hitray)
+    {
+        //ローロング着地のフラグを立てる
+        anime.SetBool("doLandRolling", true);
+        //地面に着地したら
+        if (hitray.transform.gameObject.CompareTag("Ground"))
+        {
+            GroundAnime();
+        }
+
+        //ローロングジャンプポイントに着地したら
+        if (hitray.transform.gameObject.CompareTag("RollingJumpPoint"))
+        {
+            RollingPointAnime();
+        }
+
+        //加速するフラグをたてる
+        speedAccelerationFlag = true;
 
     }
 
@@ -952,7 +942,7 @@ public class Player : MonoBehaviour
     }
 
     //スローモーションの元コルーチン
-    private IEnumerator StartSlowmotion()
+    private IEnumerator StartSlowmotion(RaycastHit _hit)
     {
         //レイは飛ばさない
         lineCast = null;
@@ -979,12 +969,15 @@ public class Player : MonoBehaviour
             if (elapsedTime > slowTime)
             {
                 //右クリックされていなければ，ダメージ判定をさせる
-                if (!isClicked)
+                if (isClicked == false)
                 {
-                    fallDamageHitFlag = true;
                     Debug.Log("入った");
-                    //Debug.Log(fallDamageHitFlag);
-                    OnDamaged();
+                    OnDamaged(_hit);
+                }
+                if(isClicked == true)
+                {
+                    Debug.Log("ダメージなし");
+                    NoDamaged(_hit);
                 }
                 //Debug.Log("とけた");
                 Time.timeScale = 1f;
