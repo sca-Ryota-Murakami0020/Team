@@ -39,10 +39,7 @@ public class SecondScore : MonoBehaviour
         //10分単位のImage画像の初期化
         tenMinImage.sprite = numberImage[0];
 
-        counter = 0;
-
-        //ハイスコア更新
-        UpLoadSecondTime();
+        counter = 0;     
     }
 
     /*
@@ -74,26 +71,27 @@ public class SecondScore : MonoBehaviour
             //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[1] / 600)];
         }
+        StartCoroutine("StartSecondScore");
     }
 
     private IEnumerator StartSecondScore()
     {
         //画面外から移動してくる
-        if (counter <= 300 && counter >= 0)
+        if (counter <= 255 && counter >= 0)
         {
-            timer.position -= new Vector3(2.0f, 0, 0);
+            timer.position -= new Vector3(2.5f, 0, 0);
             counter++;
         }
-        //ある程度進んだら減速する
-        if (counter <= 500 && counter >= 300)
+        //ある程度移動したら減速する
+        if (counter <= 333 && counter >= 255)
         {
-            timer.position -= new Vector3(1.0f, 0, 0);
+            timer.position -= new Vector3(1.5f, 0, 0);
             counter++;
         }
         //一秒間待機する
         yield return new WaitForSeconds(1.5f);
         //待機が終わった後に1位のハイスコアのテキストを動かすコルーチンを作動させる
-        hst.StartCoroutine("StartHighScore");
+        hst.UpdateHighScore();
         yield break;
     }
 }

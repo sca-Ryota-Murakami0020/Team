@@ -41,16 +41,7 @@ public class TherdScore : MonoBehaviour
         tenMinImage.sprite = numberImage[0];
 
         counter = 0;
-
-        //ハイスコア更新
-        UpdateTherdScore();
     }
-
-    /*
-    void Update()
-    {
-        
-    }*/
 
     public void UpdateTherdScore()
     {
@@ -75,25 +66,26 @@ public class TherdScore : MonoBehaviour
             //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[2] / 600)];
         }
+        StartCoroutine("StartTherdScore");
     }
 
     private IEnumerator StartTherdScore()
     {
         //画面外から移動してくる
-        if (counter <= 300 && counter >= 0)
+        if (counter <= 255 && counter >= 0)
         {
-            timer.position -= new Vector3(2.0f, 0, 0);
+            timer.position -= new Vector3(2.5f, 0, 0);
             counter++;
         }
         //ある程度移動したら減速する
-        if (counter <= 500 && counter >= 300)
+        if (counter <= 333 && counter >= 255)
         {
-            timer.position -= new Vector3(1.0f, 0, 0);
+            timer.position -= new Vector3(1.5f, 0, 0);
             counter++;
         }
         yield return new WaitForSeconds(1.5f);
         //1秒後2位のハイスコアテキストを移動させるコルーチンを作動させる
-        ss.StartCoroutine("StartSecondScore");
+        ss.UpLoadSecondTime();
         yield break;
     }
 }

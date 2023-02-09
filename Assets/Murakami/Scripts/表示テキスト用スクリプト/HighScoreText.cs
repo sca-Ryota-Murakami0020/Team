@@ -35,16 +35,7 @@ public class HighScoreText : MonoBehaviour
         //10分単位のImage画像の初期化
         tenMinImage.sprite = numberImage[0];
         counter = 0;
-
-        //ハイスコア更新
-        UpdateHighScore();
     }
-
-    /*
-    void Update()
-    {
-
-    }*/
 
     public void UpdateHighScore()
     {
@@ -70,20 +61,21 @@ public class HighScoreText : MonoBehaviour
             //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
         }
+        StartCoroutine("StartHighScore");
     }
 
     private IEnumerator StartHighScore()
     {
         //画面外から移動してくる
-        if (counter <= 300 && counter >= 0)
+        if (counter <= 255 && counter >= 0)
         {
-            timer.position -= new Vector3(2.0f, 0, 0);
+            timer.position -= new Vector3(2.5f, 0, 0);
             counter++;
         }
-        //ある程度進んだら減速する
-        if (counter <= 500 && counter >= 300)
+        //ある程度移動したら減速する
+        if (counter <= 333 && counter >= 255)
         {
-            timer.position -= new Vector3(1.0f, 0, 0);
+            timer.position -= new Vector3(1.5f, 0, 0);
             counter++;
         }
         yield return new WaitForSeconds(1);

@@ -666,22 +666,22 @@ public class Player : MonoBehaviour
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
             Debug.Log("ノックバック前修正");
-            this.transform.position += new Vector3(0,0,-0.1f);
+            this.transform.position += new Vector3(0,0,0.2f);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
             Debug.Log("ノックバック後ろ修正");
-            this.transform.position += new Vector3(0, 0, 0.1f);
+            this.transform.position += new Vector3(0, 0, -0.2f);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
             Debug.Log("ノックバック左修正");
-            this.transform.position += new Vector3(-0.1f, 0, 0);
+            this.transform.position += new Vector3(0.2f, 0, 0);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * raySideRange, out hit, LayerMask.GetMask("Bill")))
         {
             Debug.Log("ノックバック右修正");
-            this.transform.position += new Vector3(0.1f, 0, 0);
+            this.transform.position += new Vector3(-0.2f, 0, 0);
         }
     }
 
