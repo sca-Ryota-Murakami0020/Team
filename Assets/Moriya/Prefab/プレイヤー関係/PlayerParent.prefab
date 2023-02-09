@@ -336,7 +336,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anime: {fileID: 2670541578645781811}
   rayPosition: {fileID: 9048854286861818554}
-  rayRange: 0.5
+  rayRange: 0.4
+  raySideRange: 0.3
   takeDamageDistance: 3
   timeScale: 0.1
   mainCamera: {fileID: 0}

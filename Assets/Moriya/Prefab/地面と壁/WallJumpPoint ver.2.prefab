@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6992033103831676221}
   - component: {fileID: 2792211217931470806}
   - component: {fileID: 2673511013308340655}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: WallJumpPoint ver.2
   m_TagString: WallJumpPoint
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 2744343839711192574}
   - component: {fileID: 2744343839711192575}
   - component: {fileID: 2744343839711192572}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: WallJumpPoint ver.2
   m_TagString: WallJumpPoint
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 9077771250210296850}
   - component: {fileID: 5327917016927103351}
   - component: {fileID: 6715629705426352676}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: WallJumpPoint ver.2
   m_TagString: WallJumpPoint
   m_Icon: {fileID: 0}

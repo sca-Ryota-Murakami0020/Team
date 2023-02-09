@@ -66,9 +66,12 @@ public class Player : MonoBehaviour
     //　レイを飛ばす場所
     [SerializeField]
     private Transform rayPosition;
-    //　レイを飛ばす距離
+    //　下方向にレイを飛ばす距離
     [SerializeField]
     private float rayRange;
+    //　横方向をレイを飛ばす距離
+    [SerializeField]
+    private float raySideRange;
     //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
@@ -660,22 +663,22 @@ public class Player : MonoBehaviour
     private void KnockBack()
     {
         RaycastHit hit;
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * raySideRange, out hit, LayerMask.GetMask("Ground")))
         {
             Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0,0,-0.1f);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * rayRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * raySideRange, out hit, LayerMask.GetMask("Ground")))
         {
             Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0, 0, 0.1f);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * rayRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * raySideRange, out hit, LayerMask.GetMask("Ground")))
         {
             Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(-0.1f, 0, 0);
         }
-        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * rayRange, out hit, LayerMask.GetMask("Ground")))
+        if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * raySideRange, out hit, LayerMask.GetMask("Ground")))
         {
             Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0.1f, 0, 0);
