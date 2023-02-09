@@ -289,7 +289,7 @@ public class Player : MonoBehaviour
         }
 
         //ノックバック
-        
+        KnockBack();
 
         //　落ちている状態
         //落下中の処理(ほぼアニメーション)
@@ -662,18 +662,22 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, out hit, LayerMask.GetMask("Ground")))
         {
+            Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0,0,-0.1f);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.back * rayRange, out hit, LayerMask.GetMask("Ground")))
         {
+            Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0, 0, 0.1f);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.left * rayRange, out hit, LayerMask.GetMask("Ground")))
         {
+            Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(-0.1f, 0, 0);
         }
         if (Physics.Linecast(rayPosition.position, rayPosition.position + Vector3.right * rayRange, out hit, LayerMask.GetMask("Ground")))
         {
+            Debug.Log("ノックバック修正");
             this.transform.position += new Vector3(0.1f, 0, 0);
         }
     }
