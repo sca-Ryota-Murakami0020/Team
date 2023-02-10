@@ -23,7 +23,7 @@ public class SecondScore : MonoBehaviour
     //テキストを動かすために必要な宣言
     [SerializeField] private RectTransform timer;
     //コルーチンでテキストを動かした分を計算する変数
-    private int counter;
+    private int counter = 0;
 
     void Start()
     {
@@ -37,17 +37,10 @@ public class SecondScore : MonoBehaviour
         //1分単位のImage画像の初期化
         oneMinImage.sprite = numberImage[0];
         //10分単位のImage画像の初期化
-        tenMinImage.sprite = numberImage[0];
-
-        counter = 0;     
+        tenMinImage.sprite = numberImage[0];  
     }
 
-    /*
-    void Update()
-    {
-
-}   */
-
+    //スコアの更新
     public void UpLoadSecondTime()
     {
         //2位スコアの表記
@@ -71,9 +64,11 @@ public class SecondScore : MonoBehaviour
             //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[1] / 600)];
         }
+        //コルーチン作動
         StartCoroutine("StartSecondScore");
     }
 
+    //ランキングのスライド移動
     private IEnumerator StartSecondScore()
     {
         //画面外から移動してくる
@@ -90,7 +85,7 @@ public class SecondScore : MonoBehaviour
         }
         //一秒間待機する
         yield return new WaitForSeconds(1.5f);
-        //待機が終わった後に1位のハイスコアのテキストを動かすコルーチンを作動させる
+        //待機終了後に1位のハイスコアのテキストを動かすコルーチンを作動させる
         hst.UpdateHighScore();
         yield break;
     }

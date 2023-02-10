@@ -5,21 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class RetryButtonC : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     //ゲームをリトライする
     public void RetryGame()
     {
+        //ビルステージを呼び出すロードシーンを呼び出す
         SceneManager.LoadScene("LoadBill");
     }
 }

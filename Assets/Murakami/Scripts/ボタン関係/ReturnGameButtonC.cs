@@ -11,12 +11,7 @@ public class ReturnGameButtonC : MonoBehaviour
         pDC = FindObjectOfType<PasueDisplayC>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //ポーズ画面からゲーム画面に戻る
     public void ReturnGame()
     {
         //ポーズ画面を閉じる

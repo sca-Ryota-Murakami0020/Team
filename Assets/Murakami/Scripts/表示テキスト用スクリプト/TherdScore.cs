@@ -23,7 +23,7 @@ public class TherdScore : MonoBehaviour
     //テキストを動かすために必要な宣言
     [SerializeField] private RectTransform timer;
     //テキストの動いた距離を計測する変数
-    private int counter;
+    private int counter = 0;
 
 
     void Start()
@@ -39,10 +39,9 @@ public class TherdScore : MonoBehaviour
         oneMinImage.sprite = numberImage[0];
         //10分単位のImage画像の初期化
         tenMinImage.sprite = numberImage[0];
-
-        counter = 0;
     }
 
+    //スコアの更新
     public void UpdateTherdScore()
     {
         //2位スコアの表記
@@ -69,6 +68,7 @@ public class TherdScore : MonoBehaviour
         StartCoroutine("StartTherdScore");
     }
 
+    //ランキングのスライド移動
     private IEnumerator StartTherdScore()
     {
         //画面外から移動してくる
@@ -83,8 +83,9 @@ public class TherdScore : MonoBehaviour
             timer.position -= new Vector3(1.5f, 0, 0);
             counter++;
         }
+        //終着してから1.5秒間待機する
         yield return new WaitForSeconds(1.5f);
-        //1秒後2位のハイスコアテキストを移動させるコルーチンを作動させる
+        //待機終了後2位のハイスコアテキストを移動させるコルーチンを作動させる
         ss.UpLoadSecondTime();
         yield break;
     }

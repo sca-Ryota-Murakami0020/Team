@@ -13,8 +13,6 @@ public class EnemyC : MonoBehaviour
     private float enemySpeed = 0.7f;
     //移動距離
     [SerializeField] private float limitDistance;
-    //ノックバック速度
-    private float knocbuckSpeed = 1.5f;
     //追跡中使うスピード
     private float addSpeed = 3.0f;
     //回転回数
@@ -37,8 +35,6 @@ public class EnemyC : MonoBehaviour
     #endregion
 
     #region//プレイ中に変化するEnemyの位置・旋回情報
-    //位置
-    private Vector3 pos;
     //ray関係
     private float rayDistance = 2.0f;
     //rayを飛ばすオブジェクト
@@ -78,6 +74,7 @@ public class EnemyC : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        //Enemyのステータス関係の初期化
         rotationState = RotationPar.NULL;
         defaultPosition = this.transform.position;
         trueDefaultPosition = this.transform.position;
@@ -200,20 +197,26 @@ public class EnemyC : MonoBehaviour
     //リセット機能
     private IEnumerator ResetEnemy()
     {
-        Debug.Log("透明化処理中");
+        //１０秒間Enemyを縮小する処理
         while(invisibleTime <= 10)
         {
+            //Enemyのサイズを０にする
             this.transform.localScale = Vector3.zero;
+            //１秒間待機する
             yield return new WaitForSeconds(1.0f);
+            //コルーチン内でのTime関数は精確では無かったのでint型の変数を用いて秒数を計測した
             invisibleTime++;
         }
-        Debug.Log("透明化処理終了");
+        //１０秒後にEnemyのサイズを元に戻す
         this.transform.localScale = defSize;
+        //透明化の処理が終了したのでフラグをfalseにする
         isInvisible = false;
+        //次のリセット処理のためにここで計測に用いた変数を初期化する
         invisibleTime = 0;
         yield break;
     }
 
+    //旋回処理
     private IEnumerator TurnLookPosition()
     {
         //旋回前に少し待つ

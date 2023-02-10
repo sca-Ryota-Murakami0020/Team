@@ -13,22 +13,12 @@ public class TitleButtonC : MonoBehaviour
         tGM = FindObjectOfType<totalGameManager>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     //タイトルに戻る
     public void GotoTitle()
     {
+        //totalGameManagerがないタイトル画面を呼び出す
         SceneManager.LoadScene("AnyLoadTitle");
+        //現在のプレイ時間を初期化する
         tGM.TotalTime = 0.0f;
     }
 }

@@ -20,7 +20,7 @@ public class TimeTextC : MonoBehaviour
     //移動するタイム表示
     [SerializeField] private RectTransform timer;
     //コルーチンで用いる変数
-    private int counter;
+    private int counter = 0;
     //TherdScore
     private TherdScore th;
 
@@ -28,13 +28,17 @@ public class TimeTextC : MonoBehaviour
     void Start()
     {
         totalGM = FindObjectOfType<totalGameManager>();
-        //00:00表示にする = 初期化
-        oneSecImage.sprite = numberImage[0];
-        tenSecImage.sprite = numberImage[0];
-        oneMinImage.sprite = numberImage[0];
-        tenMinImage.sprite = numberImage[0];
-        counter = 0;
         th = FindObjectOfType<TherdScore>();
+
+        //初期化
+        //1秒単位の初期化（0～9）
+        oneSecImage.sprite = numberImage[0];
+        //10秒単位の初期化（0～5）
+        tenSecImage.sprite = numberImage[0];
+        //1分単位の初期化（0～9）
+        oneMinImage.sprite = numberImage[0];
+        //10分単位の初期化（0～5）
+        tenMinImage.sprite = numberImage[0];
     }
 
     void Update()
@@ -52,11 +56,7 @@ public class TimeTextC : MonoBehaviour
         StartCoroutine("StartText");
     }
 
-    public void SetStartTimer()
-    {
-
-    }
-
+    //ランキングのスライド移動
     private IEnumerator StartText()
     {
         yield return new WaitForSeconds(1.5f);
@@ -66,8 +66,9 @@ public class TimeTextC : MonoBehaviour
             timer.position -= new Vector3(2.5f, 0, 0);
             counter++;
         }
+        //1.5秒間待機する
         yield return new WaitForSeconds(1.5f);
-        //設置完了1秒後にTherdScoreのコルーチンを開始させる
+        //待機終了後にTherdScoreのコルーチンを開始させる
         th.UpdateTherdScore();
         yield break;
     }

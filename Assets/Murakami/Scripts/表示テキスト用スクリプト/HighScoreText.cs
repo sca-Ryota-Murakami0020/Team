@@ -20,7 +20,7 @@ public class HighScoreText : MonoBehaviour
     //テキストを動かすために必要な宣言
     [SerializeField] private RectTransform timer;
     //コルーチンでテキストを動かした分を計算する変数
-    private int counter;
+    private int counter = 0;　
 
     void Start()
     {
@@ -34,7 +34,6 @@ public class HighScoreText : MonoBehaviour
         oneMinImage.sprite = numberImage[0];
         //10分単位のImage画像の初期化
         tenMinImage.sprite = numberImage[0];
-        counter = 0;
     }
 
     public void UpdateHighScore()
@@ -61,9 +60,11 @@ public class HighScoreText : MonoBehaviour
             //10分単位のImage画像の更新
             tenMinImage.sprite = numberImage[Mathf.FloorToInt(totalGM.BestTime[0] / 600)];
         }
+        //コルーチン作動
         StartCoroutine("StartHighScore");
     }
 
+    //ランキングのスライド移動
     private IEnumerator StartHighScore()
     {
         //画面外から移動してくる
@@ -78,6 +79,7 @@ public class HighScoreText : MonoBehaviour
             timer.position -= new Vector3(1.5f, 0, 0);
             counter++;
         }
+        //終着してから1秒間待機する
         yield return new WaitForSeconds(1);
         yield break;
     }

@@ -6,18 +6,12 @@ public class MenuBottonC : MonoBehaviour
 {
     private PasueDisplayC pDC;
 
-    // Start is called before the first frame update
     void Start()
     {
         pDC = FindObjectOfType<PasueDisplayC>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //ポーズ画面から操作説明画面に切り替える
     public void OnManual()
     {
         //操作画面の開示

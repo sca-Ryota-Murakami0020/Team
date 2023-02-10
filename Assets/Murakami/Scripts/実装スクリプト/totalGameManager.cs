@@ -10,13 +10,11 @@ public class totalGameManager : MonoBehaviour
     //ハイスコア用変数
     private float[] bestTime;
     //１回のゲーム時間
-    private float totalTime;
-    //プレイ開始とプレイ終了の判定をするフラグ
-    private bool timeCounter;
+    private float totalTime = 0.0f;
     //スコアの個数を数えるための変数
-    private int loadCount;
-    //
-    private HighScoreText hST;
+    private int loadCount = 0;
+    //プレイ開始とプレイ終了の判定をするフラグ
+    private bool timeCounter = false;
     #endregion
 
     #region//プレイヤー関係
@@ -69,18 +67,14 @@ public class totalGameManager : MonoBehaviour
     //シングルトン
     private void Awake()
     {
-        //AudioSource呼び出し
-        //audios = GetComponent<AudioSource>();
         DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        timeCounter = false;
-        //初期化
+        //シーンに応じた処理ができるようにする
         SceneManager.sceneLoaded += StageLoaded;
-        loadCount = 0;
         //配列の要素数の定義
         bestTime = new float[4];
     }
@@ -103,13 +97,18 @@ public class totalGameManager : MonoBehaviour
         //初回のプレイの記録をハイスコア第1位の配列に格納する
         if (loadCount == 0)
         {
+            //1位のランキングの要素に格納する
             bestTime[loadCount] = totalTime;
         }
 
         //２回目プレイ～３回目時の記録を記録
         if (loadCount >= 1 && loadCount <= 2)
         {
+            //プレイ回数に応じた番地にクリア時間を代入する
+            //プレイ回数に応じた番地にした理由は既にデータが格納されている番地に格納しようとすると
+            //データが上書きされるのでランキングが正常に動作しないから
             bestTime[loadCount] = totalTime;
+            //下のバブルソートでランキングを更新する
             if (loadCount >= 1)
             {
                 for (int i = loadCount; i > 0; i--)
@@ -130,7 +129,9 @@ public class totalGameManager : MonoBehaviour
         //4回目以降ハイスコアを出したら記録を更新する
         if (loadCount >= 3)
         {
+            //bestTimeの3番地は必ず最新のクリア時間を入れる
             bestTime[3] = totalTime;
+            //ここのバブルソートでランキングの更新を行う
             for (int i = 3; i >= 1; i--)
             {
                 for (int j = i - 1; j >= 0; j--)
@@ -140,8 +141,6 @@ public class totalGameManager : MonoBehaviour
                         float bestTimeTem = bestTime[j];
                         bestTime[j] = bestTime[i];
                         bestTime[i] = bestTimeTem;
-                        Debug.Log("i: " + bestTime[i]);
-                        Debug.Log("j: " + bestTime[j]);
                     }
                 }
             }

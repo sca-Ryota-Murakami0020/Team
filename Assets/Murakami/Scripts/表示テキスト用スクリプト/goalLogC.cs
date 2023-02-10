@@ -23,15 +23,14 @@ public class goalLogC : MonoBehaviour
         StartCoroutine("UpScale");
     }
 
+    //ƒQ[ƒ€ƒNƒŠƒA‚ÌƒƒS‚ðŠg‘å‚·‚é
     private IEnumerator UpScale()
     {
         while(this.transform.localScale.x >= 1000 && this.transform.localScale.y >= 300)
         {
-            Debug.Log("Šg‘å’†");
             goalImage.transform.localScale += new Vector3(10,3,0);
             yield return new WaitForSeconds(0.1f);
         }
-        tTC.SetStartTimer();
         yield break;
     }
 }
