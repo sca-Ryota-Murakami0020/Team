@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseUIPrefab: {fileID: 6116651871894078907, guid: 25bfdab31cbdc1e408a4ecdabc3577b6, type: 3}
+  secondPauseUIPrefab: {fileID: 5102754496360832453, guid: a914c27e53865b246bff8a694c8e1512, type: 3}
   playOperatePrafab: {fileID: 3516121092579955884, guid: e231a5ab0f4382c40883bc73ceff630f, type: 3}

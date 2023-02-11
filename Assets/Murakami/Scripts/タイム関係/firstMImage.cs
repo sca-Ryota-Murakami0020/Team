@@ -26,6 +26,6 @@ public class firstMImage : MonoBehaviour
         //TotalGameManager‚©‚çæ“¾‚µ‚½ƒQ[ƒ€ŠÔ‚ğintŒ^‚É•ÏŠ·
         firstMCount = Mathf.FloorToInt(gm.TotalTime / 60);
         //ƒQ[ƒ€ŠÔ‚Ì1•ª’PˆÊ‚Ì•\¦‚ğs‚¤(0`9)
-        image.sprite = numberImage[firstMCount];
+        image.sprite = numberImage[firstMCount % 10];
     }
 }

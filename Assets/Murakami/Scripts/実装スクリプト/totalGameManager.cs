@@ -24,6 +24,9 @@ public class totalGameManager : MonoBehaviour
     private int playerItemCount = 0;
     #endregion
 
+    //PasueDisplayC
+    private PasueDisplayC pDC;
+
     #region//プロパティ
 
     public float[] BestTime//ハイスコアの数値格納配列
@@ -86,7 +89,10 @@ public class totalGameManager : MonoBehaviour
         //計測させるフラグtimeCoounterがtrueの間は時間計測を行う
         if (timeCounter == true)
         {
-            this.totalTime += Time.deltaTime;
+            if(pDC.MenuFlag == false)
+            {
+                this.totalTime += Time.deltaTime;
+            }
         }
         #endregion
     }
@@ -157,6 +163,8 @@ public class totalGameManager : MonoBehaviour
         //それぞれのプレイシーンが呼び出されたら
         if (nextScene.name == "bill" || nextScene.name == "1階" || nextScene.name == "2階" || nextScene.name == "3階" || nextScene.name == "LastScene")
         {
+            //メニュー画面が開かれていないことを確認するために定義する
+            pDC = FindObjectOfType<PasueDisplayC>();
             //タイム計測を開始or再開させる
             timeCounter = true;
         }

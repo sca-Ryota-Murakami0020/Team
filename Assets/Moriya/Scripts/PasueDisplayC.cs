@@ -24,8 +24,13 @@ public class PasueDisplayC : MonoBehaviour
     [SerializeField]
     //ポーズした時に表示するUIのプレハブ
     private GameObject pauseUIPrefab;
-    //ポーズUIのインスタンス
+    //２枚目のポーズUIのインスタンス
     private GameObject pauseUIInstance;
+    [SerializeField]
+    //２枚目のポーズした時に表示するUIのプレハブ
+    private GameObject secondPauseUIPrefab;
+    //ポーズUIのインスタンス
+    private GameObject secondPauseUIInstance;
     //操作説明UIのインスタンス
     private GameObject playOperateUIInstance;
     [SerializeField]
@@ -160,38 +165,52 @@ public class PasueDisplayC : MonoBehaviour
         Destroy(playOperateUIInstance);
         pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
     }
+
+    //２ページ目のメニュー画面から１ページ目のメニュー画面を呼び出す
+    public void OpenFirstMenuPage()
+    {
+        Destroy(pauseUIInstance);
+        secondPauseUIInstance = GameObject.Instantiate(secondPauseUIPrefab) as GameObject;
+    }
+
+    //１ページ目のメニュー画面から２ページ目のメニュー画面を呼び出す
+    public void OpenSecondMenuPage()
+    {
+        Destroy(secondPauseUIInstance);
+        pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
+    }
     #endregion
 
-        /*
-        //操作説明の際のコルーチン
-        private IEnumerator PlayerXplanation()
+    /*
+    //操作説明の際のコルーチン
+    private IEnumerator PlayerXplanation()
+    {
+        while (true)
         {
-            while (true)
+            //ポーズ画面を消して、操作画面UIを出す
+            if (onlyFlag == true)
             {
-                //ポーズ画面を消して、操作画面UIを出す
-                if (onlyFlag == true)
-                {
-                    Destroy(pauseUIInstance);
-                    playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
-                    operationExpFlag = true;
-                    onlyFlag = false;
-                }
-                Debug.Log(playOperateUIInstance);
-                //Tabキーから離れてた時かつ操作画面UIが出ていたら
-                if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
-                {
-                    //ポーズ画面UIを出し、操作画面UIを消す
-                    operationExpFlag = false;
-                    openManual = false;
-                    Destroy(playOperateUIInstance);
-                    pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
-                    Debug.Log(pauseUIInstance);
-                    yield break;
-                }
-               yield return null; 
+                Destroy(pauseUIInstance);
+                playOperateUIInstance = GameObject.Instantiate(playOperatePrafab) as GameObject;
+                operationExpFlag = true;
+                onlyFlag = false;
             }
+            Debug.Log(playOperateUIInstance);
+            //Tabキーから離れてた時かつ操作画面UIが出ていたら
+            if (operationExpFlag == true && Input.GetKeyUp (KeyCode.Tab))
+            {
+                //ポーズ画面UIを出し、操作画面UIを消す
+                operationExpFlag = false;
+                openManual = false;
+                Destroy(playOperateUIInstance);
+                pauseUIInstance = GameObject.Instantiate(pauseUIPrefab) as GameObject;
+                Debug.Log(pauseUIInstance);
+                yield break;
+            }
+           yield return null; 
         }
-        */
+    }
+    */
 
     //リセットするときに値を変える
     private void ResetCommand()

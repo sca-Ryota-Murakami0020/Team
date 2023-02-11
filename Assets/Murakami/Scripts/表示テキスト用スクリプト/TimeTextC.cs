@@ -61,9 +61,9 @@ public class TimeTextC : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         //1ゲームのタイムを00:00表示で画面外から-x方向に500だけ動かす
-        if (counter <= 480)
+        if (counter <= 250)
         {
-            timer.position -= new Vector3(2.5f, 0, 0);
+            timer.position -= new Vector3(5.0f, 0, 0);
             counter++;
         }
         //1.5秒間待機する

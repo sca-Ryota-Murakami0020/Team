@@ -72,15 +72,15 @@ public class TherdScore : MonoBehaviour
     private IEnumerator StartTherdScore()
     {
         //画面外から移動してくる
-        if (counter <= 255 && counter >= 0)
+        if (counter <= 120 && counter >= 0)
         {
-            timer.position -= new Vector3(2.5f, 0, 0);
+            timer.position -= new Vector3(5.0f, 0, 0);
             counter++;
         }
         //ある程度移動したら減速する
-        if (counter <= 333 && counter >= 255)
+        if (counter <= 245 && counter >= 120)
         {
-            timer.position -= new Vector3(1.5f, 0, 0);
+            timer.position -= new Vector3(3.0f, 0, 0);
             counter++;
         }
         //終着してから1.5秒間待機する

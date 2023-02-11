@@ -72,15 +72,15 @@ public class SecondScore : MonoBehaviour
     private IEnumerator StartSecondScore()
     {
         //‰æ–ÊŠO‚©‚çˆÚ“®‚µ‚Ä‚­‚é
-        if (counter <= 255 && counter >= 0)
+        if (counter <= 120 && counter >= 0)
         {
-            timer.position -= new Vector3(2.5f, 0, 0);
+            timer.position -= new Vector3(5.0f, 0, 0);
             counter++;
         }
         //‚ ‚é’ö“xˆÚ“®‚µ‚½‚çŒ¸‘¬‚·‚é
-        if (counter <= 333 && counter >= 255)
+        if (counter <= 245 && counter >= 120)
         {
-            timer.position -= new Vector3(1.5f, 0, 0);
+            timer.position -= new Vector3(3.0f, 0, 0);
             counter++;
         }
         //ˆê•bŠÔ‘Ò‹@‚·‚é
