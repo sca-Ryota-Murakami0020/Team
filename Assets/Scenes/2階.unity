@@ -2175,7 +2175,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0e9b6b87d11f73e4f8fad06c9477285f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4303,16 +4303,32 @@ PrefabInstance:
       value: 10.769525
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457181151487, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.615
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596988457181151487, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.0503
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596988457181151487, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -18.75
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457202409490, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalScale.y
       value: 10.769525
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457202409490, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596988457202409490, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.0503
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596988457202409490, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.61
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457524529348, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalScale.y
@@ -4320,7 +4336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457524529348, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.5403
+      value: -11.28
       objectReference: {fileID: 0}
     - target: {fileID: 3596988457524529348, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4332,7 +4348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3596988458122797866, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.2997
+      value: 1.859
       objectReference: {fileID: 0}
     - target: {fileID: 3596988458122797866, guid: 0af0d7d424491e44da1633e2c48e7617, type: 3}
       propertyPath: m_LocalPosition.y

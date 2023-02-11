@@ -23,7 +23,7 @@ public class CameraC : MonoBehaviour
     //PLayerを追従する速度
     private float cameraSpeed = 3.0f;
     //視点からカメラまでの距離
-    private float cameraDistance = 4.6f;
+    private float cameraDistance = 4.8f;
     //デフォルトの高さ
     private float cameraHeight = 2.5f;
     //離れる時の速度
