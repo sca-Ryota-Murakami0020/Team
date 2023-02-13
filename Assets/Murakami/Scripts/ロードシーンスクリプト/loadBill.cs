@@ -66,7 +66,6 @@ public class loadBill : MonoBehaviour
             //少しずつ透明度を上げていく（パネルを透明にしていく）
             pC.a -= 0.001f;
             fadeAlpha.color = pC;
-            Debug.Log("r");
         }
         //フェードインが行われたフラグを立てる
         didFadeIn = true;

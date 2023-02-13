@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class goalLogC : MonoBehaviour
 {
+    //TimeTextC
     private TimeTextC tTC;
+    //Šg‘å‚·‚é‰æ‘œ
     [SerializeField] private RectTransform goalImage;
 
     // Start is called before the first frame update
@@ -26,6 +28,7 @@ public class goalLogC : MonoBehaviour
     //ƒQ[ƒ€ƒNƒŠƒA‚ÌƒƒS‚ðŠg‘å‚·‚é
     private IEnumerator UpScale()
     {
+        //ˆê’è‚Ì‘å‚«‚³‚Ü‚ÅŠg‘å‚·‚é
         while(this.transform.localScale.x >= 1000 && this.transform.localScale.y >= 300)
         {
             goalImage.transform.localScale += new Vector3(10,3,0);

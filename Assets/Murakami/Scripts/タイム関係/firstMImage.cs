@@ -14,13 +14,11 @@ public class firstMImage : MonoBehaviour
     //TotalGameManager‚©‚çæ“¾‚µ‚½ƒQ[ƒ€ŠÔ‚ğintŒ^‚É‚µ‚Äæ“¾‚·‚é•Ï”
     private int firstMCount;
 
-    // Start is called before the first frame update
     void Start()
     {
         gm = FindObjectOfType<totalGameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         //TotalGameManager‚©‚çæ“¾‚µ‚½ƒQ[ƒ€ŠÔ‚ğintŒ^‚É•ÏŠ·

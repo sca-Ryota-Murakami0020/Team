@@ -61,38 +61,40 @@ public class CameraC : MonoBehaviour
     //視点とカメラ座標を随時更新
     void Update()
     {
+        //プレイヤーが見つからない時は処理を行わない
         if (Player == null) return;
+        //プレイヤーがメニューを開いていない時に動けるようにする
         if(pDC.MenuFlag == false)
         {
             //マウスの移動量を取得
             mousex = Input.GetAxis("Mouse X");
             mousey = Input.GetAxis("Mouse Y");
 
-            //通常のカメラ操作
+            //マウスの移動距離が一定以上だったら
             if ((Mathf.Abs(mousex) > 0.019f || Mathf.Abs(mousey) > 0.019f) && pWC.WallJumpHitFlag == false)
             {
-                //135行目から
+                //通常のカメラ操作
                 Roll(-mousex, -mousey);
             }
 
-            //壁ジャン中のカメラの操作pWC.WallJumpHitFlag == true && 
+            //プレイヤーが壁に張り付いている時
             if (Mathf.Abs(mousex) > 0.019f && pWC.WallJumpHitFlag == true)
             {
-                //185行目から
+                //壁ジャン中のカメラの操作
                 PlayerDoWallJump(-mousex);
             }
 
-            //視点のリセット
+            //右のシフトが押された時
             if (Input.GetKey(KeyCode.RightShift))
             {
-                //165行目から
+                //視点のリセット
                 Reset();
             }
 
-            //94行目から
+            //カメラの視点となる行先の更新
             UpdateLookPosition();
 
-            //109行目から
+            //カメラの座要更新
             UpdateCameraPosition();
 
             //常にプレイヤーのいる方向を向く

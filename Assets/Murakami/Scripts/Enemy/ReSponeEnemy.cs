@@ -18,7 +18,6 @@ public class ReSponeEnemy : MonoBehaviour
         aliveFlag = false;
         sponePosition = sponePosObj.transform.position;
         this.transform.position = sponePosition;
-        Debug.Log("最初の呼び出し完了");
     }
 
     void Update()
@@ -29,7 +28,6 @@ public class ReSponeEnemy : MonoBehaviour
             //最初、ステージには敵が配置していないのでここで一度だけ呼び出す
             Instantiate(enemy, new Vector3(sponePosition.x, sponePosition.y,sponePosition.z), Quaternion.identity);
             aliveFlag = true;
-            Debug.Log("呼び出し位置" + sponePosition);
         }
         
     }
@@ -42,12 +40,10 @@ public class ReSponeEnemy : MonoBehaviour
 
     private IEnumerator StartSponeEnemy()
     {
-        Debug.Log("処理中");
         //10秒間待機する
         yield return new WaitForSeconds(10);
         //10秒後にEnemyCの方でSetSctiveをfalseにしたGameObjectのSetActiveをtrueにして再び活動できるようにしてあげる
         Instantiate(enemy, this.transform.position, Quaternion.identity);
-        Debug.Log("処理完了");
         yield break;
     }
 }
