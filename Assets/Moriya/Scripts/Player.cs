@@ -88,9 +88,9 @@ public class Player : MonoBehaviour
     //加速制限時間
     private float speedTime = 1000.0f;
     //加速する値を入れる変数
-    private float accelSpeed = 6.0f;
+    private float accelSpeed = 4.0f;
     //加速リセットする際に使う変数
-    private float defaultSpeed = 4.0f;
+    private float defaultSpeed = 2.5f;
 
     //RigidBodyとボックスコライダーの定義
     private Rigidbody rb;

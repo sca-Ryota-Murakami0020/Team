@@ -27,7 +27,6 @@ public class BackSecondPasueUIC : MonoBehaviour
     //１ページ目から２ページ目に移動する
     public void BackSecondPasueUI()
     {
-        Debug.Log("2page");
         pDC.OpenSecondMenuPage();
     }
 }

@@ -49,8 +49,14 @@ public class loadTitle : MonoBehaviour
     //フェードインの処理
     private IEnumerator FadeIn()
     {
+        //パネルのイメージの取得
+        fadeAlpha = fadePanel.GetComponent<Image>();
+
+        //現在のパネルの透明度を取得
+        pC = fadeAlpha.color;
+
         //透明度が0以上なら
-        while (pC.a >= 0)
+        while (pC.a >= 0 && didFadeIn == false)
         {
             //指定時間分だけ待つ
             yield return new WaitForSeconds(0.7f);

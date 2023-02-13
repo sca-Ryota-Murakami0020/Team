@@ -27,7 +27,6 @@ public class BackPasueButton : MonoBehaviour
     //１ページ目から２ページ目に移動する
     public void BackFirstPasueUI()
     {
-        Debug.Log("1pege");
         pDC.OpenFirstMenuPage();
     }
 }
