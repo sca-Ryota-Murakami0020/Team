@@ -360,23 +360,25 @@ public class Player : MonoBehaviour
                 _parent.transform.position -= mainCameraRightDer * runSpeed * Time.deltaTime;
             }
 
-            //通常ジャンプと壁ジャンプのスピード
+            //通常ジャンプのスピード
             if (jumpFlag == true)
             {
                 _parent.transform.position -= mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
 
-            //ローロングジャンプのスピード
+            //ローリングジャンプのスピード
             if (rollingJumpDidFlag == true)
             {
                 _parent.transform.position -= mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
             }
 
+            //壁ジャンプのスピード
             if (wallJumpDidFlag == true)
             {
                 _parent.transform.position -= mainCameraRightDer * wallJumpRunSpeed * Time.deltaTime;
             }
 
+            //カメラの向きに合わせて回転する
             transform.rotation = Quaternion.LookRotation(-mainCameraRightDer);
         }
 
@@ -395,22 +397,25 @@ public class Player : MonoBehaviour
                 _parent.transform.position += mainCameraRightDer * runSpeed * Time.deltaTime;
             }
 
-            //通常ジャンプと壁ジャンプのスピード
+            //通常ジャンプのスピード
             if (jumpFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * jumpingRunSpeed * Time.deltaTime;
             }
 
+            //ローリングジャンプのスピード
             if (rollingJumpDidFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * jumpRollingSpeed * Time.deltaTime;
             }
 
+            //壁ジャンプのスピード
             if (wallJumpDidFlag == true)
             {
                 _parent.transform.position += mainCameraRightDer * wallJumpRunSpeed * Time.deltaTime;
             }
 
+            //カメラの向きに合わせて回転する
             transform.rotation = Quaternion.LookRotation(mainCameraRightDer);
         }
 
@@ -431,22 +436,25 @@ public class Player : MonoBehaviour
 
             }
 
-            //通常ジャンプと壁ジャンプのスピード
+            //通常ジャンプのスピード
             if (jumpFlag == true)
             {
                 _parent.transform.position += cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
 
+            //ローリングジャンプのスピード
             if (rollingJumpDidFlag == true)
             {
                 _parent.transform.position += cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
             }
 
+            //壁ジャンプのスピード
             if (wallJumpDidFlag == true)
             {
                 _parent.transform.position += cameraDreNoY * wallJumpRunSpeed * Time.deltaTime;
             }
 
+            //カメラの向きに合わせて回転する
             transform.rotation = Quaternion.LookRotation(cameraDreNoY);
         }
 
@@ -460,28 +468,32 @@ public class Player : MonoBehaviour
                 anime.SetBool("doIdle", false);
                 anime.SetBool("doWalk", true);
             }
+
             //普通の歩くスピード
             if (jumpFlag == false && rollingJumpDidFlag == false && wallJumpDidFlag == false)
             {
                 _parent.transform.position -= cameraDreNoY * runSpeed * Time.deltaTime;
             }
 
-            //通常ジャンプと壁ジャンプのスピード
+            //通常ジャンプのスピード
             if (jumpFlag == true)
             {
                 _parent.transform.position -= cameraDreNoY * jumpingRunSpeed * Time.deltaTime;
             }
 
+            //ローリングジャンプのスピード
             if (rollingJumpDidFlag == true)
             {
                 _parent.transform.position -= cameraDreNoY * jumpRollingSpeed * Time.deltaTime;
             }
 
+            //壁ジャンプのスピード
             if (wallJumpDidFlag == true)
             {
                 _parent.transform.position -= cameraDreNoY * wallJumpRunSpeed * Time.deltaTime;
             }
 
+            //カメラの向きに合わせて回転する
             transform.rotation = Quaternion.LookRotation(-cameraDreNoY);
         }
 
@@ -507,7 +519,7 @@ public class Player : MonoBehaviour
             //ジャンプの効果音を流す
             PlaySE(jumpSE);
 
-            //ローロングジャンプができない状態なら
+            //ローリングジャンプができない状態且つ壁ジャンプができない状態なら
             if (rollingJumpFlag == false && wallJumpFlag == false)
             {
                 //ジャンプ時
@@ -517,7 +529,7 @@ public class Player : MonoBehaviour
                 jumpCount++;
             }
 
-            //ローロングジャンプができる状態なら
+            //ローリングジャンプができる状態なら
             if (rollingJumpFlag == true)
             {
                 //ローリングジャンプ時
@@ -548,7 +560,7 @@ public class Player : MonoBehaviour
                 speedAccelerationFlag = true;
                 //壁はりつき中のフラグをおる
                 doStayWall = false;
-                //壁から離れたのでフラグをおる......
+                //壁から離れたのでフラグをおる
                 pWallC.WallJumpHitFlag = false;
             }
 
@@ -590,23 +602,26 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("GoalScene");
         }
 
+        //次のステージに行くためのif文
+        //１階のステージシーンに飛ぶ
         if (other.gameObject.name == "LoadFirstStagePoint" && gm.PlayerIC >= 1)
         {
             SceneManager.LoadScene("LoadFirstStage");
         }
 
+        //２階のステージシーンに飛ぶ
         if (other.gameObject.name == "LoadSecondPoint" && gm.PlayerIC >= 2)
         {
-            //二個目のロードシーンにもちこむをかく
             SceneManager.LoadScene("LoadSecondStage");
         }
 
+        //３階のステージシーンに飛ぶ
         if (other.gameObject.name == "LoadTherdPoint" && gm.PlayerIC >= 3)
         {
-            //三個目のロードシーンにもちこむやつをかく
             SceneManager.LoadScene("LoadTherdStage");
         }
 
+        //屋上ステージシーンに飛ぶ
         if (other.gameObject.name == "LoadLastPoint")
         {
             SceneManager.LoadScene("LoadLastStage");
