@@ -46,7 +46,6 @@ public class loadBill : MonoBehaviour
         {
             StartCoroutine("FadeIn");
         }
-        Debug.Log(didFadeIn);
     }            
 
     //フェードインの処理

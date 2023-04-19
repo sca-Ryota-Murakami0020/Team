@@ -343,7 +343,7 @@ public class Player : MonoBehaviour
         //十字キー操作
         //中の処理はWASDどれも同じ
         //左方向に向いて移動したら
-        if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false)
+        if (Input.GetKey(KeyCode.A) && doInputButtonFlag == false && landFlag == false)
         {
             moveFlag = true;
 
@@ -383,7 +383,7 @@ public class Player : MonoBehaviour
         }
 
         //右方向に向いて移動したら
-        if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false)
+        if (Input.GetKey(KeyCode.D) && doInputButtonFlag == false && landFlag == false)
         {
             moveFlag = true;
             if (fallFlag == false)
@@ -420,7 +420,7 @@ public class Player : MonoBehaviour
         }
 
         //上方向に向いて移動したら
-        if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false)
+        if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false && gm.PlayBill == false && landFlag == false)
         {
             moveFlag = true;
             if (fallFlag == false)
@@ -459,7 +459,7 @@ public class Player : MonoBehaviour
         }
 
         //下方向に向いて移動したら
-        if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false)
+        if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false && gm.PlayBill == false && landFlag == false)
         {
             moveFlag = true;
 
@@ -514,7 +514,7 @@ public class Player : MonoBehaviour
         }
 
         //ジャンプの動き
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && fallFlag == false)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 0 && fallFlag == false && landFlag == false)
         {
             //ジャンプの効果音を流す
             PlaySE(jumpSE);
@@ -672,6 +672,12 @@ public class Player : MonoBehaviour
 
     }
 
+    //
+    public void PlayerLanding()
+    {
+        landFlag = false;
+    }
+
     //ノックバック
     /*private void KnockBack()
     {
@@ -755,6 +761,7 @@ public class Player : MonoBehaviour
                     }
                     //ここでフラグおり＆着地の効果音を入れている
                     fallFlag = false;
+                    landFlag = true;
                     PlaySE(randingSE);
                 }
             }
@@ -800,7 +807,7 @@ public class Player : MonoBehaviour
         //ジャンプしたらここに入る
         if (jumpFlag == true)
         {
-            anime.SetBool("doWalk", true);
+            anime.SetBool("doWalk", false);
             anime.SetBool("RollingAriIdle", false);
         }
 
@@ -940,6 +947,7 @@ public class Player : MonoBehaviour
         StartCoroutine(_hit());
         fallDamageHitFlag = false;
         anime.SetBool("doLanding", true);
+        //landFlag = true;
 
         //地面に着地したら
         if (hitray.transform.gameObject.CompareTag("Ground"))
