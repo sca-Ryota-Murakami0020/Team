@@ -420,7 +420,7 @@ public class Player : MonoBehaviour
         }
 
         //ã•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
-        if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false && gm.PlayBill == false && landFlag == false)
+        if (Input.GetKey(KeyCode.W) && doInputButtonFlag == false && landFlag == false)
         {
             moveFlag = true;
             if (fallFlag == false)
@@ -459,7 +459,7 @@ public class Player : MonoBehaviour
         }
 
         //‰º•ûŒü‚ÉŒü‚¢‚ÄˆÚ“®‚µ‚½‚ç
-        if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false && gm.PlayBill == false && landFlag == false)
+        if (Input.GetKey(KeyCode.S) && doInputButtonFlag == false && landFlag == false)
         {
             moveFlag = true;
 

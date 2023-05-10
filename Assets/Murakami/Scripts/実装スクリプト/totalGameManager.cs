@@ -23,7 +23,7 @@ public class totalGameManager : MonoBehaviour
     //引き継ぐアイテムカウントの変数
     private int playerItemCount = 0;
     //
-    private bool playerBillFlag;
+    //private bool playerBillFlag;
     #endregion
 
     //PasueDisplayC
@@ -66,12 +66,6 @@ public class totalGameManager : MonoBehaviour
     {
         get { return this.timeCounter;}
         set { this.timeCounter = value;}
-    }
-
-    public bool PlayBill
-    {
-        get { return this.playerBillFlag;}
-        set { this.playerBillFlag = value;}
     }
     #endregion
 
@@ -168,19 +162,8 @@ public class totalGameManager : MonoBehaviour
     #region//呼び出したシーンに応じての処理
     void StageLoaded(Scene nextScene, LoadSceneMode mode)
     {
-        //ビルのプレイシーンが呼び出されたら
-        if (nextScene.name == "bill")
-        {
-            //メニュー画面が開かれていないことを確認するために定義する
-            pDC = FindObjectOfType<PasueDisplayC>();
-            //タイム計測を開始or再開させる
-            timeCounter = true;
-            //プレイヤーの動きをビル専用にする
-            playerBillFlag = true;
-        }
-
         //それぞれのプレイシーンが呼び出されたら
-        if (nextScene.name == "1階" || nextScene.name == "2階" || nextScene.name == "3階" || nextScene.name == "LastScene")
+        if (nextScene.name == "bill" || nextScene.name == "1階" || nextScene.name == "2階" || nextScene.name == "3階" || nextScene.name == "LastScene")
         {
             //メニュー画面が開かれていないことを確認するために定義する
             pDC = FindObjectOfType<PasueDisplayC>();
@@ -193,11 +176,6 @@ public class totalGameManager : MonoBehaviour
         {
             //タイム計測を一旦停止させる
             timeCounter = false;
-            //もしプレイヤーの動きがビル専用になっていたら
-            if(playerBillFlag == true)
-            {
-                playerBillFlag = false;
-            }
         }
 
         //ゲームオーバーシーンorリザルト画面が呼び出されたら
@@ -222,8 +200,6 @@ public class totalGameManager : MonoBehaviour
             playerItemCount = 0;
             //１ゲームのプレイ時間の初期化
             totalTime = 0.0f;
-            //プレイヤーの動き方を初期化
-            playerBillFlag = false;
         }
     }
     #endregion
