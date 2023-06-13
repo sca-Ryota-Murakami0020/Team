@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     private Animator anime = null;
 
     #region//状況に応じて使用するフラグ
+
     //落下したときのダメージが入るかどうかのフラグ
     private bool fallDamageHitFlag = false;
     //落下ダメージが入ったフラグ
