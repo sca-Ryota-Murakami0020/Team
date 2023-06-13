@@ -9,6 +9,7 @@ using UnityEditor;
 public class Player : MonoBehaviour
 {
     #region//プレイヤーステータス
+    //プレイヤーの前のHpを保存する
     private int oldHp;
     //移動速度
     //ローリングジャンプした時のx方向スピード
@@ -25,6 +26,19 @@ public class Player : MonoBehaviour
     private float fallSpeed = -0.1f;
     //ジャンプする回数
     private int jumpCount = 0;
+
+    //加速関係
+    //加速したかどうかのフラグ
+    private bool speedAccelerationFlag = false;
+    //カウント用
+    private float speedCTime = 0;
+    //加速制限時間
+    private float speedTime = 1000.0f;
+    //加速する値を入れる変数
+    private float accelSpeed = 4.0f;
+    //加速リセットする際に使う変数
+    private float defaultSpeed = 2.5f;
+
     #endregion
 
     //プレイヤーアニメーション用変数
@@ -80,18 +94,6 @@ public class Player : MonoBehaviour
     //　どのぐらいの高さからダメージを与えるか
     [SerializeField]
     private float takeDamageDistance = 3f;
-
-    //加速関係
-    //加速したかどうかのフラグ
-    private bool speedAccelerationFlag = false;
-    //カウント用
-    private float speedCTime = 0;
-    //加速制限時間
-    private float speedTime = 1000.0f;
-    //加速する値を入れる変数
-    private float accelSpeed = 4.0f;
-    //加速リセットする際に使う変数
-    private float defaultSpeed = 2.5f;
 
     //RigidBodyとボックスコライダーの定義
     private Rigidbody rb;
