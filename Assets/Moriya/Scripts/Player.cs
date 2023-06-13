@@ -9,6 +9,7 @@ using UnityEditor;
 public class Player : MonoBehaviour
 {
     #region//プレイヤーステータス
+
     //プレイヤーの前のHpを保存する
     private int oldHp;
     //移動速度
