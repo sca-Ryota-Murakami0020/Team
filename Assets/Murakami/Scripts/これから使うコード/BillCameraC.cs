@@ -22,43 +22,30 @@ public class BillCameraC : MonoBehaviour
     private PasueDisplayC pDC;
     //BillCameraMveC
     private BillCameraMveC bCM;
+    //カメラの移動方向を判別するオブジェクト
+    private GameObject disObjecto;
+    //移動方向を判別するためのオブジェクトの名前を記憶する
+    private string disObjectoName;
 
-    //使ってないカメラの優先度
-    private int unSelectCameraPriority = 0;
-    //使っているカメラの優先度
-    private int selectCameraPriority = 10;
-    //選択中のカメラのインデックス
-    private int cameraIndex = 0;
-    //前の場面に移る
-    private bool returnCamera = false;
 
+    //プロパティ
     public GameObject OldCamera
     {
         get { return this.oldCameraObject;}
         set { this.oldCameraObject = value;}
     }
 
-    //バーチャルカメラの優先度を初期化
-    private void Awake()
+    public string DisObjectoName 
     {
-        if(cameraList == null || cameraList.Length <= 0)
-        {
-            return;
-        }
-
-        //各カメラの優先度を初期化
-        for(int i = 0; i < cameraList.Length; ++i)
-        {
-            //現在使うカメラがカメラの要素数と一緒だった場合そのカメラの優先度をあげる
-            cameraList[i].Priority = i == cameraIndex ? selectCameraPriority : unSelectCameraPriority;
-        }
+        get { return this.disObjectoName;}
+        set { this.disObjectoName = value;}
     }
-
 
     void Start()
     {
         pDC = FindObjectOfType<PasueDisplayC>();
         bCM = FindObjectOfType<BillCameraMveC>();
+
     }
 
     private void Update()
@@ -68,16 +55,6 @@ public class BillCameraC : MonoBehaviour
         {
             //常にPlayerの位置とカメラの位置を取得する
             playerPosition = this.player.transform.position;
-            cameraPosition = cameraList[cameraIndex].transform.position;
-
-            //使っているカメラに応じた動きに適用させる
-            for (int i = 0; i < cameraList.Length; i++)
-            {
-                if(cameraList[i].Priority == selectCameraPriority)
-                {
-                    CameraMover(i);
-                }
-            }
         }
     }
 
@@ -105,13 +82,13 @@ public class BillCameraC : MonoBehaviour
 
     private void CameraMoveForStopX()
     {
-        cameraList[cameraIndex].transform.position = new Vector3(this.cameraPosition.x, playerPosition.y, playerPosition.z);
+        this.transform.position = new Vector3(this.cameraPosition.x, playerPosition.y, playerPosition.z);
         Debug.Log("Z座標の移動");
     }
 
     private void CameraMoveForStopZ()
     {
-        cameraList[cameraIndex].transform.position = new Vector3(playerPosition.x, playerPosition.y, this.cameraPosition.z);
+        this.transform.position = new Vector3(playerPosition.x, playerPosition.y, this.cameraPosition.z);
         Debug.Log("X座標の移動");
     }
 
