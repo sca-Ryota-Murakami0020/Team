@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private float fallSpeed = -0.1f;
     //ジャンプする回数
     private int jumpCount = 0;
+    //プレイヤーを追いかけるカメラの前のポジションを記録するための変数(ビルステージでのみ使用する)
+    private string oldName;
 
     //加速関係
     //加速したかどうかのフラグ
@@ -239,6 +241,10 @@ public class Player : MonoBehaviour
 
         //ray投射開始
         lineCast = StartCoroutine("StartLineCast");
+
+        //現在のステージ側面の番号を代入する。
+        //ー＞ステージの側面を移動するごとに番号が増加していきfourからはoneに戻る
+        oldName = "One";
     }
 
     // Update is called once per frame
@@ -641,6 +647,18 @@ public class Player : MonoBehaviour
             PlaySE(itemGetSE);
             gm.PlayerIC++;
             other.gameObject.SetActive(false);
+        }
+        //カメラを動かすポジションに着いたら
+        if(other.gameObject.CompareTag("ChangeCameraPos"))
+        {
+            //ここでオブジェクトの名前を記憶する
+            string getCameraPosName = other.gameObject.name;
+            //BillCameraCのスクリプトを取得する
+            BillCameraC bc  = mainCamera.gameObject.GetComponent<BillCameraC>();
+            //関数の呼び出し
+            bc.CameraMover(oldName,getCameraPosName);
+            //ここで格納していた名前を取得したオブジェクトの名前に変更する
+            oldName = getCameraPosName;
         }
     }
 
