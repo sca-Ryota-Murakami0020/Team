@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
 
         //現在のステージ側面の番号を代入する。
         //ー＞ステージの側面を移動するごとに番号が増加していきfourからはoneに戻る
-        oldName = "One";
+        oldName = "Start";
     }
 
     // Update is called once per frame
