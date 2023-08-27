@@ -18,6 +18,8 @@ public class BillCameraC : MonoBehaviour
     private Quaternion[] cameraPosRot;
     //カメラの番地
     private int cameraPosNumber;
+    //カメラがすぐに動かない様にするためのフラグ
+    private bool canMoveCamera = true;
 
     void Start()
     {
@@ -25,7 +27,6 @@ public class BillCameraC : MonoBehaviour
         pDC = FindObjectOfType<PasueDisplayC>();
 
         //配列数の定義化
-        cameraPos = new GameObject[4];
         cameraPosVec = new Vector3 [4];
         cameraPosRot = new Quaternion [4];
         for(int count = 0; count < 4; count++)
@@ -77,21 +78,37 @@ public class BillCameraC : MonoBehaviour
 
     public void NextCamera()
     {
-        //次のカメラのポジションに移動する
-        cameraPosNumber++;
-        this.transform.position = cameraPosVec[cameraPosNumber];
-        //変更先のオブジェクトはカメラの向くべき角度を持っているので角度も変更する。
-        this.transform.rotation = cameraPosRot[cameraPosNumber];
-        Debug.Log("Next");
+        if(canMoveCamera)
+        {
+            //次のカメラのポジションに移動する
+            cameraPosNumber++;
+            this.transform.position = cameraPosVec[cameraPosNumber];
+            //変更先のオブジェクトはカメラの向くべき角度を持っているので角度も変更する。
+            this.transform.rotation = cameraPosRot[cameraPosNumber];
+            Debug.Log("Next");
+        }       
     }
 
     public void BackCamera()
     {
-        //前のカメラのポジションに移動する
-        cameraPosNumber--;
-        this.transform.position = cameraPosVec[cameraPosNumber];
-        //変更先のオブジェクトはカメラの向くべき角度を持っているので角度も変更する。
-        this.transform.rotation = cameraPosRot[cameraPosNumber];
-        Debug.Log($"Back");
+        if(canMoveCamera)
+        {
+            //前のカメラのポジションに移動する
+            cameraPosNumber--;
+            this.transform.position = cameraPosVec[cameraPosNumber];
+            //変更先のオブジェクトはカメラの向くべき角度を持っているので角度も変更する。
+            this.transform.rotation = cameraPosRot[cameraPosNumber];
+            Debug.Log($"Back");
+        }
+    }
+
+    private IEnumerator changeFlag()
+    {
+        //カメラの行動を2秒間不可にする
+        canMoveCamera = false;
+        yield return new WaitForSeconds(3);
+        //2秒後に行動可能にする
+        canMoveCamera = true;
+        yield return null;
     }
 }
